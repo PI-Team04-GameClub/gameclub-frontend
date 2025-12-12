@@ -1,61 +1,130 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
-  Flex,
+  Container,
   Heading,
   Button,
-  VStack,
-  Card,
-  CardBody,
-  Text,
+  SimpleGrid,
   HStack,
   useDisclosure,
 } from '@chakra-ui/react';
-import { mockNewsItems } from '../../utils/mockData';
-import { CreateNewsModal } from '../../components/modals';
+import { newsService } from '../../services/news_service';
+import { NewsItem, NewsFormData } from '../../types';
+import { NewsModal } from '../../components/modals/news/NewsModal';
+import { DeleteConfirmDialog } from '../../components/dialogs/DeleteConfirmDialog';
+import NewsCard from '../../components/cards/NewsCard';
 
 const NewsPage: React.FC = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
+  const [selectedNews, setSelectedNews] = useState<NewsItem | undefined>();
+  const [newsToDelete, setNewsToDelete] = useState<number | null>(null);
+
+  const {
+    isOpen: isNewsModalOpen,
+    onOpen: onNewsModalOpen,
+    onClose: onNewsModalClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isDeleteDialogOpen,
+    onOpen: onDeleteDialogOpen,
+    onClose: onDeleteDialogClose,
+  } = useDisclosure();
+
+  useEffect(() => {
+    loadNews();
+  }, []);
+
+  const loadNews = async () => {
+    try {
+      const data = await newsService.getAll();
+      setNewsItems(data);
+    } catch (error) {
+      console.error('Error loading news:', error);
+    }
+  };
+
+  const handleCreate = () => {
+    setSelectedNews(undefined);
+    onNewsModalOpen();
+  };
+
+  const handleEdit = (news: NewsItem) => {
+    setSelectedNews(news);
+    onNewsModalOpen();
+  };
+
+  const handleDeleteClick = (id: number) => {
+    setNewsToDelete(id);
+    onDeleteDialogOpen();
+  };
+
+  const handleSubmit = async (data: NewsFormData) => {
+    try {
+      if (selectedNews) {
+        await newsService.update(selectedNews.id, data);
+      } else {
+        await newsService.create(data);
+      }
+      loadNews();
+    } catch (error) {
+      console.error('Error saving news:', error);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (newsToDelete) {
+      try {
+        await newsService.delete(newsToDelete);
+        loadNews();
+      } catch (error) {
+        console.error('Error deleting news:', error);
+      }
+    }
+  };
 
   return (
-    <Box>
-      <Flex justify="space-between" align="center" mb={6}>
-        <Heading size="xl" fontWeight="800">
-          Latest News
-        </Heading>
-        <Button colorScheme="brand" onClick={onOpen} leftIcon={<Text>+</Text>}>
-          Create Post
-        </Button>
-      </Flex>
-
-      <VStack spacing={4} align="stretch">
-        {mockNewsItems.map((item) => (
-          <Card
-            key={item.id}
-            _hover={{ transform: 'translateY(-4px)', boxShadow: 'md' }}
-            transition="all 0.3s"
+    <Container maxW="container.xl" py={8}>
+      <Box mb={6}>
+        <HStack justify="space-between" mb={6}>
+          <Heading size="xl" fontWeight="800">
+            News & Updates
+          </Heading>
+          <Button
+            colorScheme="brand"
+            onClick={handleCreate}
           >
-            <CardBody>
-              <VStack align="stretch" spacing={3}>
-                <Heading size="md" fontWeight="700">
-                  {item.title}
-                </Heading>
-                <Text color="gray.600" fontSize="sm">
-                  {item.description}
-                </Text>
-                <HStack spacing={4} color="gray.500" fontSize="sm">
-                  <Text>By {item.author}</Text>
-                  <Text>•</Text>
-                  <Text>{item.date}</Text>
-                </HStack>
-              </VStack>
-            </CardBody>
-          </Card>
-        ))}
-      </VStack>
+            Create Post
+          </Button>
+        </HStack>
 
-      <CreateNewsModal isOpen={isOpen} onClose={onClose} />
-    </Box>
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
+          {newsItems.map((news) => (
+            <NewsCard
+              key={news.id}
+              news={news}
+              onEdit={handleEdit}
+              onDelete={handleDeleteClick}
+            />
+          ))}
+        </SimpleGrid>
+      </Box>
+
+      <NewsModal
+        isOpen={isNewsModalOpen}
+        onClose={onNewsModalClose}
+        onSubmit={handleSubmit}
+        news={selectedNews}
+      />
+
+      <DeleteConfirmDialog
+        isOpen={isDeleteDialogOpen}
+        onClose={onDeleteDialogClose}
+        onConfirm={handleDelete}
+        title="Delete News Post"
+        message="Are you sure you want to delete this news post? This action cannot be undone."
+      />
+    </Container>
   );
 };
 
