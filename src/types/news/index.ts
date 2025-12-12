@@ -1,4 +1,3 @@
-// News Types
 export interface NewsItem {
   id: number;
   title: string;

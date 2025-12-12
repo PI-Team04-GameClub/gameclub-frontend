@@ -1,44 +1,30 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ChakraProvider, Box } from '@chakra-ui/react';
-import Navbar from './components/navbar/Navbar';
-import NewsPage from './pages/news/NewsPage';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import theme from './styles/theme';
+import Navbar from './components/Navbar';
+import GamesPage from './pages/games/GamesPage';
+import TeamsPage from './pages/teams/TeamsPage';
 import TournamentsPage from './pages/tournaments/TournamentsPage';
-import MyTeamPage from './pages/team/MyTeamPage';
-import MatchesPage from './pages/matches/MatchesPage';
-import theme from './utils/theme';
+import NewsPage from './pages/news/NewsPage';
 
 const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<string>('news');
-
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'news':
-        return <NewsPage />;
-      case 'tournaments':
-        return <TournamentsPage />;
-      case 'team':
-        return <MyTeamPage />;
-      case 'matches':
-        return <MatchesPage />;
-      default:
-        return <NewsPage />;
-    }
-  };
-
   return (
     <ChakraProvider theme={theme}>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-      />
-      <Box minH="100vh">
-        <Navbar activeTab={activeTab} onTabChange={setActiveTab} />
-        <Box mt="70px" p={8}>
-          <Box maxW="1400px" mx="auto">
-            {renderContent()}
+      <Router>
+        <Box>
+          <Navbar />
+          <Box minH="calc(100vh - 73px)">
+            <Routes>
+              <Route path="/" element={<Navigate to="/news" replace />} />
+              <Route path="/news" element={<NewsPage />} />
+              <Route path="/games" element={<GamesPage />} />
+              <Route path="/teams" element={<TeamsPage />} />
+              <Route path="/tournaments" element={<TournamentsPage />} />
+            </Routes>
           </Box>
         </Box>
-      </Box>
+      </Router>
     </ChakraProvider>
   );
 };
