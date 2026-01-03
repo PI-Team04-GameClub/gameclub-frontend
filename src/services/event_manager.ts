@@ -84,7 +84,7 @@ class EventManager implements Observer {
   public emit(eventType: string, data: any): void {
     logger.info(`Emitovanje događaja: ${eventType}`);
 
-    // Sprema u historiju
+    // Sprema u povijest događaja
     this.eventHistory.push({
       type: eventType,
       data,
@@ -114,80 +114,74 @@ class EventManager implements Observer {
   }
 
   /**
-   * Dohvaća historiju događaja
+   * Dohvaća povijest događaja
    */
   public getEventHistory(): Array<{ type: string; data: any; timestamp: string }> {
     return [...this.eventHistory];
   }
 
   /**
-   * Čisti historiju događaja
+   * Čisti povijest događaja
    */
   public clearHistory(): void {
     this.eventHistory = [];
-    logger.info("Historija događaja obrisana");
+    logger.info("Povijest događaja obrisana");
   }
 
   /**
-   * Implementacija Observer sučelja (za recenzivnu observiranje)
+   * Implementacija Observer sučelja
    */
-  public update(eventType: string, data: any): void {
+  public update(eventType: string, _data: any): void {
     logger.debug(`EventManager primio događaj: ${eventType}`);
   }
 }
 
 /**
- * Konkretna klasa koja observira specifične događaje
- * Primjer: Komponenta za obavijesti
+ * 1. NotificationObserver
+ * Šalje obavijesti korisnicima za sve događaje
  */
 export class NotificationObserver implements Observer {
-  constructor(private name: string = "NotificationObserver") {}
-
-  public update(eventType: string, data?: any): void {
-    const message = `[${this.name}] Primljen događaj: ${eventType} - ${JSON.stringify(data)}`;
-    logger.info(message);
-    console.log(`🔔 ${message}`);
-  }
-}
-
-/**
- * Konkretna klasa koja observira sve što se dogodi s korisnikom
- */
-export class UserActivityObserver implements Observer {
-  constructor(private name: string = "UserActivityObserver") {}
-
   public update(eventType: string, _data?: any): void {
-    if (eventType.includes("USER") || eventType.includes("LOGIN")) {
-      logger.info(`[${this.name}] Korisnikova aktivnost: ${eventType}`);
-      console.log(`👤 Korisnik aktivnost: ${eventType}`);
-    }
+    logger.info(`🔔 Obavijest: ${eventType}`);
+    console.log(`🔔 [OBAVIJEST] ${eventType}`);
   }
 }
 
 /**
- * Konkretna klasa koja observira igre
+ * 2. GameActivityObserver
+ * Prati sve igre-specifične događaje
  */
-export class GameObserver implements Observer {
-  constructor(private name: string = "GameObserver") {}
-
+export class GameActivityObserver implements Observer {
   public update(eventType: string, _data?: any): void {
     if (eventType.includes("GAME")) {
-      logger.info(`[${this.name}] Igra događaj: ${eventType}`);
-      console.log(`🎮 Igra događaj: ${eventType}`);
+      logger.info(`🎮 Igra aktivnost: ${eventType}`);
+      console.log(`🎮 [IGRA] ${eventType}`);
     }
   }
 }
 
 /**
- * Konkretna klasa koja observira greške
+ * 3. UserActivityObserver
+ * Prati sve korisničke događaje
+ */
+export class UserActivityObserver implements Observer {
+  public update(eventType: string, _data?: any): void {
+    if (eventType.includes("USER")) {
+      logger.info(`👤 Korisnik aktivnost: ${eventType}`);
+      console.log(`👤 [KORISNIK] ${eventType}`);
+    }
+  }
+}
+
+/**
+ * 4. ErrorObserver
+ * Prati greške i sistemske probleme
  */
 export class ErrorObserver implements Observer {
-  constructor(private name: string = "ErrorObserver") {}
-
-  public update(eventType: string, data: any): void {
-    if (eventType === EventType.ERROR) {
-      logger.error(`[${this.name}] GREŠKA: ${JSON.stringify(data)}`);
-      console.error(`❌ Greška: ${data.message}`);
+  public update(eventType: string, _data: any): void {
+    if (eventType === EventType.ERROR || eventType === EventType.TOURNAMENT_UPDATED) {
+      logger.error(`❌ Greška: ${eventType}`);
+      console.error(`❌ [GREŠKA] ${eventType}`);
     }
   }
 }

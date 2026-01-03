@@ -17,7 +17,7 @@ import eventManager, {
   EventType,
   NotificationObserver,
   UserActivityObserver,
-  GameObserver,
+  GameActivityObserver,
   ErrorObserver,
 } from "../services/event_manager";
 import { Box, VStack, HStack, Button, Text, useToast } from "@chakra-ui/react";
@@ -34,14 +34,14 @@ const DesignPatternsDemo: React.FC = () => {
     // Registrira sve observere
     const notificationObserver = new NotificationObserver();
     const userActivityObserver = new UserActivityObserver();
-    const gameObserver = new GameObserver();
+    const gameActivityObserver = new GameActivityObserver();
     const errorObserver = new ErrorObserver();
 
     // Svaki observer se registrira na specifične događaje
     eventManager.subscribe(EventType.USER_LOGGED_IN, userActivityObserver);
     eventManager.subscribe(EventType.USER_LOGGED_OUT, userActivityObserver);
-    eventManager.subscribe(EventType.GAME_CREATED, gameObserver);
-    eventManager.subscribe(EventType.GAME_DELETED, gameObserver);
+    eventManager.subscribe(EventType.GAME_CREATED, gameActivityObserver);
+    eventManager.subscribe(EventType.GAME_DELETED, gameActivityObserver);
     eventManager.subscribe(EventType.NOTIFICATION, notificationObserver);
     eventManager.subscribe(EventType.ERROR, errorObserver);
 
