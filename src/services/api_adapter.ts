@@ -3,230 +3,156 @@
  * Omogućuje suradnju nekompatibilnih sučelja
  * 
  * Kada koristiti:
- * • Integracija legacy koda
- * • Korištenje vanjskih biblioteka
- * • Nekompatibilna sučelja
- * 
- * Primjer: Različiti API-ji koriste različite strukture podataka
- * Adapter ih čini kompatibilnima
+ * • Integracija različitih formata podataka
+ * • Konverzija između XML, JSON, CSV
+ * • Kompatibilnost različitih API-ja
  */
 
 import logger from "./logger";
 
 /**
- * Novo sučelje koje aplikacija koristi
+ * Sučelje za podatke o igri
  */
 export interface GameData {
   id: number;
   title: string;
-  players: Player[];
   status: "active" | "inactive";
   createdAt: string;
 }
 
-export interface Player {
-  id: number;
-  name: string;
-  score: number;
-}
 
 /**
- * Staro sučelje - Legacy API (npr. stari backend)
- * Koristi drugačije nazive i strukturu
- */
-export interface LegacyGameData {
-  game_id: number;
-  game_name: string;
-  player_list: LegacyPlayer[];
-  is_active: boolean;
-  creation_date: string;
-}
-
-export interface LegacyPlayer {
-  player_id: number;
-  player_name: string;
-  player_score: number;
-}
-
-/**
- * ADAPTER - Pretvara legacy podatke u novi format
- */
-export class LegacyGameAdapter {
-  /**
-   * Pretvara legacy igru u novo sučelje
-   */
-  public adaptGame(legacyGame: LegacyGameData): GameData {
-    logger.info(`Adaptiranje legacy igre: ${legacyGame.game_name}`);
-
-    const adaptedGame: GameData = {
-      id: legacyGame.game_id,
-      title: legacyGame.game_name,
-      players: legacyGame.player_list.map((player) =>
-        this.adaptPlayer(player)
-      ),
-      status: legacyGame.is_active ? "active" : "inactive",
-      createdAt: legacyGame.creation_date,
-    };
-
-    logger.info(`Igra uspješno adaptirana: ${adaptedGame.title}`);
-    return adaptedGame;
-  }
-
-  /**
-   * Pretvara legacy igrača u novo sučelje
-   */
-  private adaptPlayer(legacyPlayer: LegacyPlayer): Player {
-    return {
-      id: legacyPlayer.player_id,
-      name: legacyPlayer.player_name,
-      score: legacyPlayer.player_score,
-    };
-  }
-
-  /**
-   * Pretvara novu igru u legacy format (obrnuto)
-   */
-  public adaptToLegacy(game: GameData): LegacyGameData {
-    logger.info(`Konverzija u legacy format: ${game.title}`);
-
-    const legacyGame: LegacyGameData = {
-      game_id: game.id,
-      game_name: game.title,
-      player_list: game.players.map((player) =>
-        this.adaptPlayerToLegacy(player)
-      ),
-      is_active: game.status === "active",
-      creation_date: game.createdAt,
-    };
-
-    logger.info(`Konverzija uspješna`);
-    return legacyGame;
-  }
-
-  /**
-   * Pretvara novog igrača u legacy format
-   */
-  private adaptPlayerToLegacy(player: Player): LegacyPlayer {
-    return {
-      player_id: player.id,
-      player_name: player.name,
-      player_score: player.score,
-    };
-  }
-}
-
-/**
- * ADAPTER - Za različite API klijente
- * Primjer: Stariji API koristi drugačije nazive metoda
- */
-export interface ModernAPIClient {
-  fetchGame(id: number): Promise<GameData>;
-  saveGame(game: GameData): Promise<void>;
-  deleteGame(id: number): Promise<void>;
-}
-
-/**
- * Legacy API - Stare metode
- */
-export interface OldAPIClient {
-  get_game(game_id: number): Promise<LegacyGameData>;
-  post_game(game_data: LegacyGameData): Promise<void>;
-  remove_game(game_id: number): Promise<void>;
-}
-
-/**
- * ADAPTER - Čini stariji API kompatibilnim sa novim sučeljem
- */
-export class OldAPIAdapter implements ModernAPIClient {
-  constructor(private oldClient: OldAPIClient) {
-    logger.info("OldAPIAdapter inicijaliziran");
-  }
-
-  async fetchGame(id: number): Promise<GameData> {
-    logger.info(`Dohvaćanje igre preko adaptera: ID ${id}`);
-
-    // Koristi stariju metodu
-    const legacyGame = await this.oldClient.get_game(id);
-
-    // Adaptira na novo sučelje
-    const adapter = new LegacyGameAdapter();
-    const modernGame = adapter.adaptGame(legacyGame);
-
-    logger.info(`Igra uspješno dohvaćena i adaptirana`);
-    return modernGame;
-  }
-
-  async saveGame(game: GameData): Promise<void> {
-    logger.info(`Spremanje igre preko adaptera: ${game.title}`);
-
-    // Konvertuj u legacy format
-    const adapter = new LegacyGameAdapter();
-    const legacyGame = adapter.adaptToLegacy(game);
-
-    // Koristi staru metodu
-    await this.oldClient.post_game(legacyGame);
-
-    logger.info(`Igra uspješno spremljena`);
-  }
-
-  async deleteGame(id: number): Promise<void> {
-    logger.info(`Brisanje igre preko adaptera: ID ${id}`);
-
-    // Koristi staru metodu
-    await this.oldClient.remove_game(id);
-
-    logger.info(`Igra uspješno obrisana`);
-  }
-}
-
-/**
- * ADAPTER - Za različite formate podataka
- * Primjer: CSV → JSON → XML
+ * FORMAT ADAPTER - Konvertuje podatke između različitih formata
+ * JSON ↔ CSV ↔ XML
  */
 export class DataFormatAdapter {
   /**
-   * Pretvara CSV u JSON
+   * Pretvara JSON u CSV format
+   * JSON → CSV
+   */
+  static jsonToCsv(games: GameData[]): string {
+    logger.info("Konverzija: JSON → CSV");
+
+    const headers = "id,title,status,createdAt";
+    let csv = headers + "\n";
+
+    for (const game of games) {
+      csv += `${game.id},"${game.title}",${game.status},${game.createdAt}\n`;
+    }
+
+    logger.info(`${games.length} igara konvertovano u CSV format`);
+    return csv;
+  }
+
+  /**
+   * Pretvara CSV u JSON format
+   * CSV → JSON
    */
   static csvToJson(csvData: string): GameData[] {
-    logger.info("Pretvaranje CSV u JSON");
+    logger.info("Konverzija: CSV → JSON");
 
-    const lines = csvData.split("\n");
-    const headers = lines[0].split(",");
+    const lines = csvData.trim().split("\n");
     const games: GameData[] = [];
 
+    // Preskoči header red
     for (let i = 1; i < lines.length; i++) {
       if (lines[i].trim() === "") continue;
 
-      const values = lines[i].split(",");
+      const parts = lines[i].split(",");
       const game: GameData = {
-        id: parseInt(values[0]),
-        title: values[1],
-        players: [],
-        status: values[2] as "active" | "inactive",
-        createdAt: values[3],
+        id: parseInt(parts[0]),
+        title: parts[1].replace(/"/g, ""), // Uklanja navodnike
+        status: parts[2] as "active" | "inactive",
+        createdAt: parts[3],
       };
 
       games.push(game);
     }
 
-    logger.info(`${games.length} igre konvertirane iz CSV-a`);
+    logger.info(`${games.length} igara konvertovano iz CSV formata`);
     return games;
   }
 
   /**
-   * Pretvara JSON u CSV
+   * Pretvara JSON u XML format
+   * JSON → XML
    */
-  static jsonToCsv(games: GameData[]): string {
-    logger.info("Pretvaranje JSON u CSV");
+  static jsonToXml(games: GameData[]): string {
+    logger.info("Konverzija: JSON → XML");
 
-    const headers = ["id", "title", "status", "createdAt"];
-    let csv = headers.join(",") + "\n";
+    let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+    xml += "<games>\n";
 
     for (const game of games) {
-      csv += `${game.id},${game.title},${game.status},${game.createdAt}\n`;
+      xml += "  <game>\n";
+      xml += `    <id>${game.id}</id>\n`;
+      xml += `    <title>${game.title}</title>\n`;
+      xml += `    <status>${game.status}</status>\n`;
+      xml += `    <createdAt>${game.createdAt}</createdAt>\n`;
+      xml += "  </game>\n";
     }
 
-    logger.info(`${games.length} igre konvertirane u CSV`);
-    return csv;
+    xml += "</games>";
+
+    logger.info(`${games.length} igara konvertovano u XML format`);
+    return xml;
+  }
+
+  /**
+   * Pretvara XML u JSON format
+   * XML → JSON
+   */
+  static xmlToJson(xmlData: string): GameData[] {
+    logger.info("Konverzija: XML → JSON");
+
+    const games: GameData[] = [];
+
+    // Pronađi sve <game> tagove
+    const gameRegex = /<game>([\s\S]*?)<\/game>/g;
+    let match;
+
+    while ((match = gameRegex.exec(xmlData)) !== null) {
+      const gameXml = match[1];
+
+      // Extraktuj podatke iz XML-a
+      const idMatch = gameXml.match(/<id>(\d+)<\/id>/);
+      const titleMatch = gameXml.match(/<title>(.*?)<\/title>/);
+      const statusMatch = gameXml.match(/<status>(active|inactive)<\/status>/);
+      const createdAtMatch = gameXml.match(/<createdAt>(.*?)<\/createdAt>/);
+
+      if (idMatch && titleMatch && statusMatch && createdAtMatch) {
+        games.push({
+          id: parseInt(idMatch[1]),
+          title: titleMatch[1],
+          status: statusMatch[1] as "active" | "inactive",
+          createdAt: createdAtMatch[1],
+        });
+      }
+    }
+
+    logger.info(`${games.length} igara konvertovano iz XML formata`);
+    return games;
+  }
+
+  /**
+   * Pretvara CSV u XML format
+   * CSV → XML
+   */
+  static csvToXml(csvData: string): string {
+    logger.info("Konverzija: CSV → XML");
+
+    const games = this.csvToJson(csvData);
+    return this.jsonToXml(games);
+  }
+
+  /**
+   * Pretvara XML u CSV format
+   * XML → CSV
+   */
+  static xmlToCsv(xmlData: string): string {
+    logger.info("Konverzija: XML → CSV");
+
+    const games = this.xmlToJson(xmlData);
+    return this.jsonToCsv(games);
   }
 }

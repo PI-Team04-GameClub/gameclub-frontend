@@ -10,12 +10,8 @@
 import React, { useEffect, useState } from "react";
 import logger from "../services/logger";
 import {
-  LegacyGameAdapter,
-  OldAPIAdapter,
   DataFormatAdapter,
   type GameData,
-  type LegacyGameData,
-  type OldAPIClient,
 } from "../services/api_adapter";
 import eventManager, {
   EventType,
@@ -84,39 +80,39 @@ const DesignPatternsDemo: React.FC = () => {
     });
   };
 
-  // Demo 2: Adapter - Kompatibilnost sučelja
+  // Demo 2: Adapter - Format konverzija
   const handleAdapterDemo = () => {
-    logger.info("Demo 2: ADAPTER PATTERN - API kompatibilnost");
+    logger.info("Demo 2: ADAPTER PATTERN - Format konverzija");
 
     try {
-      // Primjer 1: Legacy game adapter
-      const legacyGame: LegacyGameData = {
-        game_id: 1,
-        game_name: "Counter-Strike 2",
-        player_list: [
-          { player_id: 101, player_name: "Igrač 1", player_score: 1500 },
-          { player_id: 102, player_name: "Igrač 2", player_score: 1200 },
-        ],
-        is_active: true,
-        creation_date: "2026-01-03",
-      };
+      // Primjer: JSON podataka
+      const jsonGames: GameData[] = [
+        { id: 1, title: "Counter-Strike 2", status: "active", createdAt: "2026-01-01" },
+        { id: 2, title: "League of Legends", status: "active", createdAt: "2026-01-02" },
+        { id: 3, title: "Valorant", status: "inactive", createdAt: "2025-12-25" },
+      ];
 
-      logger.info("Primjer 1: Adaptiranje legacy igre");
-      const adapter = new LegacyGameAdapter();
-      const modernGame = adapter.adaptGame(legacyGame);
-      logger.info(`Adaptirana igra: ${JSON.stringify(modernGame)}`);
+      logger.info("Primjer 1: JSON → CSV");
+      const csv = DataFormatAdapter.jsonToCsv(jsonGames);
+      logger.info(`CSV rezultat:\n${csv}`);
 
-      // Primjer 2: CSV adapter
-      logger.info("Primjer 2: CSV adapter");
-      const csvData = "id,title,status,createdAt\n2,League of Legends,active,2026-01-03";
-      const jsonGames = DataFormatAdapter.csvToJson(csvData);
-      logger.info(`CSV konvertovan u JSON: ${JSON.stringify(jsonGames)}`);
+      logger.info("Primjer 2: CSV → JSON");
+      const jsonBack = DataFormatAdapter.csvToJson(csv);
+      logger.info(`JSON rezultat: ${JSON.stringify(jsonBack)}`);
+
+      logger.info("Primjer 3: JSON → XML");
+      const xml = DataFormatAdapter.jsonToXml(jsonGames);
+      logger.info(`XML rezultat:\n${xml}`);
+
+      logger.info("Primjer 4: XML → JSON");
+      const jsonFromXml = DataFormatAdapter.xmlToJson(xml);
+      logger.info(`Konvertirano natrag u JSON: ${jsonFromXml.length} igara`);
 
       updateLogs();
 
       toast({
         title: "Adapter Demo",
-        description: "Kompatibilnost sučelja uspješna - pogledaj logove",
+        description: "Format konverzija uspješna - pogledaj logove",
         status: "success",
         duration: 3000,
       });
@@ -179,7 +175,7 @@ const DesignPatternsDemo: React.FC = () => {
             1️⃣ Singleton - Logger
           </Button>
           <Button colorScheme="green" onClick={handleAdapterDemo} size="lg">
-            2️⃣ Adapter - API
+            2️⃣ Adapter - Format Konverzija
           </Button>
           <Button colorScheme="purple" onClick={handleObserverDemo} size="lg">
             3️⃣ Observer - Events
@@ -253,7 +249,7 @@ const DesignPatternsDemo: React.FC = () => {
               <strong>Singleton:</strong> Logger.getInstance() vraća istu instancu svaki put
             </Text>
             <Text>
-              <strong>Adapter:</strong> Čini nekompatibilna sučelja kompatibilnima (legacy API)
+              <strong>Adapter:</strong> Konvertuje podatke između različitih formata (JSON, CSV, XML)
             </Text>
             <Text>
               <strong>Observer:</strong> EventManager notificira sve registrirane observere
