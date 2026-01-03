@@ -79,12 +79,12 @@ class EventManager implements Observer {
   }
 
   /**
-   * Emituje događaj i obavještava sve pretplaćene observere
+   * Emitira događaj i obavještava sve pretplaćene observere
    */
   public emit(eventType: string, data: any): void {
     logger.info(`Emitovanje događaja: ${eventType}`);
 
-    // Sprema u историju
+    // Sprema u historiju
     this.eventHistory.push({
       type: eventType,
       data,
