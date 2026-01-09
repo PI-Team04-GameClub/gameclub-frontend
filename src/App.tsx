@@ -3,7 +3,8 @@ import { ChakraProvider, Box } from '@chakra-ui/react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import theme from './styles/theme';
 import Navbar from './components/Navbar';
-import LoginPage from './pages/LoginPage';
+import LoginPage from './pages/login/LoginPage';
+import RegisterPage from './pages/register/RegisterPage';
 import GamesPage from './pages/games/GamesPage';
 import TeamsPage from './pages/teams/TeamsPage';
 import TournamentsPage from './pages/tournaments/TournamentsPage';
@@ -40,6 +41,12 @@ const App: React.FC = () => {
                 path="/login"
                 element={
                   isAuthenticated ? <Navigate to="/news" replace /> : <LoginPage />
+                }
+              />
+              <Route
+                path="/register"
+                element={
+                  isAuthenticated ? <Navigate to="/news" replace /> : <RegisterPage />
                 }
               />
               <Route
