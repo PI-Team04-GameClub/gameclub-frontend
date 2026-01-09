@@ -1,17 +1,15 @@
 import React from 'react';
 import { Box, Flex, HStack, Text, Button } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../../services/auth_service';
+import { useAuth } from '../../context';
 import { NavLink } from '../links';
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
-  const user = authService.getUser();
+  const { user, logout } = useAuth();
 
   const handleLogout = () => {
-    authService.logout();
-    // Dispatch event to notify App.tsx of auth change
-    window.dispatchEvent(new StorageEvent('storage', { key: 'token' }));
+    logout();
     navigate('/login');
   };
 

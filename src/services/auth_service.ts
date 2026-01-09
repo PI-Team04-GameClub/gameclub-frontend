@@ -3,7 +3,6 @@ import { LoginRequest, RegisterRequest, AuthResponse, User } from '../types';
 
 const API_BASE_URL = 'http://localhost:3000/api';
 
-// Configure axios
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000,
@@ -12,7 +11,6 @@ const axiosInstance = axios.create({
   },
 });
 
-// Add interceptor for errors
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -21,7 +19,6 @@ axiosInstance.interceptors.response.use(
       console.error('Response data:', error.response.data);
       console.error('Response status:', error.response.status);
     }
-    // Proslijedi error dalje bez dodatnih promjena
     return Promise.reject(error);
   }
 );
