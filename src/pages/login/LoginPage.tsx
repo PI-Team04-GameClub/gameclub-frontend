@@ -18,7 +18,7 @@ import {
   AlertDialogOverlay,
 } from '@chakra-ui/react';
 import { useNavigate, Link } from 'react-router-dom';
-import { authService } from '../../services/auth_service';
+import { useAuth } from '../../context';
 import { PasswordInput } from '../../components/inputs';
 import { SubmitButton } from '../../components/buttons';
 
@@ -29,6 +29,7 @@ const LoginPage: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const toast = useToast();
   const navigate = useNavigate();
+  const { login } = useAuth();
   const { isOpen: isErrorOpen, onOpen: onErrorOpen, onClose: onErrorClose } = useDisclosure();
   const errorCancelRef = React.useRef(null);
 
@@ -47,17 +48,7 @@ const LoginPage: React.FC = () => {
     setLoading(true);
 
     try {
-      const response = await authService.login({ email, password });
-
-      authService.setToken(response.token);
-      authService.setUser({
-        id: response.id,
-        first_name: response.first_name,
-        last_name: response.last_name,
-        email: response.email,
-      });
-
-      window.dispatchEvent(new StorageEvent('storage', { key: 'token' }));
+      await login({ email, password });
 
       toast({
         title: 'Login successful',

@@ -12,7 +12,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { useNavigate, Link } from 'react-router-dom';
-import { authService } from '../../services/auth_service';
+import { useAuth } from '../../context';
 import { SuccessAlert, ErrorAlert } from '../../components/alerts';
 import { PasswordInput } from '../../components/inputs';
 import { SubmitButton } from '../../components/buttons';
@@ -26,6 +26,7 @@ const RegisterPage: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const toast = useToast();
   const navigate = useNavigate();
+  const { register } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: isErrorOpen, onOpen: onErrorOpen, onClose: onErrorClose } = useDisclosure();
   const cancelRef = React.useRef<HTMLButtonElement>(null);
@@ -57,7 +58,7 @@ const RegisterPage: React.FC = () => {
     setLoading(true);
 
     try {
-      await authService.register({
+      await register({
         first_name: firstName,
         last_name: lastName || '',
         email,
