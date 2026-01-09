@@ -1,97 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Box,
-  Container,
-  SimpleGrid,
-  useDisclosure,
-} from '@chakra-ui/react';
-import { newsService } from '../../services/news_service';
-import { NewsItem, NewsFormData } from '../../types';
+import React from 'react';
+import { Box, Container, SimpleGrid } from '@chakra-ui/react';
+import { useNews } from '../../hooks';
 import { NewsModal } from '../../components/modals/news/NewsModal';
 import { DeleteConfirmDialog } from '../../components/dialogs/DeleteConfirmDialog';
 import NewsCard from '../../components/cards/NewsCard';
-import { authService } from '../../services/auth_service';
 import { PageHeader } from '../../components/layouts';
 
 const NewsPage: React.FC = () => {
-  const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
-  const [selectedNews, setSelectedNews] = useState<NewsItem | undefined>();
-  const [newsToDelete, setNewsToDelete] = useState<number | null>(null);
-
   const {
-    isOpen: isNewsModalOpen,
-    onOpen: onNewsModalOpen,
-    onClose: onNewsModalClose,
-  } = useDisclosure();
-
-  const {
-    isOpen: isDeleteDialogOpen,
-    onOpen: onDeleteDialogOpen,
-    onClose: onDeleteDialogClose,
-  } = useDisclosure();
-
-  useEffect(() => {
-    loadNews();
-  }, []);
-
-  const loadNews = async () => {
-    try {
-      const data = await newsService.getAll();
-      setNewsItems(data);
-    } catch (error) {
-      console.error('Error loading news:', error);
-    }
-  };
-
-  const handleCreate = () => {
-    setSelectedNews(undefined);
-    onNewsModalOpen();
-  };
-
-  const handleEdit = (news: NewsItem) => {
-    setSelectedNews(news);
-    onNewsModalOpen();
-  };
-
-  const handleDeleteClick = (id: number) => {
-    setNewsToDelete(id);
-    onDeleteDialogOpen();
-  };
-
-  const handleSubmit = async (data: Omit<NewsFormData, 'authorId'>) => {
-    try {
-      const user = authService.getUser();
-      if (!user) {
-        console.error('No user logged in');
-        return;
-      }
-
-      const newsData: NewsFormData = {
-        ...data,
-        authorId: user.id,
-      };
-
-      if (selectedNews) {
-        await newsService.update(selectedNews.id, newsData);
-      } else {
-        await newsService.create(newsData);
-      }
-      loadNews();
-    } catch (error) {
-      console.error('Error saving news:', error);
-    }
-  };
-
-  const handleDelete = async () => {
-    if (newsToDelete) {
-      try {
-        await newsService.delete(newsToDelete);
-        loadNews();
-      } catch (error) {
-        console.error('Error deleting news:', error);
-      }
-    }
-  };
+    newsItems,
+    selectedNews,
+    isModalOpen,
+    onModalClose,
+    isDeleteDialogOpen,
+    onDeleteDialogClose,
+    handleCreate,
+    handleEdit,
+    handleDeleteClick,
+    handleSubmit,
+    handleDelete,
+  } = useNews();
 
   return (
     <Container maxW="container.xl" py={8}>
@@ -115,8 +43,8 @@ const NewsPage: React.FC = () => {
       </Box>
 
       <NewsModal
-        isOpen={isNewsModalOpen}
-        onClose={onNewsModalClose}
+        isOpen={isModalOpen}
+        onClose={onModalClose}
         onSubmit={handleSubmit}
         news={selectedNews}
       />

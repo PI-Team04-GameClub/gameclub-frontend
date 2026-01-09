@@ -1,88 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Box,
-  Container,
-  useDisclosure,
-} from '@chakra-ui/react';
-import { tournamentService } from '../../services/tournament_service';
-import { Tournament, TournamentFormData } from '../../types';
+import React from 'react';
+import { Box, Container } from '@chakra-ui/react';
+import { useTournaments } from '../../hooks';
 import { TournamentModal } from '../../components/modals/tournaments/TournamentModal';
 import { DeleteConfirmDialog } from '../../components/dialogs/DeleteConfirmDialog';
 import { TournamentsTable } from '../../components/tables';
 import { PageHeader } from '../../components/layouts';
 
 const TournamentsPage: React.FC = () => {
-  const [tournaments, setTournaments] = useState<Tournament[]>([]);
-  const [selectedTournament, setSelectedTournament] = useState<
-    Tournament | undefined
-  >();
-  const [tournamentToDelete, setTournamentToDelete] = useState<number | null>(
-    null
-  );
-
   const {
-    isOpen: isTournamentModalOpen,
-    onOpen: onTournamentModalOpen,
-    onClose: onTournamentModalClose,
-  } = useDisclosure();
-
-  const {
-    isOpen: isDeleteDialogOpen,
-    onOpen: onDeleteDialogOpen,
-    onClose: onDeleteDialogClose,
-  } = useDisclosure();
-
-  useEffect(() => {
-    loadTournaments();
-  }, []);
-
-  const loadTournaments = async () => {
-    try {
-      const data = await tournamentService.getAll();
-      setTournaments(data);
-    } catch (error) {
-      console.error('Error loading tournaments:', error);
-    }
-  };
-
-  const handleCreate = () => {
-    setSelectedTournament(undefined);
-    onTournamentModalOpen();
-  };
-
-  const handleEdit = (tournament: Tournament) => {
-    setSelectedTournament(tournament);
-    onTournamentModalOpen();
-  };
-
-  const handleDeleteClick = (id: number) => {
-    setTournamentToDelete(id);
-    onDeleteDialogOpen();
-  };
-
-  const handleSubmit = async (data: TournamentFormData) => {
-    try {
-      if (selectedTournament) {
-        await tournamentService.update(selectedTournament.id, data);
-      } else {
-        await tournamentService.create(data);
-      }
-      loadTournaments();
-    } catch (error) {
-      console.error('Error saving tournament:', error);
-    }
-  };
-
-  const handleDelete = async () => {
-    if (tournamentToDelete) {
-      try {
-        await tournamentService.delete(tournamentToDelete);
-        loadTournaments();
-      } catch (error) {
-        console.error('Error deleting tournament:', error);
-      }
-    }
-  };
+    tournaments,
+    selectedTournament,
+    isModalOpen,
+    onModalClose,
+    isDeleteDialogOpen,
+    onDeleteDialogClose,
+    handleCreate,
+    handleEdit,
+    handleDeleteClick,
+    handleSubmit,
+    handleDelete,
+  } = useTournaments();
 
   return (
     <Container maxW="container.xl" py={8}>
@@ -101,8 +38,8 @@ const TournamentsPage: React.FC = () => {
       </Box>
 
       <TournamentModal
-        isOpen={isTournamentModalOpen}
-        onClose={onTournamentModalClose}
+        isOpen={isModalOpen}
+        onClose={onModalClose}
         onSubmit={handleSubmit}
         tournament={selectedTournament}
       />
