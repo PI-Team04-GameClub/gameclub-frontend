@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -13,8 +13,8 @@ import {
   Textarea,
   HStack,
   Button,
-} from '@chakra-ui/react';
-import { NewsItem } from '../../../types';
+} from "@chakra-ui/react";
+import { NewsItem } from "../../../types";
 
 interface NewsModalProps {
   isOpen: boolean;
@@ -30,8 +30,8 @@ export const NewsModal: React.FC<NewsModalProps> = ({
   news,
 }) => {
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
+    title: "",
+    description: "",
   });
 
   useEffect(() => {
@@ -42,8 +42,8 @@ export const NewsModal: React.FC<NewsModalProps> = ({
       });
     } else {
       setFormData({
-        title: '',
-        description: '',
+        title: "",
+        description: "",
       });
     }
   }, [news, isOpen]);
@@ -57,7 +57,9 @@ export const NewsModal: React.FC<NewsModalProps> = ({
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
       <ModalOverlay backdropFilter="blur(4px)" />
       <ModalContent>
-        <ModalHeader>{news ? 'Update News Post' : 'Create News Post'}</ModalHeader>
+        <ModalHeader>
+          {news ? "Update News Post" : "Create News Post"}
+        </ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
           <VStack spacing={4} align="stretch">
@@ -93,7 +95,7 @@ export const NewsModal: React.FC<NewsModalProps> = ({
                 Cancel
               </Button>
               <Button colorScheme="brand" onClick={handleSubmit} flex={1}>
-                {news ? 'Update' : 'Create'}
+                {news ? "Update" : "Create"}
               </Button>
             </HStack>
           </VStack>

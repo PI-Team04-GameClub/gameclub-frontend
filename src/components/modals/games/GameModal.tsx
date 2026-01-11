@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -15,8 +15,8 @@ import {
   NumberInputField,
   HStack,
   Button,
-} from '@chakra-ui/react';
-import { Game, GameFormData } from '../../../types';
+} from "@chakra-ui/react";
+import { Game, GameFormData } from "../../../types";
 
 interface GameModalProps {
   isOpen: boolean;
@@ -32,8 +32,8 @@ export const GameModal: React.FC<GameModalProps> = ({
   game,
 }) => {
   const [formData, setFormData] = useState<GameFormData>({
-    name: '',
-    description: '',
+    name: "",
+    description: "",
     numberOfPlayers: 2,
   });
 
@@ -46,8 +46,8 @@ export const GameModal: React.FC<GameModalProps> = ({
       });
     } else {
       setFormData({
-        name: '',
-        description: '',
+        name: "",
+        description: "",
         numberOfPlayers: 2,
       });
     }
@@ -62,7 +62,7 @@ export const GameModal: React.FC<GameModalProps> = ({
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
       <ModalOverlay backdropFilter="blur(4px)" />
       <ModalContent>
-        <ModalHeader>{game ? 'Update Game' : 'Create Game'}</ModalHeader>
+        <ModalHeader>{game ? "Update Game" : "Create Game"}</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
           <VStack spacing={4} align="stretch">
@@ -114,7 +114,7 @@ export const GameModal: React.FC<GameModalProps> = ({
                 Cancel
               </Button>
               <Button colorScheme="brand" onClick={handleSubmit} flex={1}>
-                {game ? 'Update' : 'Create'}
+                {game ? "Update" : "Create"}
               </Button>
             </HStack>
           </VStack>

@@ -1,7 +1,7 @@
-import React from 'react';
-import { Button, Spinner, ButtonProps } from '@chakra-ui/react';
+import React from "react";
+import { Button, Spinner, ButtonProps } from "@chakra-ui/react";
 
-interface SubmitButtonProps extends Omit<ButtonProps, 'isDisabled'> {
+interface SubmitButtonProps extends Omit<ButtonProps, "isDisabled"> {
   loading?: boolean;
   children: React.ReactNode;
 }
@@ -9,8 +9,8 @@ interface SubmitButtonProps extends Omit<ButtonProps, 'isDisabled'> {
 const SubmitButton: React.FC<SubmitButtonProps> = ({
   loading = false,
   children,
-  colorScheme = 'brand',
-  width = 'full',
+  colorScheme = "brand",
+  width = "full",
   ...props
 }) => {
   return (

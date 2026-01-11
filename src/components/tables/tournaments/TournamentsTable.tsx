@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Box,
   Card,
@@ -10,9 +10,9 @@ import {
   Th,
   Td,
   Badge,
-} from '@chakra-ui/react';
-import { Tournament } from '../../../types';
-import { ActionButtons } from '../../buttons';
+} from "@chakra-ui/react";
+import { Tournament } from "../../../types";
+import { ActionButtons } from "../../buttons";
 
 interface TournamentsTableProps {
   tournaments: Tournament[];
@@ -23,14 +23,18 @@ interface TournamentsTableProps {
 const TournamentsTable: React.FC<TournamentsTableProps> = ({
   tournaments,
   onEdit,
-  onDelete
+  onDelete,
 }) => {
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Active': return 'green';
-      case 'Upcoming': return 'blue';
-      case 'Completed': return 'gray';
-      default: return 'orange';
+      case "Active":
+        return "green";
+      case "Upcoming":
+        return "blue";
+      case "Completed":
+        return "gray";
+      default:
+        return "orange";
     }
   };
 
@@ -46,18 +50,24 @@ const TournamentsTable: React.FC<TournamentsTableProps> = ({
                 <Th>Prize Pool</Th>
                 <Th>Start Date</Th>
                 <Th>Status</Th>
-                <Th width="180px" textAlign="right">Actions</Th>
+                <Th width="180px" textAlign="right">
+                  Actions
+                </Th>
               </Tr>
             </Thead>
             <Tbody>
               {tournaments.map((tournament) => (
-                <Tr key={tournament.id} _hover={{ bg: 'gray.50' }} transition="all 0.2s">
+                <Tr
+                  key={tournament.id}
+                  _hover={{ bg: "gray.50" }}
+                  transition="all 0.2s"
+                >
                   <Td fontWeight="600">{tournament.name}</Td>
                   <Td>{tournament.game}</Td>
                   <Td fontWeight="600" color="green.600">
                     {tournament.prizePool}
                   </Td>
-                  <Td>{tournament.startDate.split('T')[0]}</Td>
+                  <Td>{tournament.startDate.split("T")[0]}</Td>
                   <Td>
                     <Badge
                       colorScheme={getStatusColor(tournament.status)}

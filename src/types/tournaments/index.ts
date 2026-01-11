@@ -5,7 +5,7 @@ export interface Tournament {
   players: number;
   prizePool: number;
   startDate: string;
-  status: 'Active' | 'Upcoming' | 'Completed';
+  status: "Active" | "Upcoming" | "Completed";
 }
 
 export interface TournamentFormData {

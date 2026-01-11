@@ -10,5 +10,3 @@ export interface GameFormData {
   description: string;
   numberOfPlayers: number;
 }
-
-

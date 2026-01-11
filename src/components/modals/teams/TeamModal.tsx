@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -12,8 +12,8 @@ import {
   Input,
   HStack,
   Button,
-} from '@chakra-ui/react';
-import { Team, TeamFormData } from '../../../types';
+} from "@chakra-ui/react";
+import { Team, TeamFormData } from "../../../types";
 
 interface TeamModalProps {
   isOpen: boolean;
@@ -29,14 +29,14 @@ export const TeamModal: React.FC<TeamModalProps> = ({
   team,
 }) => {
   const [formData, setFormData] = useState<TeamFormData>({
-    name: '',
+    name: "",
   });
 
   useEffect(() => {
     if (team) {
       setFormData({ name: team.name });
     } else {
-      setFormData({ name: '' });
+      setFormData({ name: "" });
     }
   }, [team, isOpen]);
 
@@ -49,7 +49,7 @@ export const TeamModal: React.FC<TeamModalProps> = ({
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
       <ModalOverlay backdropFilter="blur(4px)" />
       <ModalContent>
-        <ModalHeader>{team ? 'Update Team' : 'Create Team'}</ModalHeader>
+        <ModalHeader>{team ? "Update Team" : "Create Team"}</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
           <VStack spacing={4} align="stretch">
@@ -71,7 +71,7 @@ export const TeamModal: React.FC<TeamModalProps> = ({
                 Cancel
               </Button>
               <Button colorScheme="brand" onClick={handleSubmit} flex={1}>
-                {team ? 'Update' : 'Create'}
+                {team ? "Update" : "Create"}
               </Button>
             </HStack>
           </VStack>

@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useDisclosure } from '@chakra-ui/react';
-import { teamService } from '../../services/team_service';
-import { Team, TeamFormData } from '../../types';
+import { useState, useEffect, useCallback } from "react";
+import { useDisclosure } from "@chakra-ui/react";
+import { teamService } from "../../services/team_service";
+import { Team, TeamFormData } from "../../types";
 
 export const useTeams = () => {
   const [teams, setTeams] = useState<Team[]>([]);
@@ -25,7 +25,7 @@ export const useTeams = () => {
       const data = await teamService.getAll();
       setTeams(data);
     } catch (error) {
-      console.error('Error loading teams:', error);
+      console.error("Error loading teams:", error);
     }
   }, []);
 
@@ -38,28 +38,37 @@ export const useTeams = () => {
     onModalOpen();
   }, [onModalOpen]);
 
-  const handleEdit = useCallback((team: Team) => {
-    setSelectedTeam(team);
-    onModalOpen();
-  }, [onModalOpen]);
+  const handleEdit = useCallback(
+    (team: Team) => {
+      setSelectedTeam(team);
+      onModalOpen();
+    },
+    [onModalOpen],
+  );
 
-  const handleDeleteClick = useCallback((id: number) => {
-    setTeamToDelete(id);
-    onDeleteDialogOpen();
-  }, [onDeleteDialogOpen]);
+  const handleDeleteClick = useCallback(
+    (id: number) => {
+      setTeamToDelete(id);
+      onDeleteDialogOpen();
+    },
+    [onDeleteDialogOpen],
+  );
 
-  const handleSubmit = useCallback(async (data: TeamFormData) => {
-    try {
-      if (selectedTeam) {
-        await teamService.update(selectedTeam.id, data);
-      } else {
-        await teamService.create(data);
+  const handleSubmit = useCallback(
+    async (data: TeamFormData) => {
+      try {
+        if (selectedTeam) {
+          await teamService.update(selectedTeam.id, data);
+        } else {
+          await teamService.create(data);
+        }
+        loadTeams();
+      } catch (error) {
+        console.error("Error saving team:", error);
       }
-      loadTeams();
-    } catch (error) {
-      console.error('Error saving team:', error);
-    }
-  }, [selectedTeam, loadTeams]);
+    },
+    [selectedTeam, loadTeams],
+  );
 
   const handleDelete = useCallback(async () => {
     if (teamToDelete) {
@@ -67,7 +76,7 @@ export const useTeams = () => {
         await teamService.delete(teamToDelete);
         loadTeams();
       } catch (error) {
-        console.error('Error deleting team:', error);
+        console.error("Error deleting team:", error);
       }
     }
   }, [teamToDelete, loadTeams]);

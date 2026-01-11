@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Card,
   CardBody,
@@ -8,9 +8,9 @@ import {
   HStack,
   Flex,
   Box,
-} from '@chakra-ui/react';
-import { NewsItem } from '../../types';
-import { ActionButtons } from '../buttons';
+} from "@chakra-ui/react";
+import { NewsItem } from "../../types";
+import { ActionButtons } from "../buttons";
 
 interface NewsCardProps {
   news: NewsItem;
@@ -21,7 +21,7 @@ interface NewsCardProps {
 const NewsCard: React.FC<NewsCardProps> = ({ news, onEdit, onDelete }) => {
   return (
     <Card
-      _hover={{ transform: 'translateY(-4px)', boxShadow: 'md' }}
+      _hover={{ transform: "translateY(-4px)", boxShadow: "md" }}
       transition="all 0.3s"
     >
       <CardBody>
@@ -39,7 +39,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ news, onEdit, onDelete }) => {
               <Text>{news.date}</Text>
             </HStack>
           </VStack>
-          
+
           {(onEdit || onDelete) && (
             <Box ml={4}>
               <ActionButtons

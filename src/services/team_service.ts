@@ -1,6 +1,6 @@
-import axios from 'axios';
-import { Team, TeamFormData } from '../types'
-import { API_BASE_URL } from '../config';
+import axios from "axios";
+import { Team, TeamFormData } from "../types";
+import { API_BASE_URL } from "../config";
 
 export const teamService = {
   getAll: async (): Promise<Team[]> => {

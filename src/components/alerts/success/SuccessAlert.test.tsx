@@ -1,15 +1,15 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
-import { ChakraProvider } from '@chakra-ui/react';
-import React from 'react';
-import SuccessAlert from './SuccessAlert';
+import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
+import { ChakraProvider } from "@chakra-ui/react";
+import React from "react";
+import SuccessAlert from "./SuccessAlert";
 
 const renderWithChakra = (ui: React.ReactElement) => {
   return render(<ChakraProvider>{ui}</ChakraProvider>);
 };
 
-describe('SuccessAlert', () => {
-  it('renders when isOpen is true', () => {
+describe("SuccessAlert", () => {
+  it("renders when isOpen is true", () => {
     const cancelRef = React.createRef<HTMLButtonElement>();
     renderWithChakra(
       <SuccessAlert
@@ -18,13 +18,15 @@ describe('SuccessAlert', () => {
         title="Success!"
         message="Operation completed successfully"
         cancelRef={cancelRef}
-      />
+      />,
     );
-    
-    expect(screen.getByText('Operation completed successfully')).toBeInTheDocument();
+
+    expect(
+      screen.getByText("Operation completed successfully"),
+    ).toBeInTheDocument();
   });
 
-  it('renders title', () => {
+  it("renders title", () => {
     const cancelRef = React.createRef<HTMLButtonElement>();
     renderWithChakra(
       <SuccessAlert
@@ -33,10 +35,10 @@ describe('SuccessAlert', () => {
         title="Great Success"
         message="Done"
         cancelRef={cancelRef}
-      />
+      />,
     );
-    
-    expect(screen.getByText('Great Success')).toBeInTheDocument();
+
+    expect(screen.getByText("Great Success")).toBeInTheDocument();
   });
 
   it('renders default button text "OK"', () => {
@@ -48,13 +50,13 @@ describe('SuccessAlert', () => {
         title="Success"
         message="Done"
         cancelRef={cancelRef}
-      />
+      />,
     );
-    
-    expect(screen.getByText('OK')).toBeInTheDocument();
+
+    expect(screen.getByText("OK")).toBeInTheDocument();
   });
 
-  it('renders custom button text', () => {
+  it("renders custom button text", () => {
     const cancelRef = React.createRef<HTMLButtonElement>();
     renderWithChakra(
       <SuccessAlert
@@ -64,13 +66,13 @@ describe('SuccessAlert', () => {
         message="Done"
         buttonText="Continue"
         cancelRef={cancelRef}
-      />
+      />,
     );
-    
-    expect(screen.getByText('Continue')).toBeInTheDocument();
+
+    expect(screen.getByText("Continue")).toBeInTheDocument();
   });
 
-  it('calls onClose when button is clicked', () => {
+  it("calls onClose when button is clicked", () => {
     const onClose = vi.fn();
     const cancelRef = React.createRef<HTMLButtonElement>();
     renderWithChakra(
@@ -80,10 +82,10 @@ describe('SuccessAlert', () => {
         title="Success"
         message="Done"
         cancelRef={cancelRef}
-      />
+      />,
     );
-    
-    fireEvent.click(screen.getByText('OK'));
+
+    fireEvent.click(screen.getByText("OK"));
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 });

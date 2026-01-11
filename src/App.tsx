@@ -1,15 +1,20 @@
-import React from 'react';
-import { ChakraProvider, Box } from '@chakra-ui/react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import theme from './styles/theme';
-import Navbar from './components/navbars/Navbar';
-import LoginPage from './pages/login/LoginPage';
-import RegisterPage from './pages/register/RegisterPage';
-import GamesPage from './pages/games/GamesPage';
-import TeamsPage from './pages/teams/TeamsPage';
-import TournamentsPage from './pages/tournaments/TournamentsPage';
-import NewsPage from './pages/news/NewsPage';
-import { AuthProvider, useAuth } from './context';
+import React from "react";
+import { ChakraProvider, Box } from "@chakra-ui/react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import theme from "./styles/theme";
+import Navbar from "./components/navbars/Navbar";
+import LoginPage from "./pages/login/LoginPage";
+import RegisterPage from "./pages/register/RegisterPage";
+import GamesPage from "./pages/games/GamesPage";
+import TeamsPage from "./pages/teams/TeamsPage";
+import TournamentsPage from "./pages/tournaments/TournamentsPage";
+import NewsPage from "./pages/news/NewsPage";
+import { AuthProvider, useAuth } from "./context";
 
 const AppContent: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -42,7 +47,7 @@ const AppContent: React.FC = () => {
         zIndex={-1}
       />
       {isAuthenticated && <Navbar />}
-      <Box minH={isAuthenticated ? 'calc(100vh - 73px)' : '100vh'}>
+      <Box minH={isAuthenticated ? "calc(100vh - 73px)" : "100vh"}>
         <Routes>
           <Route
             path="/login"
@@ -53,13 +58,21 @@ const AppContent: React.FC = () => {
           <Route
             path="/register"
             element={
-              isAuthenticated ? <Navigate to="/news" replace /> : <RegisterPage />
+              isAuthenticated ? (
+                <Navigate to="/news" replace />
+              ) : (
+                <RegisterPage />
+              )
             }
           />
           <Route
             path="/"
             element={
-              isAuthenticated ? <Navigate to="/news" replace /> : <Navigate to="/login" replace />
+              isAuthenticated ? (
+                <Navigate to="/news" replace />
+              ) : (
+                <Navigate to="/login" replace />
+              )
             }
           />
           <Route
@@ -83,7 +96,11 @@ const AppContent: React.FC = () => {
           <Route
             path="/tournaments"
             element={
-              isAuthenticated ? <TournamentsPage /> : <Navigate to="/login" replace />
+              isAuthenticated ? (
+                <TournamentsPage />
+              ) : (
+                <Navigate to="/login" replace />
+              )
             }
           />
         </Routes>

@@ -1,12 +1,16 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useDisclosure } from '@chakra-ui/react';
-import { tournamentService } from '../../services/tournament_service';
-import { Tournament, TournamentFormData } from '../../types';
+import { useState, useEffect, useCallback } from "react";
+import { useDisclosure } from "@chakra-ui/react";
+import { tournamentService } from "../../services/tournament_service";
+import { Tournament, TournamentFormData } from "../../types";
 
 export const useTournaments = () => {
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
-  const [selectedTournament, setSelectedTournament] = useState<Tournament | undefined>();
-  const [tournamentToDelete, setTournamentToDelete] = useState<number | null>(null);
+  const [selectedTournament, setSelectedTournament] = useState<
+    Tournament | undefined
+  >();
+  const [tournamentToDelete, setTournamentToDelete] = useState<number | null>(
+    null,
+  );
 
   const {
     isOpen: isModalOpen,
@@ -25,7 +29,7 @@ export const useTournaments = () => {
       const data = await tournamentService.getAll();
       setTournaments(data);
     } catch (error) {
-      console.error('Error loading tournaments:', error);
+      console.error("Error loading tournaments:", error);
     }
   }, []);
 
@@ -38,28 +42,37 @@ export const useTournaments = () => {
     onModalOpen();
   }, [onModalOpen]);
 
-  const handleEdit = useCallback((tournament: Tournament) => {
-    setSelectedTournament(tournament);
-    onModalOpen();
-  }, [onModalOpen]);
+  const handleEdit = useCallback(
+    (tournament: Tournament) => {
+      setSelectedTournament(tournament);
+      onModalOpen();
+    },
+    [onModalOpen],
+  );
 
-  const handleDeleteClick = useCallback((id: number) => {
-    setTournamentToDelete(id);
-    onDeleteDialogOpen();
-  }, [onDeleteDialogOpen]);
+  const handleDeleteClick = useCallback(
+    (id: number) => {
+      setTournamentToDelete(id);
+      onDeleteDialogOpen();
+    },
+    [onDeleteDialogOpen],
+  );
 
-  const handleSubmit = useCallback(async (data: TournamentFormData) => {
-    try {
-      if (selectedTournament) {
-        await tournamentService.update(selectedTournament.id, data);
-      } else {
-        await tournamentService.create(data);
+  const handleSubmit = useCallback(
+    async (data: TournamentFormData) => {
+      try {
+        if (selectedTournament) {
+          await tournamentService.update(selectedTournament.id, data);
+        } else {
+          await tournamentService.create(data);
+        }
+        loadTournaments();
+      } catch (error) {
+        console.error("Error saving tournament:", error);
       }
-      loadTournaments();
-    } catch (error) {
-      console.error('Error saving tournament:', error);
-    }
-  }, [selectedTournament, loadTournaments]);
+    },
+    [selectedTournament, loadTournaments],
+  );
 
   const handleDelete = useCallback(async () => {
     if (tournamentToDelete) {
@@ -67,7 +80,7 @@ export const useTournaments = () => {
         await tournamentService.delete(tournamentToDelete);
         loadTournaments();
       } catch (error) {
-        console.error('Error deleting tournament:', error);
+        console.error("Error deleting tournament:", error);
       }
     }
   }, [tournamentToDelete, loadTournaments]);

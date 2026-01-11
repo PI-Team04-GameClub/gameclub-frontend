@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Box,
   Card,
@@ -9,9 +9,9 @@ import {
   Tr,
   Th,
   Td,
-} from '@chakra-ui/react';
-import { Game } from '../../../types';
-import { ActionButtons } from '../../buttons';
+} from "@chakra-ui/react";
+import { Game } from "../../../types";
+import { ActionButtons } from "../../buttons";
 
 interface GamesTableProps {
   games: Game[];
@@ -37,7 +37,11 @@ const GamesTable: React.FC<GamesTableProps> = ({ games, onEdit, onDelete }) => {
             </Thead>
             <Tbody>
               {games.map((game) => (
-                <Tr key={game.id} _hover={{ bg: 'gray.50' }} transition="all 0.2s">
+                <Tr
+                  key={game.id}
+                  _hover={{ bg: "gray.50" }}
+                  transition="all 0.2s"
+                >
                   <Td fontWeight="600">{game.name}</Td>
                   <Td color="gray.600">{game.description}</Td>
                   <Td>{game.numberOfPlayers}</Td>

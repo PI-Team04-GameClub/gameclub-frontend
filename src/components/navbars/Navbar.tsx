@@ -1,8 +1,8 @@
-import React from 'react';
-import { Box, Flex, HStack, Text, Button } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context';
-import { NavLink } from '../links';
+import React from "react";
+import { Box, Flex, HStack, Text, Button } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context";
+import { NavLink } from "../links";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ const Navbar: React.FC = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate("/login");
   };
 
   return (

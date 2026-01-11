@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   AlertDialog,
   AlertDialogBody,
@@ -7,7 +7,7 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   Button,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
 interface ErrorAlertProps {
   isOpen: boolean;
@@ -22,8 +22,8 @@ const ErrorAlert: React.FC<ErrorAlertProps> = ({
   isOpen,
   onClose,
   message,
-  title = 'Error',
-  buttonText = 'OK',
+  title = "Error",
+  buttonText = "OK",
   cancelRef,
 }) => {
   return (

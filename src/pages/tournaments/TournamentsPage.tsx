@@ -1,10 +1,10 @@
-import React from 'react';
-import { Box, Container } from '@chakra-ui/react';
-import { useTournaments } from '../../hooks';
-import { TournamentModal } from '../../components/modals/tournaments/TournamentModal';
-import { DeleteConfirmDialog } from '../../components/dialogs/DeleteConfirmDialog';
-import { TournamentsTable } from '../../components/tables';
-import { PageHeader } from '../../components/layouts';
+import React from "react";
+import { Box, Container } from "@chakra-ui/react";
+import { useTournaments } from "../../hooks";
+import { TournamentModal } from "../../components/modals/tournaments/TournamentModal";
+import { DeleteConfirmDialog } from "../../components/dialogs/DeleteConfirmDialog";
+import { TournamentsTable } from "../../components/tables";
+import { PageHeader } from "../../components/layouts";
 
 const TournamentsPage: React.FC = () => {
   const {

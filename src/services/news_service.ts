@@ -1,6 +1,6 @@
-import axios from 'axios';
-import { NewsItem, NewsFormData } from '../types'
-import { API_BASE_URL } from '../config';
+import axios from "axios";
+import { NewsItem, NewsFormData } from "../types";
+import { API_BASE_URL } from "../config";
 
 export const newsService = {
   getAll: async (): Promise<NewsItem[]> => {
