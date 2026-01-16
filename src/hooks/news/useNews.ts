@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useDisclosure } from '@chakra-ui/react';
-import { newsService } from '../../services/news_service';
-import { authService } from '../../services/auth_service';
-import { NewsItem, NewsFormData } from '../../types';
+import { useState, useEffect, useCallback } from "react";
+import { useDisclosure } from "@chakra-ui/react";
+import { newsService } from "../../services/news_service";
+import { authService } from "../../services/auth_service";
+import { NewsItem, NewsFormData } from "../../types";
 
 export const useNews = () => {
   const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
@@ -26,7 +26,7 @@ export const useNews = () => {
       const data = await newsService.getAll();
       setNewsItems(data);
     } catch (error) {
-      console.error('Error loading news:', error);
+      console.error("Error loading news:", error);
     }
   }, []);
 
@@ -39,39 +39,48 @@ export const useNews = () => {
     onModalOpen();
   }, [onModalOpen]);
 
-  const handleEdit = useCallback((news: NewsItem) => {
-    setSelectedNews(news);
-    onModalOpen();
-  }, [onModalOpen]);
+  const handleEdit = useCallback(
+    (news: NewsItem) => {
+      setSelectedNews(news);
+      onModalOpen();
+    },
+    [onModalOpen],
+  );
 
-  const handleDeleteClick = useCallback((id: number) => {
-    setNewsToDelete(id);
-    onDeleteDialogOpen();
-  }, [onDeleteDialogOpen]);
+  const handleDeleteClick = useCallback(
+    (id: number) => {
+      setNewsToDelete(id);
+      onDeleteDialogOpen();
+    },
+    [onDeleteDialogOpen],
+  );
 
-  const handleSubmit = useCallback(async (data: Omit<NewsFormData, 'authorId'>) => {
-    try {
-      const user = authService.getUser();
-      if (!user) {
-        console.error('No user logged in');
-        return;
+  const handleSubmit = useCallback(
+    async (data: Omit<NewsFormData, "authorId">) => {
+      try {
+        const user = authService.getUser();
+        if (!user) {
+          console.error("No user logged in");
+          return;
+        }
+
+        const newsData: NewsFormData = {
+          ...data,
+          authorId: user.id,
+        };
+
+        if (selectedNews) {
+          await newsService.update(selectedNews.id, newsData);
+        } else {
+          await newsService.create(newsData);
+        }
+        loadNews();
+      } catch (error) {
+        console.error("Error saving news:", error);
       }
-
-      const newsData: NewsFormData = {
-        ...data,
-        authorId: user.id,
-      };
-
-      if (selectedNews) {
-        await newsService.update(selectedNews.id, newsData);
-      } else {
-        await newsService.create(newsData);
-      }
-      loadNews();
-    } catch (error) {
-      console.error('Error saving news:', error);
-    }
-  }, [selectedNews, loadNews]);
+    },
+    [selectedNews, loadNews],
+  );
 
   const handleDelete = useCallback(async () => {
     if (newsToDelete) {
@@ -79,7 +88,7 @@ export const useNews = () => {
         await newsService.delete(newsToDelete);
         loadNews();
       } catch (error) {
-        console.error('Error deleting news:', error);
+        console.error("Error deleting news:", error);
       }
     }
   }, [newsToDelete, loadNews]);

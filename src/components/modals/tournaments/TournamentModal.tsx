@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -13,9 +13,9 @@ import {
   Select,
   HStack,
   Button,
-} from '@chakra-ui/react';
-import { Tournament, TournamentFormData, Game } from '../../../types';
-import { gameService } from '../../../services/game_service';
+} from "@chakra-ui/react";
+import { Tournament, TournamentFormData, Game } from "../../../types";
+import { gameService } from "../../../services/game_service";
 
 interface TournamentModalProps {
   isOpen: boolean;
@@ -32,11 +32,11 @@ export const TournamentModal: React.FC<TournamentModalProps> = ({
 }) => {
   const [games, setGames] = useState<Game[]>([]);
   const [formData, setFormData] = useState<TournamentFormData>({
-    name: '',
+    name: "",
     gameId: 0,
     players: 0,
     prizePool: 0,
-    startDate: '',
+    startDate: "",
   });
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export const TournamentModal: React.FC<TournamentModalProps> = ({
     if (tournament) {
       const game = games.find((g) => g.name === tournament.game);
       // Extract date part only (YYYY-MM-DD) for the date input
-      const dateOnly = tournament.startDate.split('T')[0];
+      const dateOnly = tournament.startDate.split("T")[0];
       setFormData({
         name: tournament.name,
         gameId: game?.id || 0,
@@ -57,11 +57,11 @@ export const TournamentModal: React.FC<TournamentModalProps> = ({
       });
     } else {
       setFormData({
-        name: '',
+        name: "",
         gameId: 0,
         players: 0,
         prizePool: 0,
-        startDate: '',
+        startDate: "",
       });
     }
   }, [tournament, isOpen, games]);
@@ -71,25 +71,25 @@ export const TournamentModal: React.FC<TournamentModalProps> = ({
       const data = await gameService.getAll();
       setGames(data);
     } catch (error) {
-      console.error('Error loading games:', error);
+      console.error("Error loading games:", error);
     }
   };
 
   const handleSubmit = () => {
     if (!formData.gameId || formData.gameId === 0) {
-      alert('Please select a game');
+      alert("Please select a game");
       return;
     }
     if (!formData.name.trim()) {
-      alert('Please enter a tournament name');
+      alert("Please enter a tournament name");
       return;
     }
     if (!formData.startDate) {
-      alert('Please select a start date');
+      alert("Please select a start date");
       return;
     }
     if (formData.prizePool <= 0) {
-      alert('Prize pool must be greater than 0');
+      alert("Prize pool must be greater than 0");
       return;
     }
 
@@ -108,7 +108,7 @@ export const TournamentModal: React.FC<TournamentModalProps> = ({
       <ModalOverlay backdropFilter="blur(4px)" />
       <ModalContent>
         <ModalHeader>
-          {tournament ? 'Update Tournament' : 'Create Tournament'}
+          {tournament ? "Update Tournament" : "Create Tournament"}
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
@@ -132,7 +132,7 @@ export const TournamentModal: React.FC<TournamentModalProps> = ({
               </Text>
               <Select
                 placeholder="Select game"
-                value={formData.gameId || ''}
+                value={formData.gameId || ""}
                 onChange={(e) =>
                   setFormData({ ...formData, gameId: parseInt(e.target.value) })
                 }
@@ -156,7 +156,10 @@ export const TournamentModal: React.FC<TournamentModalProps> = ({
                 placeholder="e.g., 1000"
                 value={formData.prizePool}
                 onChange={(e) =>
-                  setFormData({ ...formData, prizePool: parseFloat(e.target.value) || 0 })
+                  setFormData({
+                    ...formData,
+                    prizePool: parseFloat(e.target.value) || 0,
+                  })
                 }
               />
             </Box>
@@ -179,7 +182,7 @@ export const TournamentModal: React.FC<TournamentModalProps> = ({
                 Cancel
               </Button>
               <Button colorScheme="brand" onClick={handleSubmit} flex={1}>
-                {tournament ? 'Update' : 'Create'}
+                {tournament ? "Update" : "Create"}
               </Button>
             </HStack>
           </VStack>

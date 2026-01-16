@@ -1,10 +1,10 @@
-import React from 'react';
-import { Box, Container } from '@chakra-ui/react';
-import { useTeams } from '../../hooks';
-import { TeamModal } from '../../components/modals/teams/TeamModal';
-import { DeleteConfirmDialog } from '../../components/dialogs/DeleteConfirmDialog';
-import { TeamsTable } from '../../components/tables';
-import { PageHeader } from '../../components/layouts';
+import React from "react";
+import { Box, Container } from "@chakra-ui/react";
+import { useTeams } from "../../hooks";
+import { TeamModal } from "../../components/modals/teams/TeamModal";
+import { DeleteConfirmDialog } from "../../components/dialogs/DeleteConfirmDialog";
+import { TeamsTable } from "../../components/tables";
+import { PageHeader } from "../../components/layouts";
 
 const TeamsPage: React.FC = () => {
   const {

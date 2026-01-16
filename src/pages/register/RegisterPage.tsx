@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Box,
   Container,
@@ -10,34 +10,38 @@ import {
   Heading,
   useToast,
   useDisclosure,
-} from '@chakra-ui/react';
-import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../../context';
-import { SuccessAlert, ErrorAlert } from '../../components/alerts';
-import { PasswordInput } from '../../components/inputs';
-import { SubmitButton } from '../../components/buttons';
+} from "@chakra-ui/react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../../context";
+import { SuccessAlert, ErrorAlert } from "../../components/alerts";
+import { PasswordInput } from "../../components/inputs";
+import { SubmitButton } from "../../components/buttons";
 
 const RegisterPage: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const toast = useToast();
   const navigate = useNavigate();
   const { register } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isOpen: isErrorOpen, onOpen: onErrorOpen, onClose: onErrorClose } = useDisclosure();
+  const {
+    isOpen: isErrorOpen,
+    onOpen: onErrorOpen,
+    onClose: onErrorClose,
+  } = useDisclosure();
   const cancelRef = React.useRef<HTMLButtonElement>(null);
   const errorCancelRef = React.useRef<HTMLButtonElement>(null);
 
   const handleRegister = async () => {
     if (!email || !password || !firstName) {
       toast({
-        title: 'Error',
-        description: 'Please fill in all required fields',
-        status: 'error',
+        title: "Error",
+        description: "Please fill in all required fields",
+        status: "error",
         duration: 3000,
         isClosable: true,
       });
@@ -46,9 +50,9 @@ const RegisterPage: React.FC = () => {
 
     if (password.length < 6) {
       toast({
-        title: 'Error',
-        description: 'Password must be at least 6 characters',
-        status: 'error',
+        title: "Error",
+        description: "Password must be at least 6 characters",
+        status: "error",
         duration: 3000,
         isClosable: true,
       });
@@ -60,17 +64,19 @@ const RegisterPage: React.FC = () => {
     try {
       await register({
         first_name: firstName,
-        last_name: lastName || '',
+        last_name: lastName || "",
         email,
         password,
       });
 
       onOpen();
     } catch (error: unknown) {
-      let message = 'Registration failed';
+      let message = "Registration failed";
 
       if (error instanceof Error) {
-        const axiosError = error as { response?: { data?: { error?: string } } };
+        const axiosError = error as {
+          response?: { data?: { error?: string } };
+        };
         if (axiosError.response?.data?.error) {
           message = axiosError.response.data.error;
         } else {
@@ -87,17 +93,17 @@ const RegisterPage: React.FC = () => {
 
   const handleDialogClose = () => {
     onClose();
-    navigate('/login');
+    navigate("/login");
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleRegister();
     }
   };
 
   return (
-    <Container maxW="md" py={{ base: '12', md: '24' }}>
+    <Container maxW="md" py={{ base: "12", md: "24" }}>
       <Box
         width="full"
         bg="white"
@@ -109,10 +115,10 @@ const RegisterPage: React.FC = () => {
       >
         <VStack spacing="6">
           <Box textAlign="center">
-            <Heading mb="2" fontWeight="800">GameClub</Heading>
-            <Text color="gray.600">
-              Create a new account
-            </Text>
+            <Heading mb="2" fontWeight="800">
+              GameClub
+            </Heading>
+            <Text color="gray.600">Create a new account</Text>
           </Box>
 
           <VStack spacing="4" width="full">

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Box,
   Card,
@@ -9,9 +9,9 @@ import {
   Tr,
   Th,
   Td,
-} from '@chakra-ui/react';
-import { Team } from '../../../types';
-import { ActionButtons } from '../../buttons';
+} from "@chakra-ui/react";
+import { Team } from "../../../types";
+import { ActionButtons } from "../../buttons";
 
 interface TeamsTableProps {
   teams: Team[];
@@ -36,7 +36,11 @@ const TeamsTable: React.FC<TeamsTableProps> = ({ teams, onEdit, onDelete }) => {
             </Thead>
             <Tbody>
               {teams.map((team) => (
-                <Tr key={team.id} _hover={{ bg: 'gray.50' }} transition="all 0.2s">
+                <Tr
+                  key={team.id}
+                  _hover={{ bg: "gray.50" }}
+                  transition="all 0.2s"
+                >
                   <Td color="gray.600">{team.id}</Td>
                   <Td fontWeight="600">{team.name}</Td>
                   <Td>

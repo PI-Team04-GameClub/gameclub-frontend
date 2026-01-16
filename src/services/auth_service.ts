@@ -1,25 +1,25 @@
-import axios from 'axios';
-import { LoginRequest, RegisterRequest, AuthResponse, User } from '../types';
-import { API_BASE_URL } from '../config';
+import axios from "axios";
+import { LoginRequest, RegisterRequest, AuthResponse, User } from "../types";
+import { API_BASE_URL } from "../config";
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error('API Error:', error.message);
+    console.error("API Error:", error.message);
     if (error.response) {
-      console.error('Response data:', error.response.data);
-      console.error('Response status:', error.response.status);
+      console.error("Response data:", error.response.data);
+      console.error("Response status:", error.response.status);
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export const authService = {
@@ -43,24 +43,24 @@ export const authService = {
   },
 
   logout: (): void => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
   },
 
   getToken: (): string | null => {
-    return localStorage.getItem('token');
+    return localStorage.getItem("token");
   },
 
   getUser: (): User | null => {
-    const user = localStorage.getItem('user');
+    const user = localStorage.getItem("user");
     return user ? JSON.parse(user) : null;
   },
 
   setToken: (token: string): void => {
-    localStorage.setItem('token', token);
+    localStorage.setItem("token", token);
   },
 
   setUser: (user: User): void => {
-    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem("user", JSON.stringify(user));
   },
 };

@@ -1,6 +1,6 @@
-import React from 'react';
-import { Text } from '@chakra-ui/react';
-import { Link, useLocation } from 'react-router-dom';
+import React from "react";
+import { Text } from "@chakra-ui/react";
+import { Link, useLocation } from "react-router-dom";
 
 interface NavLinkProps {
   to: string;
@@ -19,10 +19,10 @@ const NavLink: React.FC<NavLinkProps> = ({ to, children }) => {
         borderRadius="md"
         fontWeight="600"
         fontSize="sm"
-        bg={isActive ? 'brand.500' : 'transparent'}
-        color={isActive ? 'white' : 'gray.700'}
+        bg={isActive ? "brand.500" : "transparent"}
+        color={isActive ? "white" : "gray.700"}
         _hover={{
-          bg: isActive ? 'brand.600' : 'gray.100',
+          bg: isActive ? "brand.600" : "gray.100",
         }}
         transition="all 0.2s"
       >

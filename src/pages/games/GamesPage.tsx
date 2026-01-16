@@ -1,10 +1,10 @@
-import React from 'react';
-import { Box, Container } from '@chakra-ui/react';
-import { useGames } from '../../hooks';
-import { GameModal } from '../../components/modals/games/GameModal';
-import { DeleteConfirmDialog } from '../../components/dialogs/DeleteConfirmDialog';
-import { GamesTable } from '../../components/tables';
-import { PageHeader } from '../../components/layouts';
+import React from "react";
+import { Box, Container } from "@chakra-ui/react";
+import { useGames } from "../../hooks";
+import { GameModal } from "../../components/modals/games/GameModal";
+import { DeleteConfirmDialog } from "../../components/dialogs/DeleteConfirmDialog";
+import { GamesTable } from "../../components/tables";
+import { PageHeader } from "../../components/layouts";
 
 const GamesPage: React.FC = () => {
   const {

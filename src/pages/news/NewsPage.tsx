@@ -1,10 +1,10 @@
-import React from 'react';
-import { Box, Container, SimpleGrid } from '@chakra-ui/react';
-import { useNews } from '../../hooks';
-import { NewsModal } from '../../components/modals/news/NewsModal';
-import { DeleteConfirmDialog } from '../../components/dialogs/DeleteConfirmDialog';
-import NewsCard from '../../components/cards/NewsCard';
-import { PageHeader } from '../../components/layouts';
+import React from "react";
+import { Box, Container, SimpleGrid } from "@chakra-ui/react";
+import { useNews } from "../../hooks";
+import { NewsModal } from "../../components/modals/news/NewsModal";
+import { DeleteConfirmDialog } from "../../components/dialogs/DeleteConfirmDialog";
+import NewsCard from "../../components/cards/NewsCard";
+import { PageHeader } from "../../components/layouts";
 
 const NewsPage: React.FC = () => {
   const {

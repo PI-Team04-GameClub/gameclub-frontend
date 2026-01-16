@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useDisclosure } from '@chakra-ui/react';
-import { gameService } from '../../services/game_service';
-import { Game, GameFormData } from '../../types';
+import { useState, useEffect, useCallback } from "react";
+import { useDisclosure } from "@chakra-ui/react";
+import { gameService } from "../../services/game_service";
+import { Game, GameFormData } from "../../types";
 
 export const useGames = () => {
   const [games, setGames] = useState<Game[]>([]);
@@ -25,7 +25,7 @@ export const useGames = () => {
       const data = await gameService.getAll();
       setGames(data);
     } catch (error) {
-      console.error('Error loading games:', error);
+      console.error("Error loading games:", error);
     }
   }, []);
 
@@ -38,28 +38,37 @@ export const useGames = () => {
     onModalOpen();
   }, [onModalOpen]);
 
-  const handleEdit = useCallback((game: Game) => {
-    setSelectedGame(game);
-    onModalOpen();
-  }, [onModalOpen]);
+  const handleEdit = useCallback(
+    (game: Game) => {
+      setSelectedGame(game);
+      onModalOpen();
+    },
+    [onModalOpen],
+  );
 
-  const handleDeleteClick = useCallback((id: number) => {
-    setGameToDelete(id);
-    onDeleteDialogOpen();
-  }, [onDeleteDialogOpen]);
+  const handleDeleteClick = useCallback(
+    (id: number) => {
+      setGameToDelete(id);
+      onDeleteDialogOpen();
+    },
+    [onDeleteDialogOpen],
+  );
 
-  const handleSubmit = useCallback(async (data: GameFormData) => {
-    try {
-      if (selectedGame) {
-        await gameService.update(selectedGame.id, data);
-      } else {
-        await gameService.create(data);
+  const handleSubmit = useCallback(
+    async (data: GameFormData) => {
+      try {
+        if (selectedGame) {
+          await gameService.update(selectedGame.id, data);
+        } else {
+          await gameService.create(data);
+        }
+        loadGames();
+      } catch (error) {
+        console.error("Error saving game:", error);
       }
-      loadGames();
-    } catch (error) {
-      console.error('Error saving game:', error);
-    }
-  }, [selectedGame, loadGames]);
+    },
+    [selectedGame, loadGames],
+  );
 
   const handleDelete = useCallback(async () => {
     if (gameToDelete) {
@@ -67,7 +76,7 @@ export const useGames = () => {
         await gameService.delete(gameToDelete);
         loadGames();
       } catch (error) {
-        console.error('Error deleting game:', error);
+        console.error("Error deleting game:", error);
       }
     }
   }, [gameToDelete, loadGames]);

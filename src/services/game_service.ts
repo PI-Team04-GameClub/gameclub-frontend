@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios from "axios";
 
-import { Game, GameFormData } from '../types'
-import { API_BASE_URL } from '../config';
+import { Game, GameFormData } from "../types";
+import { API_BASE_URL } from "../config";
 
 export const gameService = {
   getAll: async (): Promise<Game[]> => {

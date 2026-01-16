@@ -1,6 +1,6 @@
-import axios from 'axios';
-import { Tournament, TournamentFormData } from '../types';
-import { API_BASE_URL } from '../config';
+import axios from "axios";
+import { Tournament, TournamentFormData } from "../types";
+import { API_BASE_URL } from "../config";
 
 export const tournamentService = {
   getAll: async (): Promise<Tournament[]> => {

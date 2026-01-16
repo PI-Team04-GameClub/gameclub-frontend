@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   AlertDialog,
   AlertDialogBody,
@@ -7,7 +7,7 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   Button,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
 interface SuccessAlertProps {
   isOpen: boolean;
@@ -23,7 +23,7 @@ const SuccessAlert: React.FC<SuccessAlertProps> = ({
   onClose,
   title,
   message,
-  buttonText = 'OK',
+  buttonText = "OK",
   cancelRef,
 }) => {
   return (
