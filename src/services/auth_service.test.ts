@@ -1,17 +1,32 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import axios from "axios";
 
-// Mock axios
-vi.mock("axios", () => {
+// Use vi.hoisted to create the mock before vi.mock runs
+const { mockAxiosInstance, getErrorInterceptor, setErrorInterceptor } = vi.hoisted(() => {
+  type ErrorInterceptor = (error: Error & { response?: { data: unknown; status: number } }) => Promise<never>;
+  let errorInterceptorCallback: ErrorInterceptor | null = null;
+
   const mockAxiosInstance = {
     post: vi.fn(),
     get: vi.fn(),
     interceptors: {
       response: {
-        use: vi.fn(),
+        use: vi.fn((successCb: unknown, errorCb: ErrorInterceptor) => {
+          // Store the error callback for testing
+          errorInterceptorCallback = errorCb;
+        }),
       },
     },
   };
+
+  return {
+    mockAxiosInstance,
+    getErrorInterceptor: () => errorInterceptorCallback,
+    setErrorInterceptor: (cb: ErrorInterceptor | null) => { errorInterceptorCallback = cb; },
+  };
+});
+
+// Mock axios
+vi.mock("axios", () => {
   return {
     default: {
       create: vi.fn(() => mockAxiosInstance),
@@ -40,12 +55,6 @@ Object.defineProperty(globalThis, "localStorage", { value: localStorageMock });
 
 // Import after mocking
 import { authService } from "./auth_service";
-
-// Get the mocked axios instance
-const mockAxiosInstance = axios.create() as unknown as {
-  post: ReturnType<typeof vi.fn>;
-  get: ReturnType<typeof vi.fn>;
-};
 
 describe("authService", () => {
   beforeEach(() => {
@@ -190,6 +199,41 @@ describe("authService", () => {
         "user",
         JSON.stringify(user),
       );
+    });
+  });
+
+  describe("error interceptor", () => {
+    it("logs error message on API error", async () => {
+      const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+      const errorInterceptor = getErrorInterceptor();
+
+      const error = new Error("Network Error");
+
+      expect(errorInterceptor).not.toBeNull();
+      await expect(errorInterceptor!(error)).rejects.toThrow("Network Error");
+
+      expect(consoleError).toHaveBeenCalledWith("API Error:", "Network Error");
+      consoleError.mockRestore();
+    });
+
+    it("logs response data and status when error has response", async () => {
+      const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+      const errorInterceptor = getErrorInterceptor();
+
+      const error = Object.assign(new Error("Request failed"), {
+        response: {
+          data: { message: "Invalid credentials" },
+          status: 401,
+        },
+      });
+
+      expect(errorInterceptor).not.toBeNull();
+      await expect(errorInterceptor!(error)).rejects.toThrow("Request failed");
+
+      expect(consoleError).toHaveBeenCalledWith("API Error:", "Request failed");
+      expect(consoleError).toHaveBeenCalledWith("Response data:", { message: "Invalid credentials" });
+      expect(consoleError).toHaveBeenCalledWith("Response status:", 401);
+      consoleError.mockRestore();
     });
   });
 });
