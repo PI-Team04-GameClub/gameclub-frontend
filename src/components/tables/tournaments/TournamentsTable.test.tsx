@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "../../../test/test-utils";
 import userEvent from "@testing-library/user-event";
 import TournamentsTable from "./TournamentsTable";
+import type { Tournament } from "../../../types";
 
 describe("TournamentsTable", () => {
   const mockTournaments = [
@@ -11,7 +12,7 @@ describe("TournamentsTable", () => {
       game: "Chess",
       prizePool: 1000,
       startDate: "2024-06-01T00:00:00Z",
-      status: "Active",
+      status: "Active" as const,
       players: 16,
     },
     {
@@ -20,7 +21,7 @@ describe("TournamentsTable", () => {
       game: "Poker",
       prizePool: 5000,
       startDate: "2024-07-15T00:00:00Z",
-      status: "Upcoming",
+      status: "Upcoming" as const,
       players: 32,
     },
   ];
@@ -112,7 +113,7 @@ describe("TournamentsTable", () => {
   it("renders Completed status with correct color", () => {
     const completedTournament = {
       ...mockTournaments[0],
-      status: "Completed",
+      status: "Completed" as const,
     };
     render(<TournamentsTable {...defaultProps} tournaments={[completedTournament]} />);
     expect(screen.getByText("Completed")).toBeInTheDocument();
@@ -120,9 +121,14 @@ describe("TournamentsTable", () => {
 
   it("renders unknown status with orange color", () => {
     const unknownTournament = {
-      ...mockTournaments[0],
+      id: 1,
+      name: "Championship",
+      game: "Chess",
+      prizePool: 1000,
+      startDate: "2024-06-01T00:00:00Z",
       status: "Unknown",
-    };
+      players: 16,
+    } as unknown as Tournament;
     render(<TournamentsTable {...defaultProps} tournaments={[unknownTournament]} />);
     expect(screen.getByText("Unknown")).toBeInTheDocument();
   });

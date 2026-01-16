@@ -39,7 +39,7 @@ describe("useTournaments", () => {
       game: "Chess",
       prizePool: 1000,
       startDate: "2024-06-01T00:00:00Z",
-      status: "Active",
+      status: "Active" as const,
       players: 16,
     },
     {
@@ -48,7 +48,7 @@ describe("useTournaments", () => {
       game: "Poker",
       prizePool: 5000,
       startDate: "2024-07-01T00:00:00Z",
-      status: "Upcoming",
+      status: "Upcoming" as const,
       players: 32,
     },
   ];
@@ -117,7 +117,7 @@ describe("useTournaments", () => {
       game: "Chess",
       prizePool: 2000,
       startDate: "2024-08-01T00:00:00Z",
-      status: "Upcoming",
+      status: "Upcoming" as const,
       players: 8,
     });
 
@@ -150,7 +150,7 @@ describe("useTournaments", () => {
       game: "Chess",
       prizePool: 3000,
       startDate: "2024-06-01T00:00:00Z",
-      status: "Active",
+      status: "Active" as const,
       players: 16,
     });
 

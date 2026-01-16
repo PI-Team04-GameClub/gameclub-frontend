@@ -39,7 +39,7 @@ describe("TournamentModal", () => {
       game: "Chess",
       prizePool: 1000,
       startDate: "2024-06-01T00:00:00Z",
-      status: "Active",
+      status: "Active" as const,
       players: 16,
     };
     render(<TournamentModal {...defaultProps} tournament={tournament} />);
@@ -79,7 +79,7 @@ describe("TournamentModal", () => {
       game: "Chess",
       prizePool: 1000,
       startDate: "2024-06-01T00:00:00Z",
-      status: "Active",
+      status: "Active" as const,
       players: 16,
     };
     render(<TournamentModal {...defaultProps} tournament={tournament} />);
@@ -102,7 +102,7 @@ describe("TournamentModal", () => {
       game: "Chess",
       prizePool: 1000,
       startDate: "2024-06-01T00:00:00Z",
-      status: "Active",
+      status: "Active" as const,
       players: 16,
     };
 

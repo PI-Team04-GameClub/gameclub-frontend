@@ -23,7 +23,7 @@ describe("TournamentsPage", () => {
       game: "Chess",
       prizePool: 1000,
       startDate: "2024-06-01T00:00:00Z",
-      status: "Active",
+      status: "Active" as const,
       players: 16,
     },
     {
@@ -32,7 +32,7 @@ describe("TournamentsPage", () => {
       game: "Poker",
       prizePool: 5000,
       startDate: "2024-07-01T00:00:00Z",
-      status: "Upcoming",
+      status: "Upcoming" as const,
       players: 32,
     },
   ];

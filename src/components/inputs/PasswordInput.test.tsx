@@ -70,7 +70,7 @@ describe("PasswordInput", () => {
   });
 
   it("renders with value prop", () => {
-    render(<PasswordInput value="secret" data-testid="password-input" readOnly />);
+    render(<PasswordInput value="secret" data-testid="password-input" isReadOnly />);
     expect(screen.getByTestId("password-input")).toHaveValue("secret");
   });
 });

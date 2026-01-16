@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 
 // Use vi.hoisted to create the mock before vi.mock runs
-const { mockAxiosInstance, getErrorInterceptor, setErrorInterceptor } = vi.hoisted(() => {
+const { mockAxiosInstance, getErrorInterceptor } = vi.hoisted(() => {
   type ErrorInterceptor = (error: Error & { response?: { data: unknown; status: number } }) => Promise<never>;
   let errorInterceptorCallback: ErrorInterceptor | null = null;
 
@@ -10,7 +10,7 @@ const { mockAxiosInstance, getErrorInterceptor, setErrorInterceptor } = vi.hoist
     get: vi.fn(),
     interceptors: {
       response: {
-        use: vi.fn((successCb: unknown, errorCb: ErrorInterceptor) => {
+        use: vi.fn((_successCb: unknown, errorCb: ErrorInterceptor) => {
           // Store the error callback for testing
           errorInterceptorCallback = errorCb;
         }),
@@ -21,7 +21,6 @@ const { mockAxiosInstance, getErrorInterceptor, setErrorInterceptor } = vi.hoist
   return {
     mockAxiosInstance,
     getErrorInterceptor: () => errorInterceptorCallback,
-    setErrorInterceptor: (cb: ErrorInterceptor | null) => { errorInterceptorCallback = cb; },
   };
 });
 
