@@ -1,0 +1,6 @@
+[build]
+builder = "dockerfile"
+buildArgs = ["VITE_API_URL"]
+
+[deploy]
+port = 3001
