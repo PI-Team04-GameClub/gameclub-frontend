@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -13,7 +13,10 @@ import {
   HStack,
   Button,
   useToast,
+  Avatar,
+  IconButton,
 } from "@chakra-ui/react";
+import { EditIcon } from "@chakra-ui/icons";
 import { useAuth } from "../../../context";
 
 interface EditProfileModalProps {
@@ -21,17 +24,25 @@ interface EditProfileModalProps {
   onClose: () => void;
 }
 
+const getAvatarUrl = (userId: number | undefined) => {
+  if (!userId) return undefined;
+  return `https://api.dicebear.com/7.x/avataaars/svg?seed=${userId}`;
+};
+
 export const EditProfileModal: React.FC<EditProfileModalProps> = ({
   isOpen,
   onClose,
 }) => {
   const { user } = useAuth();
   const toast = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
   });
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   useEffect(() => {
     if (user) {
@@ -41,7 +52,43 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
         email: user.email,
       });
     }
+    if (!isOpen) {
+      setImagePreview(null);
+      setSelectedFile(null);
+    }
   }, [user, isOpen]);
+
+  const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      if (!file.type.startsWith("image/")) {
+        toast({
+          title: "Invalid file type",
+          description: "Please select an image file.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        toast({
+          title: "File too large",
+          description: "Please select an image smaller than 5MB.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        return;
+      }
+      setSelectedFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSubmit = () => {
     toast({
@@ -62,6 +109,42 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
         <ModalCloseButton />
         <ModalBody pb={6}>
           <VStack spacing={4} align="stretch">
+            <Box display="flex" flexDirection="column" alignItems="center">
+              <Text mb={2} fontWeight="600" fontSize="sm" color="gray.600">
+                Profile Image
+              </Text>
+              <Box position="relative">
+                <Avatar
+                  size="xl"
+                  name={user ? `${user.first_name} ${user.last_name}` : "User"}
+                  src={imagePreview || getAvatarUrl(user?.id)}
+                />
+                <IconButton
+                  aria-label="Change profile image"
+                  icon={<EditIcon />}
+                  size="sm"
+                  colorScheme="brand"
+                  rounded="full"
+                  position="absolute"
+                  bottom={0}
+                  right={0}
+                  onClick={() => fileInputRef.current?.click()}
+                />
+                <Input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageSelect}
+                  display="none"
+                />
+              </Box>
+              {selectedFile && (
+                <Text fontSize="xs" color="gray.500" mt={2}>
+                  {selectedFile.name}
+                </Text>
+              )}
+            </Box>
+
             <Box>
               <Text mb={2} fontWeight="600" fontSize="sm" color="gray.600">
                 First Name
