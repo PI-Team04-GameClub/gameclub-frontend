@@ -45,9 +45,7 @@ const Navbar: React.FC = () => {
           <HStack spacing={4}>
             {user && (
               <>
-                <Text fontSize="sm" color="gray.600">
-                  {user.first_name} {user.last_name}
-                </Text>
+                <NavLink to="/profile">Profile</NavLink>
                 <Button
                   size="sm"
                   colorScheme="red"

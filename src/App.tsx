@@ -14,6 +14,7 @@ import GamesPage from "./pages/games/GamesPage";
 import TeamsPage from "./pages/teams/TeamsPage";
 import TournamentsPage from "./pages/tournaments/TournamentsPage";
 import NewsPage from "./pages/news/NewsPage";
+import ProfilePage from "./pages/profile/ProfilePage";
 import { AuthProvider, useAuth } from "./context";
 
 const AppContent: React.FC = () => {
@@ -98,6 +99,16 @@ const AppContent: React.FC = () => {
             element={
               isAuthenticated ? (
                 <TournamentsPage />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              isAuthenticated ? (
+                <ProfilePage />
               ) : (
                 <Navigate to="/login" replace />
               )
