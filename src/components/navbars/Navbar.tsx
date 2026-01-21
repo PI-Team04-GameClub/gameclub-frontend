@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Flex, HStack, Text, Button } from "@chakra-ui/react";
+import { Box, Flex, HStack, Text, Button, Avatar } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context";
 import { NavLink } from "../links";
@@ -45,7 +45,13 @@ const Navbar: React.FC = () => {
           <HStack spacing={4}>
             {user && (
               <>
-                <NavLink to="/profile">Profile</NavLink>
+                <HStack spacing={2}>
+                  <Avatar
+                    size="sm"
+                    name={`${user.first_name} ${user.last_name}`}
+                  />
+                  <NavLink to="/profile">Profile</NavLink>
+                </HStack>
                 <Button
                   size="sm"
                   colorScheme="red"
