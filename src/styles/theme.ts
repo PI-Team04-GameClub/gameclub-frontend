@@ -54,6 +54,18 @@ const theme = extendTheme({
         },
       },
     },
+    Table: {
+      variants: {
+        simple: {
+          th: {
+            borderColor: "gray.200",
+          },
+          td: {
+            borderColor: "gray.200",
+          },
+        },
+      },
+    },
   },
 });
 
