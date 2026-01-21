@@ -62,7 +62,7 @@ describe("Navbar", () => {
     expect(screen.getByText("Tournaments")).toBeInTheDocument();
   });
 
-  it("renders user name when logged in", () => {
+  it("renders profile link when logged in", () => {
     vi.spyOn(contextModule, "useAuth").mockReturnValue({
       user: { id: 1, email: "test@test.com", first_name: "John", last_name: "Doe" },
       logout: mockLogout,
@@ -72,7 +72,7 @@ describe("Navbar", () => {
     });
 
     renderNavbar();
-    expect(screen.getByText("John Doe")).toBeInTheDocument();
+    expect(screen.getByText("Profile")).toBeInTheDocument();
   });
 
   it("renders logout button when logged in", () => {
@@ -98,7 +98,7 @@ describe("Navbar", () => {
     });
 
     renderNavbar();
-    expect(screen.queryByText("John Doe")).not.toBeInTheDocument();
+    expect(screen.queryByText("Profile")).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Logout" })).not.toBeInTheDocument();
   });
 

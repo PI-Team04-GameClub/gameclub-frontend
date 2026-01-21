@@ -207,7 +207,7 @@ describe("App", () => {
     render(<App />);
 
     await waitFor(() => {
-      expect(screen.getByText("John Doe")).toBeInTheDocument();
+      expect(screen.getByText("Profile")).toBeInTheDocument();
     });
   });
 });
