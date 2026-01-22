@@ -12,7 +12,8 @@
     "format:check": "prettier --check .",
     "test": "vitest",
     "test:run": "vitest run",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "spellcheck": "cspell \"**/*.{ts,tsx,js,jsx,md,json}\""
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.2.4",
