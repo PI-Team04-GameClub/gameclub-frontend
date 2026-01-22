@@ -117,7 +117,9 @@ describe("ReceivedRequestsTab", () => {
 
     render(<ReceivedRequestsTab />);
 
-    expect(screen.getByText("You don't have any pending friend requests.")).toBeInTheDocument();
+    expect(
+      screen.getByText("You don't have any pending friend requests.")
+    ).toBeInTheDocument();
   });
 
   it("renders sender avatars", () => {

@@ -15,7 +15,9 @@ describe("DeleteConfirmDialog", () => {
   it("renders dialog when open", () => {
     render(<DeleteConfirmDialog {...defaultProps} />);
     expect(screen.getByText("Delete Item")).toBeInTheDocument();
-    expect(screen.getByText("Are you sure you want to delete this item?")).toBeInTheDocument();
+    expect(
+      screen.getByText("Are you sure you want to delete this item?")
+    ).toBeInTheDocument();
   });
 
   it("does not render content when closed", () => {
@@ -51,7 +53,7 @@ describe("DeleteConfirmDialog", () => {
         {...defaultProps}
         onConfirm={onConfirm}
         onClose={onClose}
-      />,
+      />
     );
 
     await user.click(screen.getByRole("button", { name: "Delete" }));
@@ -65,7 +67,9 @@ describe("DeleteConfirmDialog", () => {
   });
 
   it("renders custom message", () => {
-    render(<DeleteConfirmDialog {...defaultProps} message="Custom message here" />);
+    render(
+      <DeleteConfirmDialog {...defaultProps} message="Custom message here" />
+    );
     expect(screen.getByText("Custom message here")).toBeInTheDocument();
   });
 

@@ -31,7 +31,7 @@ const renderRegisterPage = () => {
       <BrowserRouter>
         <RegisterPage />
       </BrowserRouter>
-    </ChakraProvider>,
+    </ChakraProvider>
   );
 };
 
@@ -77,7 +77,9 @@ describe("RegisterPage", () => {
 
   it("renders create account button", () => {
     renderRegisterPage();
-    expect(screen.getByRole("button", { name: "Create Account" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Create Account" })
+    ).toBeInTheDocument();
   });
 
   it("renders sign in link", () => {
@@ -112,7 +114,7 @@ describe("RegisterPage", () => {
         title: "Error",
         description: "Please fill in all required fields",
         status: "error",
-      }),
+      })
     );
   });
 
@@ -130,7 +132,7 @@ describe("RegisterPage", () => {
         title: "Error",
         description: "Password must be at least 6 characters",
         status: "error",
-      }),
+      })
     );
   });
 
@@ -242,7 +244,10 @@ describe("RegisterPage", () => {
 
     await user.type(screen.getByPlaceholderText("First Name"), "John");
     await user.type(screen.getByPlaceholderText("Email"), "john@test.com");
-    await user.type(screen.getByPlaceholderText("Password"), "password123{enter}");
+    await user.type(
+      screen.getByPlaceholderText("Password"),
+      "password123{enter}"
+    );
 
     await waitFor(() => {
       expect(mockRegister).toHaveBeenCalled();

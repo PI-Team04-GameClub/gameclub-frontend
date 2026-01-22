@@ -24,7 +24,7 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(
-    !!authService.getToken(),
+    !!authService.getToken()
   );
   const [user, setUser] = useState<User | null>(authService.getUser());
 

@@ -6,7 +6,10 @@ import PasswordInput from "./PasswordInput";
 describe("PasswordInput", () => {
   it("renders with password type by default", () => {
     render(<PasswordInput data-testid="password-input" />);
-    expect(screen.getByTestId("password-input")).toHaveAttribute("type", "password");
+    expect(screen.getByTestId("password-input")).toHaveAttribute(
+      "type",
+      "password"
+    );
   });
 
   it("renders show button with default label", () => {
@@ -19,7 +22,10 @@ describe("PasswordInput", () => {
     render(<PasswordInput data-testid="password-input" />);
 
     await user.click(screen.getByRole("button", { name: "Show" }));
-    expect(screen.getByTestId("password-input")).toHaveAttribute("type", "text");
+    expect(screen.getByTestId("password-input")).toHaveAttribute(
+      "type",
+      "text"
+    );
   });
 
   it("shows hide button after clicking show", async () => {
@@ -36,7 +42,10 @@ describe("PasswordInput", () => {
 
     await user.click(screen.getByRole("button", { name: "Show" }));
     await user.click(screen.getByRole("button", { name: "Hide" }));
-    expect(screen.getByTestId("password-input")).toHaveAttribute("type", "password");
+    expect(screen.getByTestId("password-input")).toHaveAttribute(
+      "type",
+      "password"
+    );
   });
 
   it("renders with custom show label", () => {
@@ -53,10 +62,15 @@ describe("PasswordInput", () => {
   });
 
   it("passes through additional props", () => {
-    render(<PasswordInput placeholder="Enter password" data-testid="password-input" />);
+    render(
+      <PasswordInput
+        placeholder="Enter password"
+        data-testid="password-input"
+      />
+    );
     expect(screen.getByTestId("password-input")).toHaveAttribute(
       "placeholder",
-      "Enter password",
+      "Enter password"
     );
   });
 
@@ -70,7 +84,9 @@ describe("PasswordInput", () => {
   });
 
   it("renders with value prop", () => {
-    render(<PasswordInput value="secret" data-testid="password-input" isReadOnly />);
+    render(
+      <PasswordInput value="secret" data-testid="password-input" isReadOnly />
+    );
     expect(screen.getByTestId("password-input")).toHaveValue("secret");
   });
 });

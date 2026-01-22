@@ -44,7 +44,7 @@ export const useNews = () => {
       setSelectedNews(news);
       onModalOpen();
     },
-    [onModalOpen],
+    [onModalOpen]
   );
 
   const handleDeleteClick = useCallback(
@@ -52,7 +52,7 @@ export const useNews = () => {
       setNewsToDelete(id);
       onDeleteDialogOpen();
     },
-    [onDeleteDialogOpen],
+    [onDeleteDialogOpen]
   );
 
   const handleSubmit = useCallback(
@@ -79,7 +79,7 @@ export const useNews = () => {
         console.error("Error saving news:", error);
       }
     },
-    [selectedNews, loadNews],
+    [selectedNews, loadNews]
   );
 
   const handleDelete = useCallback(async () => {

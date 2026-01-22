@@ -115,7 +115,9 @@ describe("TournamentsTable", () => {
       ...mockTournaments[0],
       status: "Completed" as const,
     };
-    render(<TournamentsTable {...defaultProps} tournaments={[completedTournament]} />);
+    render(
+      <TournamentsTable {...defaultProps} tournaments={[completedTournament]} />
+    );
     expect(screen.getByText("Completed")).toBeInTheDocument();
   });
 
@@ -129,7 +131,9 @@ describe("TournamentsTable", () => {
       status: "Unknown",
       players: 16,
     } as unknown as Tournament;
-    render(<TournamentsTable {...defaultProps} tournaments={[unknownTournament]} />);
+    render(
+      <TournamentsTable {...defaultProps} tournaments={[unknownTournament]} />
+    );
     expect(screen.getByText("Unknown")).toBeInTheDocument();
   });
 });

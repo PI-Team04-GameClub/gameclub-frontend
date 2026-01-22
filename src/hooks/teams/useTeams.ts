@@ -43,7 +43,7 @@ export const useTeams = () => {
       setSelectedTeam(team);
       onModalOpen();
     },
-    [onModalOpen],
+    [onModalOpen]
   );
 
   const handleDeleteClick = useCallback(
@@ -51,7 +51,7 @@ export const useTeams = () => {
       setTeamToDelete(id);
       onDeleteDialogOpen();
     },
-    [onDeleteDialogOpen],
+    [onDeleteDialogOpen]
   );
 
   const handleSubmit = useCallback(
@@ -67,7 +67,7 @@ export const useTeams = () => {
         console.error("Error saving team:", error);
       }
     },
-    [selectedTeam, loadTeams],
+    [selectedTeam, loadTeams]
   );
 
   const handleDelete = useCallback(async () => {

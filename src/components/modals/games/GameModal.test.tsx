@@ -20,7 +20,12 @@ describe("GameModal", () => {
   });
 
   it("renders update modal when game provided", () => {
-    const game = { id: 1, name: "Chess", description: "Strategy game", numberOfPlayers: 2 };
+    const game = {
+      id: 1,
+      name: "Chess",
+      description: "Strategy game",
+      numberOfPlayers: 2,
+    };
     render(<GameModal {...defaultProps} game={game} />);
     expect(screen.getByText("Update Game")).toBeInTheDocument();
   });
@@ -43,7 +48,12 @@ describe("GameModal", () => {
   });
 
   it("renders update button when game provided", () => {
-    const game = { id: 1, name: "Chess", description: "Strategy game", numberOfPlayers: 2 };
+    const game = {
+      id: 1,
+      name: "Chess",
+      description: "Strategy game",
+      numberOfPlayers: 2,
+    };
     render(<GameModal {...defaultProps} game={game} />);
     expect(screen.getByRole("button", { name: "Update" })).toBeInTheDocument();
   });
@@ -58,11 +68,18 @@ describe("GameModal", () => {
   });
 
   it("populates form with game data when game provided", () => {
-    const game = { id: 1, name: "Chess", description: "Strategy game", numberOfPlayers: 2 };
+    const game = {
+      id: 1,
+      name: "Chess",
+      description: "Strategy game",
+      numberOfPlayers: 2,
+    };
     render(<GameModal {...defaultProps} game={game} />);
 
     expect(screen.getByPlaceholderText("Enter game name")).toHaveValue("Chess");
-    expect(screen.getByPlaceholderText("Enter game description")).toHaveValue("Strategy game");
+    expect(screen.getByPlaceholderText("Enter game description")).toHaveValue(
+      "Strategy game"
+    );
   });
 
   it("clears form when closed without game", async () => {
@@ -94,10 +111,18 @@ describe("GameModal", () => {
     const user = userEvent.setup();
     const onSubmit = vi.fn();
     const onClose = vi.fn();
-    render(<GameModal {...defaultProps} onSubmit={onSubmit} onClose={onClose} />);
+    render(
+      <GameModal {...defaultProps} onSubmit={onSubmit} onClose={onClose} />
+    );
 
-    await user.type(screen.getByPlaceholderText("Enter game name"), "Test Game");
-    await user.type(screen.getByPlaceholderText("Enter game description"), "Test Desc");
+    await user.type(
+      screen.getByPlaceholderText("Enter game name"),
+      "Test Game"
+    );
+    await user.type(
+      screen.getByPlaceholderText("Enter game description"),
+      "Test Desc"
+    );
     await user.click(screen.getByRole("button", { name: "Create" }));
 
     await waitFor(() => {
@@ -119,14 +144,22 @@ describe("GameModal", () => {
     const user = userEvent.setup();
     const onSubmit = vi.fn();
     const onClose = vi.fn();
-    render(<GameModal {...defaultProps} onSubmit={onSubmit} onClose={onClose} />);
+    render(
+      <GameModal {...defaultProps} onSubmit={onSubmit} onClose={onClose} />
+    );
 
     const numberInput = screen.getByPlaceholderText("Enter number of players");
     // Use fireEvent.change for NumberInput as it handles value changes more reliably
     fireEvent.change(numberInput, { target: { value: "5" } });
 
-    await user.type(screen.getByPlaceholderText("Enter game name"), "Test Game");
-    await user.type(screen.getByPlaceholderText("Enter game description"), "Test Desc");
+    await user.type(
+      screen.getByPlaceholderText("Enter game name"),
+      "Test Game"
+    );
+    await user.type(
+      screen.getByPlaceholderText("Enter game description"),
+      "Test Desc"
+    );
     await user.click(screen.getByRole("button", { name: "Create" }));
 
     await waitFor(() => {

@@ -54,7 +54,7 @@ const renderWithProviders = (ui: React.ReactElement) => {
       <BrowserRouter>
         <AuthProvider>{ui}</AuthProvider>
       </BrowserRouter>
-    </ChakraProvider>,
+    </ChakraProvider>
   );
 };
 
@@ -188,7 +188,7 @@ describe("AuthContext", () => {
             <BrowserRouter>
               <TestComponent />
             </BrowserRouter>
-          </ChakraProvider>,
+          </ChakraProvider>
         );
       }).toThrow("useAuth must be used within an AuthProvider");
 

@@ -78,9 +78,11 @@ describe("NewsModal", () => {
     };
     render(<NewsModal {...defaultProps} news={news} />);
 
-    expect(screen.getByPlaceholderText("Enter post title")).toHaveValue("Test News");
+    expect(screen.getByPlaceholderText("Enter post title")).toHaveValue(
+      "Test News"
+    );
     expect(screen.getByPlaceholderText("Enter post description")).toHaveValue(
-      "Test description",
+      "Test description"
     );
   });
 
@@ -106,10 +108,18 @@ describe("NewsModal", () => {
     const user = userEvent.setup();
     const onSubmit = vi.fn();
     const onClose = vi.fn();
-    render(<NewsModal {...defaultProps} onSubmit={onSubmit} onClose={onClose} />);
+    render(
+      <NewsModal {...defaultProps} onSubmit={onSubmit} onClose={onClose} />
+    );
 
-    await user.type(screen.getByPlaceholderText("Enter post title"), "Test Title");
-    await user.type(screen.getByPlaceholderText("Enter post description"), "Test Content");
+    await user.type(
+      screen.getByPlaceholderText("Enter post title"),
+      "Test Title"
+    );
+    await user.type(
+      screen.getByPlaceholderText("Enter post description"),
+      "Test Content"
+    );
     await user.click(screen.getByRole("button", { name: "Create" }));
 
     await waitFor(() => {
@@ -131,6 +141,8 @@ describe("NewsModal", () => {
     rerender(<NewsModal {...defaultProps} isOpen={true} />);
 
     expect(screen.getByPlaceholderText("Enter post title")).toHaveValue("");
-    expect(screen.getByPlaceholderText("Enter post description")).toHaveValue("");
+    expect(screen.getByPlaceholderText("Enter post description")).toHaveValue(
+      ""
+    );
   });
 });

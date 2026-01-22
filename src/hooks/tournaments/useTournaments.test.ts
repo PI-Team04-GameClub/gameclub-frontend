@@ -200,9 +200,11 @@ describe("useTournaments", () => {
   });
 
   it("handles error when loading tournaments", async () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
     vi.mocked(tournamentService.getAll).mockRejectedValueOnce(
-      new Error("Network error"),
+      new Error("Network error")
     );
 
     const { result } = renderHook(() => useTournaments());
@@ -210,7 +212,7 @@ describe("useTournaments", () => {
     await waitFor(() => {
       expect(consoleError).toHaveBeenCalledWith(
         "Error loading tournaments:",
-        expect.any(Error),
+        expect.any(Error)
       );
     });
 
@@ -219,9 +221,11 @@ describe("useTournaments", () => {
   });
 
   it("handles error when saving tournament", async () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
     vi.mocked(tournamentService.create).mockRejectedValueOnce(
-      new Error("Save error"),
+      new Error("Save error")
     );
 
     const { result } = renderHook(() => useTournaments());
@@ -242,15 +246,17 @@ describe("useTournaments", () => {
 
     expect(consoleError).toHaveBeenCalledWith(
       "Error saving tournament:",
-      expect.any(Error),
+      expect.any(Error)
     );
     consoleError.mockRestore();
   });
 
   it("handles error when deleting tournament", async () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
     vi.mocked(tournamentService.delete).mockRejectedValueOnce(
-      new Error("Delete error"),
+      new Error("Delete error")
     );
 
     const { result } = renderHook(() => useTournaments());
@@ -269,7 +275,7 @@ describe("useTournaments", () => {
 
     expect(consoleError).toHaveBeenCalledWith(
       "Error deleting tournament:",
-      expect.any(Error),
+      expect.any(Error)
     );
     consoleError.mockRestore();
   });

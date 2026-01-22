@@ -110,7 +110,7 @@ describe("TournamentModal", () => {
 
     await waitFor(() => {
       expect(screen.getByPlaceholderText("Enter tournament name")).toHaveValue(
-        "Championship",
+        "Championship"
       );
     });
   });
@@ -138,15 +138,19 @@ describe("TournamentModal", () => {
   });
 
   it("handles error when loading games fails", async () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
-    vi.mocked(gameService.getAll).mockRejectedValueOnce(new Error("Network error"));
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    vi.mocked(gameService.getAll).mockRejectedValueOnce(
+      new Error("Network error")
+    );
 
     render(<TournamentModal {...defaultProps} />);
 
     await waitFor(() => {
       expect(consoleError).toHaveBeenCalledWith(
         "Error loading games:",
-        expect.any(Error),
+        expect.any(Error)
       );
     });
 
@@ -159,7 +163,10 @@ describe("TournamentModal", () => {
 
     render(<TournamentModal {...defaultProps} />);
 
-    await user.type(screen.getByPlaceholderText("Enter tournament name"), "Test");
+    await user.type(
+      screen.getByPlaceholderText("Enter tournament name"),
+      "Test"
+    );
     await user.click(screen.getByRole("button", { name: "Create" }));
 
     expect(alertMock).toHaveBeenCalledWith("Please select a game");
@@ -193,7 +200,10 @@ describe("TournamentModal", () => {
       expect(screen.getByRole("combobox")).toBeInTheDocument();
     });
 
-    await user.type(screen.getByPlaceholderText("Enter tournament name"), "Test");
+    await user.type(
+      screen.getByPlaceholderText("Enter tournament name"),
+      "Test"
+    );
     await user.selectOptions(screen.getByRole("combobox"), "1");
     await user.click(screen.getByRole("button", { name: "Create" }));
 
@@ -211,7 +221,10 @@ describe("TournamentModal", () => {
       expect(screen.getByRole("combobox")).toBeInTheDocument();
     });
 
-    await user.type(screen.getByPlaceholderText("Enter tournament name"), "Test");
+    await user.type(
+      screen.getByPlaceholderText("Enter tournament name"),
+      "Test"
+    );
     await user.selectOptions(screen.getByRole("combobox"), "1");
 
     const dateInput = screen.getByDisplayValue("");
@@ -228,13 +241,22 @@ describe("TournamentModal", () => {
     const onSubmit = vi.fn();
     const onClose = vi.fn();
 
-    render(<TournamentModal {...defaultProps} onSubmit={onSubmit} onClose={onClose} />);
+    render(
+      <TournamentModal
+        {...defaultProps}
+        onSubmit={onSubmit}
+        onClose={onClose}
+      />
+    );
 
     await waitFor(() => {
       expect(screen.getByRole("combobox")).toBeInTheDocument();
     });
 
-    await user.type(screen.getByPlaceholderText("Enter tournament name"), "New Tournament");
+    await user.type(
+      screen.getByPlaceholderText("Enter tournament name"),
+      "New Tournament"
+    );
     await user.selectOptions(screen.getByRole("combobox"), "1");
 
     const prizePoolInput = screen.getByPlaceholderText("e.g., 1000");
@@ -242,7 +264,9 @@ describe("TournamentModal", () => {
     await user.type(prizePoolInput, "500");
 
     // Find date input by type attribute
-    const dateInput = document.querySelector('input[type="date"]') as HTMLInputElement;
+    const dateInput = document.querySelector(
+      'input[type="date"]'
+    ) as HTMLInputElement;
     await user.type(dateInput, "2024-06-15");
 
     await user.click(screen.getByRole("button", { name: "Create" }));
@@ -253,7 +277,7 @@ describe("TournamentModal", () => {
           name: "New Tournament",
           gameId: 1,
           prizePool: 500,
-        }),
+        })
       );
     });
     expect(onClose).toHaveBeenCalled();
@@ -275,7 +299,9 @@ describe("TournamentModal", () => {
     render(<TournamentModal {...defaultProps} />);
 
     // Find date input by type attribute
-    const dateInput = document.querySelector('input[type="date"]') as HTMLInputElement;
+    const dateInput = document.querySelector(
+      'input[type="date"]'
+    ) as HTMLInputElement;
     await user.type(dateInput, "2024-12-25");
 
     expect(dateInput).toHaveValue("2024-12-25");

@@ -174,15 +174,19 @@ describe("useGames", () => {
   });
 
   it("handles error when loading games", async () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
-    vi.mocked(gameService.getAll).mockRejectedValueOnce(new Error("Network error"));
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    vi.mocked(gameService.getAll).mockRejectedValueOnce(
+      new Error("Network error")
+    );
 
     const { result } = renderHook(() => useGames());
 
     await waitFor(() => {
       expect(consoleError).toHaveBeenCalledWith(
         "Error loading games:",
-        expect.any(Error),
+        expect.any(Error)
       );
     });
 
@@ -191,8 +195,12 @@ describe("useGames", () => {
   });
 
   it("handles error when saving game", async () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
-    vi.mocked(gameService.create).mockRejectedValueOnce(new Error("Save error"));
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    vi.mocked(gameService.create).mockRejectedValueOnce(
+      new Error("Save error")
+    );
 
     const { result } = renderHook(() => useGames());
 
@@ -210,14 +218,18 @@ describe("useGames", () => {
 
     expect(consoleError).toHaveBeenCalledWith(
       "Error saving game:",
-      expect.any(Error),
+      expect.any(Error)
     );
     consoleError.mockRestore();
   });
 
   it("handles error when deleting game", async () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
-    vi.mocked(gameService.delete).mockRejectedValueOnce(new Error("Delete error"));
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    vi.mocked(gameService.delete).mockRejectedValueOnce(
+      new Error("Delete error")
+    );
 
     const { result } = renderHook(() => useGames());
 
@@ -235,7 +247,7 @@ describe("useGames", () => {
 
     expect(consoleError).toHaveBeenCalledWith(
       "Error deleting game:",
-      expect.any(Error),
+      expect.any(Error)
     );
     consoleError.mockRestore();
   });

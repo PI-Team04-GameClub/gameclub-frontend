@@ -55,7 +55,7 @@ describe("SubmitButton", () => {
 
   it("passes additional props to button", () => {
     renderWithChakra(
-      <SubmitButton data-testid="custom-btn">Submit</SubmitButton>,
+      <SubmitButton data-testid="custom-btn">Submit</SubmitButton>
     );
     expect(screen.getByTestId("custom-btn")).toBeInTheDocument();
   });

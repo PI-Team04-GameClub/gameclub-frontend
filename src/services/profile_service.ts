@@ -28,7 +28,7 @@ axiosInstance.interceptors.response.use(
       console.error("Response status:", error.response.status);
     }
     return Promise.reject(error);
-  },
+  }
 );
 
 export const profileService = {
@@ -53,7 +53,9 @@ export const profileService = {
     return response.data;
   },
 
-  sendFriendRequest: async (data: FriendRequestFormData): Promise<FriendRequest> => {
+  sendFriendRequest: async (
+    data: FriendRequestFormData
+  ): Promise<FriendRequest> => {
     const response = await axiosInstance.post("/profile/requests", data);
     return response.data;
   },

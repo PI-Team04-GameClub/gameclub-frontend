@@ -40,7 +40,9 @@ describe("TeamsPage", () => {
 
   it("renders create team button", () => {
     render(<TeamsPage />);
-    expect(screen.getByRole("button", { name: /create team/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /create team/i })
+    ).toBeInTheDocument();
   });
 
   it("renders teams table", () => {
@@ -61,7 +63,10 @@ describe("TeamsPage", () => {
   });
 
   it("renders modal when isModalOpen is true", () => {
-    vi.mocked(useTeams).mockReturnValue({ ...mockHookReturn, isModalOpen: true });
+    vi.mocked(useTeams).mockReturnValue({
+      ...mockHookReturn,
+      isModalOpen: true,
+    });
 
     render(<TeamsPage />);
     const dialog = screen.getByRole("dialog");
@@ -78,8 +83,8 @@ describe("TeamsPage", () => {
     expect(screen.getByText("Delete Team")).toBeInTheDocument();
     expect(
       screen.getByText(
-        "Are you sure you want to delete this team? This action cannot be undone.",
-      ),
+        "Are you sure you want to delete this team? This action cannot be undone."
+      )
     ).toBeInTheDocument();
   });
 
@@ -110,7 +115,10 @@ describe("TeamsPage", () => {
   it("calls handleDeleteClick when delete button clicked", async () => {
     const user = userEvent.setup();
     const handleDeleteClick = vi.fn();
-    vi.mocked(useTeams).mockReturnValue({ ...mockHookReturn, handleDeleteClick });
+    vi.mocked(useTeams).mockReturnValue({
+      ...mockHookReturn,
+      handleDeleteClick,
+    });
 
     render(<TeamsPage />);
     const deleteButtons = screen.getAllByRole("button", { name: /delete/i });

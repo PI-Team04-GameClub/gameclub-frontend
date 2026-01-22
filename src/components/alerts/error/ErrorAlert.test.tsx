@@ -17,7 +17,7 @@ describe("ErrorAlert", () => {
         onClose={() => {}}
         message="Something went wrong"
         cancelRef={cancelRef}
-      />,
+      />
     );
 
     expect(screen.getByText("Something went wrong")).toBeInTheDocument();
@@ -31,7 +31,7 @@ describe("ErrorAlert", () => {
         onClose={() => {}}
         message="Error message"
         cancelRef={cancelRef}
-      />,
+      />
     );
 
     expect(screen.getByText("Error")).toBeInTheDocument();
@@ -46,7 +46,7 @@ describe("ErrorAlert", () => {
         message="Error message"
         title="Custom Error"
         cancelRef={cancelRef}
-      />,
+      />
     );
 
     expect(screen.getByText("Custom Error")).toBeInTheDocument();
@@ -60,7 +60,7 @@ describe("ErrorAlert", () => {
         onClose={() => {}}
         message="Error message"
         cancelRef={cancelRef}
-      />,
+      />
     );
 
     expect(screen.getByText("OK")).toBeInTheDocument();
@@ -75,7 +75,7 @@ describe("ErrorAlert", () => {
         message="Error message"
         buttonText="Close"
         cancelRef={cancelRef}
-      />,
+      />
     );
 
     expect(screen.getByText("Close")).toBeInTheDocument();
@@ -90,7 +90,7 @@ describe("ErrorAlert", () => {
         onClose={onClose}
         message="Error message"
         cancelRef={cancelRef}
-      />,
+      />
     );
 
     fireEvent.click(screen.getByText("OK"));

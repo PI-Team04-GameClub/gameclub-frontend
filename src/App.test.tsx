@@ -70,12 +70,16 @@ describe("App", () => {
 
   it("renders GameClub heading on login page", () => {
     render(<App />);
-    expect(screen.getByRole("heading", { name: "GameClub" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "GameClub" })
+    ).toBeInTheDocument();
   });
 
   it("renders create account link on login page", () => {
     render(<App />);
-    expect(screen.getByRole("link", { name: "Create account" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "Create account" })
+    ).toBeInTheDocument();
   });
 
   it("redirects to login when accessing protected route unauthenticated", async () => {
@@ -172,7 +176,9 @@ describe("App", () => {
 
     // First, verify the login page renders with the register link
     await waitFor(() => {
-      expect(screen.getByRole("link", { name: "Create account" })).toBeInTheDocument();
+      expect(
+        screen.getByRole("link", { name: "Create account" })
+      ).toBeInTheDocument();
     });
   });
 

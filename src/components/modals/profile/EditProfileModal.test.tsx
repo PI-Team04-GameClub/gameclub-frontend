@@ -54,7 +54,9 @@ describe("EditProfileModal", () => {
 
     expect(screen.getByPlaceholderText("Enter first name")).toHaveValue("John");
     expect(screen.getByPlaceholderText("Enter last name")).toHaveValue("Doe");
-    expect(screen.getByPlaceholderText("Enter email")).toHaveValue("john@example.com");
+    expect(screen.getByPlaceholderText("Enter email")).toHaveValue(
+      "john@example.com"
+    );
   });
 
   it("renders cancel button", () => {
@@ -64,7 +66,9 @@ describe("EditProfileModal", () => {
 
   it("renders save changes button", () => {
     render(<EditProfileModal {...defaultProps} />);
-    expect(screen.getByRole("button", { name: "Save Changes" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Save Changes" })
+    ).toBeInTheDocument();
   });
 
   it("calls onClose when cancel button clicked", async () => {

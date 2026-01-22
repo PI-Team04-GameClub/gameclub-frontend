@@ -60,7 +60,9 @@ describe("ProfilePage", () => {
 
   it("renders edit profile button", () => {
     render(<ProfilePage />);
-    expect(screen.getByRole("button", { name: "Edit Profile" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Edit Profile" })
+    ).toBeInTheDocument();
   });
 
   it("renders total wins stat", () => {
@@ -72,13 +74,20 @@ describe("ProfilePage", () => {
   it("renders tabs", () => {
     render(<ProfilePage />);
     expect(screen.getByRole("tab", { name: "Friends" })).toBeInTheDocument();
-    expect(screen.getByRole("tab", { name: "Sent Requests" })).toBeInTheDocument();
-    expect(screen.getByRole("tab", { name: "Received Requests" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("tab", { name: "Sent Requests" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("tab", { name: "Received Requests" })
+    ).toBeInTheDocument();
   });
 
   it("friends tab is selected by default", () => {
     render(<ProfilePage />);
-    expect(screen.getByRole("tab", { name: "Friends" })).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByRole("tab", { name: "Friends" })).toHaveAttribute(
+      "aria-selected",
+      "true"
+    );
   });
 
   it("switches to sent requests tab when clicked", async () => {
@@ -89,7 +98,7 @@ describe("ProfilePage", () => {
 
     expect(screen.getByRole("tab", { name: "Sent Requests" })).toHaveAttribute(
       "aria-selected",
-      "true",
+      "true"
     );
   });
 
@@ -99,10 +108,9 @@ describe("ProfilePage", () => {
 
     await user.click(screen.getByRole("tab", { name: "Received Requests" }));
 
-    expect(screen.getByRole("tab", { name: "Received Requests" })).toHaveAttribute(
-      "aria-selected",
-      "true",
-    );
+    expect(
+      screen.getByRole("tab", { name: "Received Requests" })
+    ).toHaveAttribute("aria-selected", "true");
   });
 
   it("opens edit profile modal when edit button clicked", async () => {

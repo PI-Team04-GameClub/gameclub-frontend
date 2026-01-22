@@ -16,7 +16,7 @@ describe("PageHeader", () => {
   it("renders action button when actionLabel and onAction provided", () => {
     const onAction = () => {};
     renderWithChakra(
-      <PageHeader title="Title" actionLabel="Create" onAction={onAction} />,
+      <PageHeader title="Title" actionLabel="Create" onAction={onAction} />
     );
 
     expect(screen.getByText("Create")).toBeInTheDocument();
@@ -36,7 +36,7 @@ describe("PageHeader", () => {
     };
 
     renderWithChakra(
-      <PageHeader title="Title" actionLabel="Click" onAction={onAction} />,
+      <PageHeader title="Title" actionLabel="Click" onAction={onAction} />
     );
 
     fireEvent.click(screen.getByText("Click"));

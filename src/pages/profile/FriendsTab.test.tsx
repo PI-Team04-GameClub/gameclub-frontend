@@ -60,7 +60,9 @@ describe("FriendsTab", () => {
   it("renders remove friend buttons", () => {
     render(<FriendsTab />);
 
-    const removeButtons = screen.getAllByRole("button", { name: "Remove Friend" });
+    const removeButtons = screen.getAllByRole("button", {
+      name: "Remove Friend",
+    });
     expect(removeButtons).toHaveLength(2);
   });
 
@@ -74,7 +76,9 @@ describe("FriendsTab", () => {
 
     render(<FriendsTab />);
 
-    const removeButtons = screen.getAllByRole("button", { name: "Remove Friend" });
+    const removeButtons = screen.getAllByRole("button", {
+      name: "Remove Friend",
+    });
     await user.click(removeButtons[0]);
 
     expect(handleRemoveClick).toHaveBeenCalledWith(1);
@@ -88,7 +92,9 @@ describe("FriendsTab", () => {
 
     render(<FriendsTab />);
 
-    expect(screen.getByText("You don't have any friends yet.")).toBeInTheDocument();
+    expect(
+      screen.getByText("You don't have any friends yet.")
+    ).toBeInTheDocument();
   });
 
   it("renders delete confirmation dialog when open", () => {
@@ -100,7 +106,9 @@ describe("FriendsTab", () => {
     render(<FriendsTab />);
 
     expect(
-      screen.getByText("Are you sure you want to remove this friend? This action cannot be undone."),
+      screen.getByText(
+        "Are you sure you want to remove this friend? This action cannot be undone."
+      )
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Delete" })).toBeInTheDocument();
   });

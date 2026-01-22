@@ -59,7 +59,9 @@ describe("TeamModal", () => {
     const team = { id: 1, name: "Team Alpha" };
     render(<TeamModal {...defaultProps} team={team} />);
 
-    expect(screen.getByPlaceholderText("Enter team name")).toHaveValue("Team Alpha");
+    expect(screen.getByPlaceholderText("Enter team name")).toHaveValue(
+      "Team Alpha"
+    );
   });
 
   it("allows typing in name field", async () => {
@@ -75,9 +77,14 @@ describe("TeamModal", () => {
     const user = userEvent.setup();
     const onSubmit = vi.fn();
     const onClose = vi.fn();
-    render(<TeamModal {...defaultProps} onSubmit={onSubmit} onClose={onClose} />);
+    render(
+      <TeamModal {...defaultProps} onSubmit={onSubmit} onClose={onClose} />
+    );
 
-    await user.type(screen.getByPlaceholderText("Enter team name"), "Test Team");
+    await user.type(
+      screen.getByPlaceholderText("Enter team name"),
+      "Test Team"
+    );
     await user.click(screen.getByRole("button", { name: "Create" }));
 
     await waitFor(() => {

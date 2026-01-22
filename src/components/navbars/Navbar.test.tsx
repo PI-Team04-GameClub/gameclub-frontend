@@ -22,7 +22,7 @@ const renderNavbar = () => {
       <BrowserRouter>
         <Navbar />
       </BrowserRouter>
-    </ChakraProvider>,
+    </ChakraProvider>
   );
 };
 
@@ -35,7 +35,12 @@ describe("Navbar", () => {
 
   it("renders the brand name", () => {
     vi.spyOn(contextModule, "useAuth").mockReturnValue({
-      user: { id: 1, email: "test@test.com", first_name: "John", last_name: "Doe" },
+      user: {
+        id: 1,
+        email: "test@test.com",
+        first_name: "John",
+        last_name: "Doe",
+      },
       logout: mockLogout,
       isAuthenticated: true,
       login: vi.fn(),
@@ -48,7 +53,12 @@ describe("Navbar", () => {
 
   it("renders navigation links", () => {
     vi.spyOn(contextModule, "useAuth").mockReturnValue({
-      user: { id: 1, email: "test@test.com", first_name: "John", last_name: "Doe" },
+      user: {
+        id: 1,
+        email: "test@test.com",
+        first_name: "John",
+        last_name: "Doe",
+      },
       logout: mockLogout,
       isAuthenticated: true,
       login: vi.fn(),
@@ -64,7 +74,12 @@ describe("Navbar", () => {
 
   it("renders profile link when logged in", () => {
     vi.spyOn(contextModule, "useAuth").mockReturnValue({
-      user: { id: 1, email: "test@test.com", first_name: "John", last_name: "Doe" },
+      user: {
+        id: 1,
+        email: "test@test.com",
+        first_name: "John",
+        last_name: "Doe",
+      },
       logout: mockLogout,
       isAuthenticated: true,
       login: vi.fn(),
@@ -77,7 +92,12 @@ describe("Navbar", () => {
 
   it("renders logout button when logged in", () => {
     vi.spyOn(contextModule, "useAuth").mockReturnValue({
-      user: { id: 1, email: "test@test.com", first_name: "John", last_name: "Doe" },
+      user: {
+        id: 1,
+        email: "test@test.com",
+        first_name: "John",
+        last_name: "Doe",
+      },
       logout: mockLogout,
       isAuthenticated: true,
       login: vi.fn(),
@@ -99,13 +119,20 @@ describe("Navbar", () => {
 
     renderNavbar();
     expect(screen.queryByText("Profile")).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Logout" })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Logout" })
+    ).not.toBeInTheDocument();
   });
 
   it("calls logout and navigates to login when logout button is clicked", async () => {
     const user = userEvent.setup();
     vi.spyOn(contextModule, "useAuth").mockReturnValue({
-      user: { id: 1, email: "test@test.com", first_name: "John", last_name: "Doe" },
+      user: {
+        id: 1,
+        email: "test@test.com",
+        first_name: "John",
+        last_name: "Doe",
+      },
       logout: mockLogout,
       isAuthenticated: true,
       login: vi.fn(),
@@ -121,7 +148,12 @@ describe("Navbar", () => {
 
   it("renders navigation link to news", () => {
     vi.spyOn(contextModule, "useAuth").mockReturnValue({
-      user: { id: 1, email: "test@test.com", first_name: "John", last_name: "Doe" },
+      user: {
+        id: 1,
+        email: "test@test.com",
+        first_name: "John",
+        last_name: "Doe",
+      },
       logout: mockLogout,
       isAuthenticated: true,
       login: vi.fn(),
@@ -135,7 +167,12 @@ describe("Navbar", () => {
 
   it("renders navigation link to games", () => {
     vi.spyOn(contextModule, "useAuth").mockReturnValue({
-      user: { id: 1, email: "test@test.com", first_name: "John", last_name: "Doe" },
+      user: {
+        id: 1,
+        email: "test@test.com",
+        first_name: "John",
+        last_name: "Doe",
+      },
       logout: mockLogout,
       isAuthenticated: true,
       login: vi.fn(),
@@ -149,7 +186,12 @@ describe("Navbar", () => {
 
   it("renders navigation link to teams", () => {
     vi.spyOn(contextModule, "useAuth").mockReturnValue({
-      user: { id: 1, email: "test@test.com", first_name: "John", last_name: "Doe" },
+      user: {
+        id: 1,
+        email: "test@test.com",
+        first_name: "John",
+        last_name: "Doe",
+      },
       logout: mockLogout,
       isAuthenticated: true,
       login: vi.fn(),
@@ -163,7 +205,12 @@ describe("Navbar", () => {
 
   it("renders navigation link to tournaments", () => {
     vi.spyOn(contextModule, "useAuth").mockReturnValue({
-      user: { id: 1, email: "test@test.com", first_name: "John", last_name: "Doe" },
+      user: {
+        id: 1,
+        email: "test@test.com",
+        first_name: "John",
+        last_name: "Doe",
+      },
       logout: mockLogout,
       isAuthenticated: true,
       login: vi.fn(),
