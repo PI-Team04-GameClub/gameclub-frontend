@@ -1,0 +1,26 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "gameclub",
+    "chakra",
+    "framer",
+    "vitejs",
+    "vitest",
+    "jsdom",
+    "tsconfig",
+    "vite"
+  ],
+  "ignorePaths": [
+    "node_modules",
+    "dist",
+    "coverage",
+    "package-lock.json",
+    "*.min.js",
+    "*.min.css"
+  ],
+  "ignoreRegExpList": [
+    "/#[0-9a-fA-F]{6}/",
+    "/[a-z0-9]{7,40}/"
+  ]
+}
