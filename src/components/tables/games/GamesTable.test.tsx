@@ -5,7 +5,12 @@ import GamesTable from "./GamesTable";
 
 describe("GamesTable", () => {
   const mockGames = [
-    { id: 1, name: "Chess", description: "Strategy board game", numberOfPlayers: 2 },
+    {
+      id: 1,
+      name: "Chess",
+      description: "Strategy board game",
+      numberOfPlayers: 2,
+    },
     { id: 2, name: "Poker", description: "Card game", numberOfPlayers: 6 },
   ];
 

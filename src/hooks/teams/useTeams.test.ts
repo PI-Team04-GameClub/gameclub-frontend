@@ -162,15 +162,19 @@ describe("useTeams", () => {
   });
 
   it("handles error when loading teams", async () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
-    vi.mocked(teamService.getAll).mockRejectedValueOnce(new Error("Network error"));
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    vi.mocked(teamService.getAll).mockRejectedValueOnce(
+      new Error("Network error")
+    );
 
     const { result } = renderHook(() => useTeams());
 
     await waitFor(() => {
       expect(consoleError).toHaveBeenCalledWith(
         "Error loading teams:",
-        expect.any(Error),
+        expect.any(Error)
       );
     });
 
@@ -179,8 +183,12 @@ describe("useTeams", () => {
   });
 
   it("handles error when saving team", async () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
-    vi.mocked(teamService.create).mockRejectedValueOnce(new Error("Save error"));
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    vi.mocked(teamService.create).mockRejectedValueOnce(
+      new Error("Save error")
+    );
 
     const { result } = renderHook(() => useTeams());
 
@@ -194,14 +202,18 @@ describe("useTeams", () => {
 
     expect(consoleError).toHaveBeenCalledWith(
       "Error saving team:",
-      expect.any(Error),
+      expect.any(Error)
     );
     consoleError.mockRestore();
   });
 
   it("handles error when deleting team", async () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
-    vi.mocked(teamService.delete).mockRejectedValueOnce(new Error("Delete error"));
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    vi.mocked(teamService.delete).mockRejectedValueOnce(
+      new Error("Delete error")
+    );
 
     const { result } = renderHook(() => useTeams());
 
@@ -219,7 +231,7 @@ describe("useTeams", () => {
 
     expect(consoleError).toHaveBeenCalledWith(
       "Error deleting team:",
-      expect.any(Error),
+      expect.any(Error)
     );
     consoleError.mockRestore();
   });

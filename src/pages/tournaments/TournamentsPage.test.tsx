@@ -65,7 +65,7 @@ describe("TournamentsPage", () => {
   it("renders create tournament button", () => {
     render(<TournamentsPage />);
     expect(
-      screen.getByRole("button", { name: /create tournament/i }),
+      screen.getByRole("button", { name: /create tournament/i })
     ).toBeInTheDocument();
   });
 
@@ -78,10 +78,15 @@ describe("TournamentsPage", () => {
   it("calls handleCreate when create button clicked", async () => {
     const user = userEvent.setup();
     const handleCreate = vi.fn();
-    vi.mocked(useTournaments).mockReturnValue({ ...mockHookReturn, handleCreate });
+    vi.mocked(useTournaments).mockReturnValue({
+      ...mockHookReturn,
+      handleCreate,
+    });
 
     render(<TournamentsPage />);
-    await user.click(screen.getByRole("button", { name: /create tournament/i }));
+    await user.click(
+      screen.getByRole("button", { name: /create tournament/i })
+    );
 
     expect(handleCreate).toHaveBeenCalled();
   });
@@ -107,8 +112,8 @@ describe("TournamentsPage", () => {
     expect(screen.getByText("Delete Tournament")).toBeInTheDocument();
     expect(
       screen.getByText(
-        "Are you sure you want to delete this tournament? This action cannot be undone.",
-      ),
+        "Are you sure you want to delete this tournament? This action cannot be undone."
+      )
     ).toBeInTheDocument();
   });
 
@@ -127,7 +132,10 @@ describe("TournamentsPage", () => {
   it("calls handleEdit when edit button clicked", async () => {
     const user = userEvent.setup();
     const handleEdit = vi.fn();
-    vi.mocked(useTournaments).mockReturnValue({ ...mockHookReturn, handleEdit });
+    vi.mocked(useTournaments).mockReturnValue({
+      ...mockHookReturn,
+      handleEdit,
+    });
 
     render(<TournamentsPage />);
     const editButtons = screen.getAllByRole("button", { name: /edit/i });

@@ -52,7 +52,9 @@ describe("NewsPage", () => {
 
   it("renders create post button", () => {
     render(<NewsPage />);
-    expect(screen.getByRole("button", { name: /create post/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /create post/i })
+    ).toBeInTheDocument();
   });
 
   it("renders news cards", () => {
@@ -73,7 +75,10 @@ describe("NewsPage", () => {
   });
 
   it("renders modal when isModalOpen is true", () => {
-    vi.mocked(useNews).mockReturnValue({ ...mockHookReturn, isModalOpen: true });
+    vi.mocked(useNews).mockReturnValue({
+      ...mockHookReturn,
+      isModalOpen: true,
+    });
 
     render(<NewsPage />);
     const dialog = screen.getByRole("dialog");
@@ -90,8 +95,8 @@ describe("NewsPage", () => {
     expect(screen.getByText("Delete News Post")).toBeInTheDocument();
     expect(
       screen.getByText(
-        "Are you sure you want to delete this news post? This action cannot be undone.",
-      ),
+        "Are you sure you want to delete this news post? This action cannot be undone."
+      )
     ).toBeInTheDocument();
   });
 
@@ -122,7 +127,10 @@ describe("NewsPage", () => {
   it("calls handleDeleteClick when delete button clicked", async () => {
     const user = userEvent.setup();
     const handleDeleteClick = vi.fn();
-    vi.mocked(useNews).mockReturnValue({ ...mockHookReturn, handleDeleteClick });
+    vi.mocked(useNews).mockReturnValue({
+      ...mockHookReturn,
+      handleDeleteClick,
+    });
 
     render(<NewsPage />);
     const deleteButtons = screen.getAllByRole("button", { name: /delete/i });

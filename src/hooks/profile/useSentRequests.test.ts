@@ -61,7 +61,9 @@ describe("useSentRequests", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(profileService.getSentRequests).mockResolvedValue(mockSentRequests);
+    vi.mocked(profileService.getSentRequests).mockResolvedValue(
+      mockSentRequests
+    );
   });
 
   it("loads sent requests on mount", async () => {
@@ -110,13 +112,20 @@ describe("useSentRequests", () => {
   });
 
   it("handles error when loading sent requests", async () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
-    vi.mocked(profileService.getSentRequests).mockRejectedValueOnce(new Error("Network error"));
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    vi.mocked(profileService.getSentRequests).mockRejectedValueOnce(
+      new Error("Network error")
+    );
 
     const { result } = renderHook(() => useSentRequests());
 
     await waitFor(() => {
-      expect(consoleError).toHaveBeenCalledWith("Error loading sent requests:", expect.any(Error));
+      expect(consoleError).toHaveBeenCalledWith(
+        "Error loading sent requests:",
+        expect.any(Error)
+      );
     });
 
     expect(result.current.sentRequests).toEqual([]);
@@ -124,8 +133,12 @@ describe("useSentRequests", () => {
   });
 
   it("handles error when canceling request", async () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
-    vi.mocked(profileService.cancelRequest).mockRejectedValueOnce(new Error("Cancel error"));
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    vi.mocked(profileService.cancelRequest).mockRejectedValueOnce(
+      new Error("Cancel error")
+    );
 
     const { result } = renderHook(() => useSentRequests());
 
@@ -141,7 +154,10 @@ describe("useSentRequests", () => {
       await result.current.handleCancel();
     });
 
-    expect(consoleError).toHaveBeenCalledWith("Error canceling request:", expect.any(Error));
+    expect(consoleError).toHaveBeenCalledWith(
+      "Error canceling request:",
+      expect.any(Error)
+    );
     consoleError.mockRestore();
   });
 

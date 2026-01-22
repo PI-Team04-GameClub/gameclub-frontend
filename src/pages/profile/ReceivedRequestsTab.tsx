@@ -64,7 +64,8 @@ const ReceivedRequestCard: React.FC<{
 };
 
 const ReceivedRequestsTab: React.FC = () => {
-  const { receivedRequests, handleAccept, handleReject } = useReceivedRequests();
+  const { receivedRequests, handleAccept, handleReject } =
+    useReceivedRequests();
 
   return (
     <Box>

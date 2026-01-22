@@ -43,7 +43,9 @@ describe("useReceivedRequests", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(profileService.getReceivedRequests).mockResolvedValue(mockReceivedRequests);
+    vi.mocked(profileService.getReceivedRequests).mockResolvedValue(
+      mockReceivedRequests
+    );
   });
 
   it("loads received requests on mount", async () => {
@@ -91,15 +93,19 @@ describe("useReceivedRequests", () => {
   });
 
   it("handles error when loading received requests", async () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
-    vi.mocked(profileService.getReceivedRequests).mockRejectedValueOnce(new Error("Network error"));
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    vi.mocked(profileService.getReceivedRequests).mockRejectedValueOnce(
+      new Error("Network error")
+    );
 
     const { result } = renderHook(() => useReceivedRequests());
 
     await waitFor(() => {
       expect(consoleError).toHaveBeenCalledWith(
         "Error loading received requests:",
-        expect.any(Error),
+        expect.any(Error)
       );
     });
 
@@ -108,8 +114,12 @@ describe("useReceivedRequests", () => {
   });
 
   it("handles error when accepting request", async () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
-    vi.mocked(profileService.acceptRequest).mockRejectedValueOnce(new Error("Accept error"));
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    vi.mocked(profileService.acceptRequest).mockRejectedValueOnce(
+      new Error("Accept error")
+    );
 
     const { result } = renderHook(() => useReceivedRequests());
 
@@ -121,13 +131,20 @@ describe("useReceivedRequests", () => {
       await result.current.handleAccept(1);
     });
 
-    expect(consoleError).toHaveBeenCalledWith("Error accepting request:", expect.any(Error));
+    expect(consoleError).toHaveBeenCalledWith(
+      "Error accepting request:",
+      expect.any(Error)
+    );
     consoleError.mockRestore();
   });
 
   it("handles error when rejecting request", async () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
-    vi.mocked(profileService.rejectRequest).mockRejectedValueOnce(new Error("Reject error"));
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    vi.mocked(profileService.rejectRequest).mockRejectedValueOnce(
+      new Error("Reject error")
+    );
 
     const { result } = renderHook(() => useReceivedRequests());
 
@@ -139,7 +156,10 @@ describe("useReceivedRequests", () => {
       await result.current.handleReject(1);
     });
 
-    expect(consoleError).toHaveBeenCalledWith("Error rejecting request:", expect.any(Error));
+    expect(consoleError).toHaveBeenCalledWith(
+      "Error rejecting request:",
+      expect.any(Error)
+    );
     consoleError.mockRestore();
   });
 });

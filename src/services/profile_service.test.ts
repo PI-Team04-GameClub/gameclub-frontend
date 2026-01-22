@@ -65,7 +65,9 @@ describe("profileService", () => {
     it("throws error when API fails", async () => {
       mockedAxios.get.mockRejectedValueOnce(new Error("Network error"));
 
-      await expect(profileService.getFriends()).rejects.toThrow("Network error");
+      await expect(profileService.getFriends()).rejects.toThrow(
+        "Network error"
+      );
     });
   });
 
@@ -81,7 +83,9 @@ describe("profileService", () => {
     it("throws error when API fails", async () => {
       mockedAxios.delete.mockRejectedValueOnce(new Error("Delete error"));
 
-      await expect(profileService.removeFriend(1)).rejects.toThrow("Delete error");
+      await expect(profileService.removeFriend(1)).rejects.toThrow(
+        "Delete error"
+      );
     });
   });
 
@@ -113,7 +117,9 @@ describe("profileService", () => {
     it("throws error when API fails", async () => {
       mockedAxios.get.mockRejectedValueOnce(new Error("Network error"));
 
-      await expect(profileService.getSentRequests()).rejects.toThrow("Network error");
+      await expect(profileService.getSentRequests()).rejects.toThrow(
+        "Network error"
+      );
     });
   });
 
@@ -145,7 +151,9 @@ describe("profileService", () => {
     it("throws error when API fails", async () => {
       mockedAxios.get.mockRejectedValueOnce(new Error("Network error"));
 
-      await expect(profileService.getReceivedRequests()).rejects.toThrow("Network error");
+      await expect(profileService.getReceivedRequests()).rejects.toThrow(
+        "Network error"
+      );
     });
   });
 
@@ -176,9 +184,9 @@ describe("profileService", () => {
     it("throws error when API fails", async () => {
       mockedAxios.post.mockRejectedValueOnce(new Error("Send error"));
 
-      await expect(profileService.sendFriendRequest({ receiverId: 2 })).rejects.toThrow(
-        "Send error",
-      );
+      await expect(
+        profileService.sendFriendRequest({ receiverId: 2 })
+      ).rejects.toThrow("Send error");
     });
   });
 
@@ -194,7 +202,9 @@ describe("profileService", () => {
     it("throws error when API fails", async () => {
       mockedAxios.post.mockRejectedValueOnce(new Error("Accept error"));
 
-      await expect(profileService.acceptRequest(1)).rejects.toThrow("Accept error");
+      await expect(profileService.acceptRequest(1)).rejects.toThrow(
+        "Accept error"
+      );
     });
   });
 
@@ -210,7 +220,9 @@ describe("profileService", () => {
     it("throws error when API fails", async () => {
       mockedAxios.post.mockRejectedValueOnce(new Error("Reject error"));
 
-      await expect(profileService.rejectRequest(1)).rejects.toThrow("Reject error");
+      await expect(profileService.rejectRequest(1)).rejects.toThrow(
+        "Reject error"
+      );
     });
   });
 
@@ -226,7 +238,9 @@ describe("profileService", () => {
     it("throws error when API fails", async () => {
       mockedAxios.delete.mockRejectedValueOnce(new Error("Cancel error"));
 
-      await expect(profileService.cancelRequest(1)).rejects.toThrow("Cancel error");
+      await expect(profileService.cancelRequest(1)).rejects.toThrow(
+        "Cancel error"
+      );
     });
   });
 });

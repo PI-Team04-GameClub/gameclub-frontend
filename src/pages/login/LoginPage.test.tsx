@@ -31,7 +31,7 @@ const renderLoginPage = () => {
       <BrowserRouter>
         <LoginPage />
       </BrowserRouter>
-    </ChakraProvider>,
+    </ChakraProvider>
   );
 };
 
@@ -73,7 +73,9 @@ describe("LoginPage", () => {
   it("renders create account link", () => {
     renderLoginPage();
     expect(screen.getByText("Don't have an account?")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Create account" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "Create account" })
+    ).toBeInTheDocument();
   });
 
   it("allows typing in email input", async () => {
@@ -105,7 +107,7 @@ describe("LoginPage", () => {
         title: "Error",
         description: "Please fill in all fields",
         status: "error",
-      }),
+      })
     );
   });
 
@@ -158,7 +160,7 @@ describe("LoginPage", () => {
         expect.objectContaining({
           title: "Login successful",
           status: "success",
-        }),
+        })
       );
     });
   });
@@ -191,7 +193,10 @@ describe("LoginPage", () => {
     renderLoginPage();
 
     await user.type(screen.getByPlaceholderText("Email"), "test@test.com");
-    await user.type(screen.getByPlaceholderText("Password"), "password123{enter}");
+    await user.type(
+      screen.getByPlaceholderText("Password"),
+      "password123{enter}"
+    );
 
     await waitFor(() => {
       expect(mockLogin).toHaveBeenCalled();

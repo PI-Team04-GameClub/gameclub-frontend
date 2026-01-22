@@ -31,7 +31,7 @@ export const useSentRequests = () => {
       setRequestToCancel(id);
       onCancelDialogOpen();
     },
-    [onCancelDialogOpen],
+    [onCancelDialogOpen]
   );
 
   const handleCancel = useCallback(async () => {

@@ -19,7 +19,7 @@ axiosInstance.interceptors.response.use(
       console.error("Response status:", error.response.status);
     }
     return Promise.reject(error);
-  },
+  }
 );
 
 export const authService = {

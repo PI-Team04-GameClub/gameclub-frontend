@@ -103,7 +103,9 @@ describe("SentRequestsTab", () => {
 
     render(<SentRequestsTab />);
 
-    expect(screen.getByText("You haven't sent any friend requests.")).toBeInTheDocument();
+    expect(
+      screen.getByText("You haven't sent any friend requests.")
+    ).toBeInTheDocument();
   });
 
   it("renders cancel confirmation dialog when open", () => {
@@ -116,7 +118,7 @@ describe("SentRequestsTab", () => {
 
     expect(screen.getByText("Cancel Friend Request")).toBeInTheDocument();
     expect(
-      screen.getByText("Are you sure you want to cancel this friend request?"),
+      screen.getByText("Are you sure you want to cancel this friend request?")
     ).toBeInTheDocument();
   });
 

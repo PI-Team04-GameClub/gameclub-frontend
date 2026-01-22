@@ -193,7 +193,9 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                 colorScheme="brand"
                 onClick={handleSubmit}
                 flex={1}
-                isDisabled={!formData.firstName || !formData.lastName || !formData.email}
+                isDisabled={
+                  !formData.firstName || !formData.lastName || !formData.email
+                }
               >
                 Save Changes
               </Button>

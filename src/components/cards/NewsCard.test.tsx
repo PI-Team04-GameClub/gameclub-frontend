@@ -19,7 +19,9 @@ describe("NewsCard", () => {
 
   it("renders news description", () => {
     render(<NewsCard news={mockNews} />);
-    expect(screen.getByText("Test news description content")).toBeInTheDocument();
+    expect(
+      screen.getByText("Test news description content")
+    ).toBeInTheDocument();
   });
 
   it("renders author name", () => {
@@ -46,8 +48,12 @@ describe("NewsCard", () => {
 
   it("does not render action buttons when no handlers provided", () => {
     render(<NewsCard news={mockNews} />);
-    expect(screen.queryByRole("button", { name: /edit/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /delete/i })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /edit/i })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /delete/i })
+    ).not.toBeInTheDocument();
   });
 
   it("calls onEdit with news when edit button is clicked", async () => {

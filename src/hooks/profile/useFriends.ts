@@ -31,7 +31,7 @@ export const useFriends = () => {
       setFriendToRemove(id);
       onDeleteDialogOpen();
     },
-    [onDeleteDialogOpen],
+    [onDeleteDialogOpen]
   );
 
   const handleRemove = useCallback(async () => {

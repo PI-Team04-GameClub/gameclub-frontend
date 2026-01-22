@@ -9,7 +9,7 @@ export const useTournaments = () => {
     Tournament | undefined
   >();
   const [tournamentToDelete, setTournamentToDelete] = useState<number | null>(
-    null,
+    null
   );
 
   const {
@@ -47,7 +47,7 @@ export const useTournaments = () => {
       setSelectedTournament(tournament);
       onModalOpen();
     },
-    [onModalOpen],
+    [onModalOpen]
   );
 
   const handleDeleteClick = useCallback(
@@ -55,7 +55,7 @@ export const useTournaments = () => {
       setTournamentToDelete(id);
       onDeleteDialogOpen();
     },
-    [onDeleteDialogOpen],
+    [onDeleteDialogOpen]
   );
 
   const handleSubmit = useCallback(
@@ -71,7 +71,7 @@ export const useTournaments = () => {
         console.error("Error saving tournament:", error);
       }
     },
-    [selectedTournament, loadTournaments],
+    [selectedTournament, loadTournaments]
   );
 
   const handleDelete = useCallback(async () => {

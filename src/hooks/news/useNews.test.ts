@@ -206,7 +206,9 @@ describe("useNews", () => {
   });
 
   it("does not submit when no user is logged in", async () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
     vi.mocked(authService.getUser).mockReturnValue(null);
 
     const { result } = renderHook(() => useNews());
@@ -228,15 +230,19 @@ describe("useNews", () => {
   });
 
   it("handles error when loading news", async () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
-    vi.mocked(newsService.getAll).mockRejectedValueOnce(new Error("Network error"));
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    vi.mocked(newsService.getAll).mockRejectedValueOnce(
+      new Error("Network error")
+    );
 
     const { result } = renderHook(() => useNews());
 
     await waitFor(() => {
       expect(consoleError).toHaveBeenCalledWith(
         "Error loading news:",
-        expect.any(Error),
+        expect.any(Error)
       );
     });
 
@@ -245,8 +251,12 @@ describe("useNews", () => {
   });
 
   it("handles error when saving news", async () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
-    vi.mocked(newsService.create).mockRejectedValueOnce(new Error("Save error"));
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    vi.mocked(newsService.create).mockRejectedValueOnce(
+      new Error("Save error")
+    );
 
     const { result } = renderHook(() => useNews());
 
@@ -263,14 +273,18 @@ describe("useNews", () => {
 
     expect(consoleError).toHaveBeenCalledWith(
       "Error saving news:",
-      expect.any(Error),
+      expect.any(Error)
     );
     consoleError.mockRestore();
   });
 
   it("handles error when deleting news", async () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
-    vi.mocked(newsService.delete).mockRejectedValueOnce(new Error("Delete error"));
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    vi.mocked(newsService.delete).mockRejectedValueOnce(
+      new Error("Delete error")
+    );
 
     const { result } = renderHook(() => useNews());
 
@@ -288,7 +302,7 @@ describe("useNews", () => {
 
     expect(consoleError).toHaveBeenCalledWith(
       "Error deleting news:",
-      expect.any(Error),
+      expect.any(Error)
     );
     consoleError.mockRestore();
   });

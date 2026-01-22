@@ -8,7 +8,7 @@ const renderWithProviders = (ui: React.ReactElement) => {
   return render(
     <ChakraProvider>
       <BrowserRouter>{ui}</BrowserRouter>
-    </ChakraProvider>,
+    </ChakraProvider>
   );
 };
 
@@ -29,7 +29,7 @@ describe("NavLink", () => {
       <>
         <NavLink to="/news">News</NavLink>
         <NavLink to="/teams">Teams</NavLink>
-      </>,
+      </>
     );
 
     expect(screen.getByText("News")).toBeInTheDocument();

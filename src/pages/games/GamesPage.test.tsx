@@ -40,7 +40,9 @@ describe("GamesPage", () => {
 
   it("renders create game button", () => {
     render(<GamesPage />);
-    expect(screen.getByRole("button", { name: /create game/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /create game/i })
+    ).toBeInTheDocument();
   });
 
   it("renders games table", () => {
@@ -61,7 +63,10 @@ describe("GamesPage", () => {
   });
 
   it("renders modal when isModalOpen is true", () => {
-    vi.mocked(useGames).mockReturnValue({ ...mockHookReturn, isModalOpen: true });
+    vi.mocked(useGames).mockReturnValue({
+      ...mockHookReturn,
+      isModalOpen: true,
+    });
 
     render(<GamesPage />);
     const dialog = screen.getByRole("dialog");
@@ -78,8 +83,8 @@ describe("GamesPage", () => {
     expect(screen.getByText("Delete Game")).toBeInTheDocument();
     expect(
       screen.getByText(
-        "Are you sure you want to delete this game? This action cannot be undone.",
-      ),
+        "Are you sure you want to delete this game? This action cannot be undone."
+      )
     ).toBeInTheDocument();
   });
 
@@ -110,7 +115,10 @@ describe("GamesPage", () => {
   it("calls handleDeleteClick when delete button clicked", async () => {
     const user = userEvent.setup();
     const handleDeleteClick = vi.fn();
-    vi.mocked(useGames).mockReturnValue({ ...mockHookReturn, handleDeleteClick });
+    vi.mocked(useGames).mockReturnValue({
+      ...mockHookReturn,
+      handleDeleteClick,
+    });
 
     render(<GamesPage />);
     const deleteButtons = screen.getAllByRole("button", { name: /delete/i });

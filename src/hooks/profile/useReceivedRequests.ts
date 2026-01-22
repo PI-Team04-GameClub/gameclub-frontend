@@ -27,7 +27,7 @@ export const useReceivedRequests = () => {
         console.error("Error accepting request:", error);
       }
     },
-    [loadReceivedRequests],
+    [loadReceivedRequests]
   );
 
   const handleReject = useCallback(
@@ -39,7 +39,7 @@ export const useReceivedRequests = () => {
         console.error("Error rejecting request:", error);
       }
     },
-    [loadReceivedRequests],
+    [loadReceivedRequests]
   );
 
   return {

@@ -62,7 +62,7 @@ describe("ActionButtons", () => {
   it("renders custom delete label", () => {
     const onDelete = vi.fn();
     renderWithChakra(
-      <ActionButtons onDelete={onDelete} deleteLabel="Remove" />,
+      <ActionButtons onDelete={onDelete} deleteLabel="Remove" />
     );
 
     expect(screen.getByText("Remove")).toBeInTheDocument();

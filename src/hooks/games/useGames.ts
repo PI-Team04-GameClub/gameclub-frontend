@@ -43,7 +43,7 @@ export const useGames = () => {
       setSelectedGame(game);
       onModalOpen();
     },
-    [onModalOpen],
+    [onModalOpen]
   );
 
   const handleDeleteClick = useCallback(
@@ -51,7 +51,7 @@ export const useGames = () => {
       setGameToDelete(id);
       onDeleteDialogOpen();
     },
-    [onDeleteDialogOpen],
+    [onDeleteDialogOpen]
   );
 
   const handleSubmit = useCallback(
@@ -67,7 +67,7 @@ export const useGames = () => {
         console.error("Error saving game:", error);
       }
     },
-    [selectedGame, loadGames],
+    [selectedGame, loadGames]
   );
 
   const handleDelete = useCallback(async () => {

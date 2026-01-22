@@ -18,11 +18,11 @@ describe("SuccessAlert", () => {
         title="Success!"
         message="Operation completed successfully"
         cancelRef={cancelRef}
-      />,
+      />
     );
 
     expect(
-      screen.getByText("Operation completed successfully"),
+      screen.getByText("Operation completed successfully")
     ).toBeInTheDocument();
   });
 
@@ -35,7 +35,7 @@ describe("SuccessAlert", () => {
         title="Great Success"
         message="Done"
         cancelRef={cancelRef}
-      />,
+      />
     );
 
     expect(screen.getByText("Great Success")).toBeInTheDocument();
@@ -50,7 +50,7 @@ describe("SuccessAlert", () => {
         title="Success"
         message="Done"
         cancelRef={cancelRef}
-      />,
+      />
     );
 
     expect(screen.getByText("OK")).toBeInTheDocument();
@@ -66,7 +66,7 @@ describe("SuccessAlert", () => {
         message="Done"
         buttonText="Continue"
         cancelRef={cancelRef}
-      />,
+      />
     );
 
     expect(screen.getByText("Continue")).toBeInTheDocument();
@@ -82,7 +82,7 @@ describe("SuccessAlert", () => {
         title="Success"
         message="Done"
         cancelRef={cancelRef}
-      />,
+      />
     );
 
     fireEvent.click(screen.getByText("OK"));
