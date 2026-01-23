@@ -57,51 +57,55 @@ describe("useFriends", () => {
   });
 
   it("loads friends on mount", async () => {
+    // Act
     const { result } = renderHook(() => useFriends());
 
+    // Assert
     await waitFor(() => {
       expect(result.current.friends).toEqual(mockFriends);
     });
-
     expect(profileService.getFriends).toHaveBeenCalled();
   });
 
   it("handles remove click", async () => {
+    // Arrange
     const { result } = renderHook(() => useFriends());
-
     await waitFor(() => {
       expect(result.current.friends).toEqual(mockFriends);
     });
 
+    // Act
     act(() => {
       result.current.handleRemoveClick(1);
     });
 
+    // Assert
     expect(result.current.isDeleteDialogOpen).toBeDefined();
   });
 
   it("handles remove action", async () => {
+    // Arrange
     vi.mocked(profileService.removeFriend).mockResolvedValue(undefined);
-
     const { result } = renderHook(() => useFriends());
-
     await waitFor(() => {
       expect(result.current.friends).toEqual(mockFriends);
     });
-
     act(() => {
       result.current.handleRemoveClick(1);
     });
 
+    // Act
     await act(async () => {
       await result.current.handleRemove();
     });
 
+    // Assert
     expect(profileService.removeFriend).toHaveBeenCalledWith(1);
     expect(profileService.getFriends).toHaveBeenCalledTimes(2);
   });
 
   it("handles error when loading friends", async () => {
+    // Arrange
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
@@ -109,41 +113,42 @@ describe("useFriends", () => {
       new Error("Network error")
     );
 
+    // Act
     const { result } = renderHook(() => useFriends());
 
+    // Assert
     await waitFor(() => {
       expect(consoleError).toHaveBeenCalledWith(
         "Error loading friends:",
         expect.any(Error)
       );
     });
-
     expect(result.current.friends).toEqual([]);
     consoleError.mockRestore();
   });
 
   it("handles error when removing friend", async () => {
+    // Arrange
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
     vi.mocked(profileService.removeFriend).mockRejectedValueOnce(
       new Error("Remove error")
     );
-
     const { result } = renderHook(() => useFriends());
-
     await waitFor(() => {
       expect(result.current.friends).toEqual(mockFriends);
     });
-
     act(() => {
       result.current.handleRemoveClick(1);
     });
 
+    // Act
     await act(async () => {
       await result.current.handleRemove();
     });
 
+    // Assert
     expect(consoleError).toHaveBeenCalledWith(
       "Error removing friend:",
       expect.any(Error)
@@ -152,16 +157,18 @@ describe("useFriends", () => {
   });
 
   it("does not remove when friendToRemove is null", async () => {
+    // Arrange
     const { result } = renderHook(() => useFriends());
-
     await waitFor(() => {
       expect(result.current.friends).toEqual(mockFriends);
     });
 
+    // Act
     await act(async () => {
       await result.current.handleRemove();
     });
 
+    // Assert
     expect(profileService.removeFriend).not.toHaveBeenCalled();
   });
 });

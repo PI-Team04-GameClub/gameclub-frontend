@@ -50,118 +50,139 @@ describe("ReceivedRequestsTab", () => {
   });
 
   it("renders received requests list", () => {
+    // Arrange & Act
     render(<ReceivedRequestsTab />);
 
+    // Assert
     expect(screen.getByText("John Doe")).toBeInTheDocument();
     expect(screen.getByText("Jane Smith")).toBeInTheDocument();
   });
 
   it("renders sender emails", () => {
+    // Arrange & Act
     render(<ReceivedRequestsTab />);
 
+    // Assert
     expect(screen.getByText("john@example.com")).toBeInTheDocument();
     expect(screen.getByText("jane@example.com")).toBeInTheDocument();
   });
 
   it("renders accept buttons", () => {
+    // Arrange & Act
     render(<ReceivedRequestsTab />);
 
+    // Assert
     const acceptButtons = screen.getAllByRole("button", { name: "Accept" });
     expect(acceptButtons).toHaveLength(2);
   });
 
   it("renders reject buttons", () => {
+    // Arrange & Act
     render(<ReceivedRequestsTab />);
 
+    // Assert
     const rejectButtons = screen.getAllByRole("button", { name: "Reject" });
     expect(rejectButtons).toHaveLength(2);
   });
 
   it("calls handleAccept when accept button clicked", async () => {
+    // Arrange
     const user = userEvent.setup();
     const handleAccept = vi.fn();
     vi.mocked(useReceivedRequests).mockReturnValue({
       ...mockUseReceivedRequests,
       handleAccept,
     });
-
     render(<ReceivedRequestsTab />);
 
+    // Act
     const acceptButtons = screen.getAllByRole("button", { name: "Accept" });
     await user.click(acceptButtons[0]);
 
+    // Assert
     expect(handleAccept).toHaveBeenCalledWith(1);
   });
 
   it("calls handleReject when reject button clicked", async () => {
+    // Arrange
     const user = userEvent.setup();
     const handleReject = vi.fn();
     vi.mocked(useReceivedRequests).mockReturnValue({
       ...mockUseReceivedRequests,
       handleReject,
     });
-
     render(<ReceivedRequestsTab />);
 
+    // Act
     const rejectButtons = screen.getAllByRole("button", { name: "Reject" });
     await user.click(rejectButtons[0]);
 
+    // Assert
     expect(handleReject).toHaveBeenCalledWith(1);
   });
 
   it("renders empty state when no received requests", () => {
+    // Arrange
     vi.mocked(useReceivedRequests).mockReturnValue({
       ...mockUseReceivedRequests,
       receivedRequests: [],
     });
 
+    // Act
     render(<ReceivedRequestsTab />);
 
+    // Assert
     expect(
       screen.getByText("You don't have any pending friend requests.")
     ).toBeInTheDocument();
   });
 
   it("renders sender avatars", () => {
+    // Arrange & Act
     render(<ReceivedRequestsTab />);
 
+    // Assert
     const avatars = screen.getAllByRole("img");
     expect(avatars.length).toBeGreaterThanOrEqual(2);
   });
 
   it("handles multiple accept clicks on different requests", async () => {
+    // Arrange
     const user = userEvent.setup();
     const handleAccept = vi.fn();
     vi.mocked(useReceivedRequests).mockReturnValue({
       ...mockUseReceivedRequests,
       handleAccept,
     });
-
     render(<ReceivedRequestsTab />);
 
+    // Act
     const acceptButtons = screen.getAllByRole("button", { name: "Accept" });
     await user.click(acceptButtons[0]);
     await user.click(acceptButtons[1]);
 
+    // Assert
     expect(handleAccept).toHaveBeenCalledTimes(2);
     expect(handleAccept).toHaveBeenNthCalledWith(1, 1);
     expect(handleAccept).toHaveBeenNthCalledWith(2, 2);
   });
 
   it("handles multiple reject clicks on different requests", async () => {
+    // Arrange
     const user = userEvent.setup();
     const handleReject = vi.fn();
     vi.mocked(useReceivedRequests).mockReturnValue({
       ...mockUseReceivedRequests,
       handleReject,
     });
-
     render(<ReceivedRequestsTab />);
 
+    // Act
     const rejectButtons = screen.getAllByRole("button", { name: "Reject" });
     await user.click(rejectButtons[0]);
     await user.click(rejectButtons[1]);
 
+    // Assert
     expect(handleReject).toHaveBeenCalledTimes(2);
     expect(handleReject).toHaveBeenNthCalledWith(1, 1);
     expect(handleReject).toHaveBeenNthCalledWith(2, 2);

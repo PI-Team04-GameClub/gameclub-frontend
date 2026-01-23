@@ -59,58 +59,66 @@ describe("useTournaments", () => {
   });
 
   it("loads tournaments on mount", async () => {
+    // Act
     const { result } = renderHook(() => useTournaments());
 
+    // Assert
     await waitFor(() => {
       expect(result.current.tournaments).toEqual(mockTournaments);
     });
-
     expect(tournamentService.getAll).toHaveBeenCalled();
   });
 
   it("handles create action", async () => {
+    // Arrange
     const { result } = renderHook(() => useTournaments());
-
     await waitFor(() => {
       expect(result.current.tournaments).toEqual(mockTournaments);
     });
 
+    // Act
     act(() => {
       result.current.handleCreate();
     });
 
+    // Assert
     expect(result.current.selectedTournament).toBeUndefined();
   });
 
   it("handles edit action", async () => {
+    // Arrange
     const { result } = renderHook(() => useTournaments());
-
     await waitFor(() => {
       expect(result.current.tournaments).toEqual(mockTournaments);
     });
 
+    // Act
     act(() => {
       result.current.handleEdit(mockTournaments[0]);
     });
 
+    // Assert
     expect(result.current.selectedTournament).toEqual(mockTournaments[0]);
   });
 
   it("handles delete click", async () => {
+    // Arrange
     const { result } = renderHook(() => useTournaments());
-
     await waitFor(() => {
       expect(result.current.tournaments).toEqual(mockTournaments);
     });
 
+    // Act
     act(() => {
       result.current.handleDeleteClick(1);
     });
 
+    // Assert
     expect(result.current.isDeleteDialogOpen).toBeDefined();
   });
 
   it("handles submit for creating new tournament", async () => {
+    // Arrange
     vi.mocked(tournamentService.create).mockResolvedValue({
       id: 3,
       name: "New Tournament",
@@ -120,13 +128,10 @@ describe("useTournaments", () => {
       status: "Upcoming" as const,
       players: 8,
     });
-
     const { result } = renderHook(() => useTournaments());
-
     await waitFor(() => {
       expect(result.current.tournaments).toEqual(mockTournaments);
     });
-
     const newTournamentData = {
       name: "New Tournament",
       gameId: 1,
@@ -135,15 +140,18 @@ describe("useTournaments", () => {
       players: 8,
     };
 
+    // Act
     await act(async () => {
       await result.current.handleSubmit(newTournamentData);
     });
 
+    // Assert
     expect(tournamentService.create).toHaveBeenCalledWith(newTournamentData);
     expect(tournamentService.getAll).toHaveBeenCalledTimes(2);
   });
 
   it("handles submit for updating existing tournament", async () => {
+    // Arrange
     vi.mocked(tournamentService.update).mockResolvedValue({
       id: 1,
       name: "Updated Tournament",
@@ -153,17 +161,13 @@ describe("useTournaments", () => {
       status: "Active" as const,
       players: 16,
     });
-
     const { result } = renderHook(() => useTournaments());
-
     await waitFor(() => {
       expect(result.current.tournaments).toEqual(mockTournaments);
     });
-
     act(() => {
       result.current.handleEdit(mockTournaments[0]);
     });
-
     const updateData = {
       name: "Updated Tournament",
       gameId: 1,
@@ -172,34 +176,37 @@ describe("useTournaments", () => {
       players: 16,
     };
 
+    // Act
     await act(async () => {
       await result.current.handleSubmit(updateData);
     });
 
+    // Assert
     expect(tournamentService.update).toHaveBeenCalledWith(1, updateData);
   });
 
   it("handles delete action", async () => {
+    // Arrange
     vi.mocked(tournamentService.delete).mockResolvedValue(undefined);
-
     const { result } = renderHook(() => useTournaments());
-
     await waitFor(() => {
       expect(result.current.tournaments).toEqual(mockTournaments);
     });
-
     act(() => {
       result.current.handleDeleteClick(1);
     });
 
+    // Act
     await act(async () => {
       await result.current.handleDelete();
     });
 
+    // Assert
     expect(tournamentService.delete).toHaveBeenCalledWith(1);
   });
 
   it("handles error when loading tournaments", async () => {
+    // Arrange
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
@@ -207,33 +214,34 @@ describe("useTournaments", () => {
       new Error("Network error")
     );
 
+    // Act
     const { result } = renderHook(() => useTournaments());
 
+    // Assert
     await waitFor(() => {
       expect(consoleError).toHaveBeenCalledWith(
         "Error loading tournaments:",
         expect.any(Error)
       );
     });
-
     expect(result.current.tournaments).toEqual([]);
     consoleError.mockRestore();
   });
 
   it("handles error when saving tournament", async () => {
+    // Arrange
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
     vi.mocked(tournamentService.create).mockRejectedValueOnce(
       new Error("Save error")
     );
-
     const { result } = renderHook(() => useTournaments());
-
     await waitFor(() => {
       expect(result.current.tournaments).toEqual(mockTournaments);
     });
 
+    // Act
     await act(async () => {
       await result.current.handleSubmit({
         name: "Test",
@@ -244,6 +252,7 @@ describe("useTournaments", () => {
       });
     });
 
+    // Assert
     expect(consoleError).toHaveBeenCalledWith(
       "Error saving tournament:",
       expect.any(Error)
@@ -252,27 +261,27 @@ describe("useTournaments", () => {
   });
 
   it("handles error when deleting tournament", async () => {
+    // Arrange
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
     vi.mocked(tournamentService.delete).mockRejectedValueOnce(
       new Error("Delete error")
     );
-
     const { result } = renderHook(() => useTournaments());
-
     await waitFor(() => {
       expect(result.current.tournaments).toEqual(mockTournaments);
     });
-
     act(() => {
       result.current.handleDeleteClick(1);
     });
 
+    // Act
     await act(async () => {
       await result.current.handleDelete();
     });
 
+    // Assert
     expect(consoleError).toHaveBeenCalledWith(
       "Error deleting tournament:",
       expect.any(Error)
@@ -281,16 +290,18 @@ describe("useTournaments", () => {
   });
 
   it("does not delete when tournamentToDelete is null", async () => {
+    // Arrange
     const { result } = renderHook(() => useTournaments());
-
     await waitFor(() => {
       expect(result.current.tournaments).toEqual(mockTournaments);
     });
 
+    // Act
     await act(async () => {
       await result.current.handleDelete();
     });
 
+    // Assert
     expect(tournamentService.delete).not.toHaveBeenCalled();
   });
 });

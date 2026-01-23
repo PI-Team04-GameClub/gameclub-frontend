@@ -10,7 +10,10 @@ const renderWithChakra = (ui: React.ReactElement) => {
 
 describe("ErrorAlert", () => {
   it("renders when isOpen is true", () => {
+    // Arrange
     const cancelRef = React.createRef<HTMLButtonElement>();
+
+    // Act
     renderWithChakra(
       <ErrorAlert
         isOpen={true}
@@ -20,11 +23,15 @@ describe("ErrorAlert", () => {
       />
     );
 
+    // Assert
     expect(screen.getByText("Something went wrong")).toBeInTheDocument();
   });
 
   it('renders default title "Error"', () => {
+    // Arrange
     const cancelRef = React.createRef<HTMLButtonElement>();
+
+    // Act
     renderWithChakra(
       <ErrorAlert
         isOpen={true}
@@ -34,11 +41,15 @@ describe("ErrorAlert", () => {
       />
     );
 
+    // Assert
     expect(screen.getByText("Error")).toBeInTheDocument();
   });
 
   it("renders custom title", () => {
+    // Arrange
     const cancelRef = React.createRef<HTMLButtonElement>();
+
+    // Act
     renderWithChakra(
       <ErrorAlert
         isOpen={true}
@@ -49,11 +60,15 @@ describe("ErrorAlert", () => {
       />
     );
 
+    // Assert
     expect(screen.getByText("Custom Error")).toBeInTheDocument();
   });
 
   it('renders default button text "OK"', () => {
+    // Arrange
     const cancelRef = React.createRef<HTMLButtonElement>();
+
+    // Act
     renderWithChakra(
       <ErrorAlert
         isOpen={true}
@@ -63,11 +78,15 @@ describe("ErrorAlert", () => {
       />
     );
 
+    // Assert
     expect(screen.getByText("OK")).toBeInTheDocument();
   });
 
   it("renders custom button text", () => {
+    // Arrange
     const cancelRef = React.createRef<HTMLButtonElement>();
+
+    // Act
     renderWithChakra(
       <ErrorAlert
         isOpen={true}
@@ -78,10 +97,12 @@ describe("ErrorAlert", () => {
       />
     );
 
+    // Assert
     expect(screen.getByText("Close")).toBeInTheDocument();
   });
 
   it("calls onClose when button is clicked", () => {
+    // Arrange
     const onClose = vi.fn();
     const cancelRef = React.createRef<HTMLButtonElement>();
     renderWithChakra(
@@ -93,7 +114,10 @@ describe("ErrorAlert", () => {
       />
     );
 
+    // Act
     fireEvent.click(screen.getByText("OK"));
+
+    // Assert
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 });

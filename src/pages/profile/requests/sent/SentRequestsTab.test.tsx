@@ -52,70 +52,86 @@ describe("SentRequestsTab", () => {
   });
 
   it("renders sent requests list", () => {
+    // Arrange & Act
     render(<SentRequestsTab />);
 
+    // Assert
     expect(screen.getByText("John Doe")).toBeInTheDocument();
     expect(screen.getByText("Jane Smith")).toBeInTheDocument();
   });
 
   it("renders receiver emails", () => {
+    // Arrange & Act
     render(<SentRequestsTab />);
 
+    // Assert
     expect(screen.getByText("john@example.com")).toBeInTheDocument();
     expect(screen.getByText("jane@example.com")).toBeInTheDocument();
   });
 
   it("renders pending badges", () => {
+    // Arrange & Act
     render(<SentRequestsTab />);
 
+    // Assert
     const pendingBadges = screen.getAllByText("Pending");
     expect(pendingBadges).toHaveLength(2);
   });
 
   it("renders cancel buttons", () => {
+    // Arrange & Act
     render(<SentRequestsTab />);
 
+    // Assert
     const cancelButtons = screen.getAllByRole("button", { name: "Cancel" });
     expect(cancelButtons).toHaveLength(2);
   });
 
   it("calls handleCancelClick when cancel button clicked", async () => {
+    // Arrange
     const user = userEvent.setup();
     const handleCancelClick = vi.fn();
     vi.mocked(useSentRequests).mockReturnValue({
       ...mockUseSentRequests,
       handleCancelClick,
     });
-
     render(<SentRequestsTab />);
 
+    // Act
     const cancelButtons = screen.getAllByRole("button", { name: "Cancel" });
     await user.click(cancelButtons[0]);
 
+    // Assert
     expect(handleCancelClick).toHaveBeenCalledWith(1);
   });
 
   it("renders empty state when no sent requests", () => {
+    // Arrange
     vi.mocked(useSentRequests).mockReturnValue({
       ...mockUseSentRequests,
       sentRequests: [],
     });
 
+    // Act
     render(<SentRequestsTab />);
 
+    // Assert
     expect(
       screen.getByText("You haven't sent any friend requests.")
     ).toBeInTheDocument();
   });
 
   it("renders cancel confirmation dialog when open", () => {
+    // Arrange
     vi.mocked(useSentRequests).mockReturnValue({
       ...mockUseSentRequests,
       isCancelDialogOpen: true,
     });
 
+    // Act
     render(<SentRequestsTab />);
 
+    // Assert
     expect(screen.getByText("Cancel Friend Request")).toBeInTheDocument();
     expect(
       screen.getByText("Are you sure you want to cancel this friend request?")
@@ -123,6 +139,7 @@ describe("SentRequestsTab", () => {
   });
 
   it("calls handleCancel when dialog confirm clicked", async () => {
+    // Arrange
     const user = userEvent.setup();
     const handleCancel = vi.fn();
     vi.mocked(useSentRequests).mockReturnValue({
@@ -130,17 +147,19 @@ describe("SentRequestsTab", () => {
       isCancelDialogOpen: true,
       handleCancel,
     });
-
     render(<SentRequestsTab />);
 
+    // Act
     await user.click(screen.getByRole("button", { name: "Delete" }));
 
+    // Assert
     await waitFor(() => {
       expect(handleCancel).toHaveBeenCalled();
     });
   });
 
   it("calls onCancelDialogClose when dialog cancel clicked", async () => {
+    // Arrange
     const user = userEvent.setup();
     const onCancelDialogClose = vi.fn();
     vi.mocked(useSentRequests).mockReturnValue({
@@ -148,20 +167,21 @@ describe("SentRequestsTab", () => {
       isCancelDialogOpen: true,
       onCancelDialogClose,
     });
-
     render(<SentRequestsTab />);
 
-    // The dialog has both "Cancel" buttons from the card and the dialog
-    // We need to click the one in the dialog which is the last one
+    // Act
     const cancelButtons = screen.getAllByRole("button", { name: "Cancel" });
     await user.click(cancelButtons[cancelButtons.length - 1]);
 
+    // Assert
     expect(onCancelDialogClose).toHaveBeenCalled();
   });
 
   it("renders receiver avatars", () => {
+    // Arrange & Act
     render(<SentRequestsTab />);
 
+    // Assert
     const avatars = screen.getAllByRole("img");
     expect(avatars.length).toBeGreaterThanOrEqual(2);
   });

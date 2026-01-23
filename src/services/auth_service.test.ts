@@ -65,6 +65,7 @@ describe("authService", () => {
 
   describe("login", () => {
     it("sends login request and returns auth response", async () => {
+      // Arrange
       const loginData = { email: "test@test.com", password: "password123" };
       const authResponse = {
         token: "jwt-token",
@@ -77,8 +78,10 @@ describe("authService", () => {
       };
       mockAxiosInstance.post.mockResolvedValueOnce({ data: authResponse });
 
+      // Act
       const result = await authService.login(loginData);
 
+      // Assert
       expect(mockAxiosInstance.post).toHaveBeenCalledWith(
         "/auth/login",
         loginData
@@ -89,6 +92,7 @@ describe("authService", () => {
 
   describe("register", () => {
     it("sends register request and returns auth response", async () => {
+      // Arrange
       const registerData = {
         email: "test@test.com",
         password: "password123",
@@ -106,8 +110,10 @@ describe("authService", () => {
       };
       mockAxiosInstance.post.mockResolvedValueOnce({ data: authResponse });
 
+      // Act
       const result = await authService.register(registerData);
 
+      // Assert
       expect(mockAxiosInstance.post).toHaveBeenCalledWith(
         "/auth/register",
         registerData
@@ -118,6 +124,7 @@ describe("authService", () => {
 
   describe("getCurrentUser", () => {
     it("fetches current user with authorization header", async () => {
+      // Arrange
       const user = {
         id: 1,
         email: "test@test.com",
@@ -126,8 +133,10 @@ describe("authService", () => {
       };
       mockAxiosInstance.get.mockResolvedValueOnce({ data: user });
 
+      // Act
       const result = await authService.getCurrentUser("my-token");
 
+      // Assert
       expect(mockAxiosInstance.get).toHaveBeenCalledWith("/auth/me", {
         headers: { Authorization: "Bearer my-token" },
       });
@@ -137,19 +146,28 @@ describe("authService", () => {
 
   describe("getToken", () => {
     it("returns null when no token is stored", () => {
+      // Arrange
       localStorageMock.getItem.mockReturnValueOnce(null);
+
+      // Act & Assert
       expect(authService.getToken()).toBeNull();
     });
 
     it("returns token when stored", () => {
+      // Arrange
       localStorageMock.getItem.mockReturnValueOnce("test-token");
+
+      // Act & Assert
       expect(authService.getToken()).toBe("test-token");
     });
   });
 
   describe("setToken", () => {
     it("stores token in localStorage", () => {
+      // Act
       authService.setToken("my-token");
+
+      // Assert
       expect(localStorageMock.setItem).toHaveBeenCalledWith(
         "token",
         "my-token"
@@ -159,23 +177,33 @@ describe("authService", () => {
 
   describe("logout", () => {
     it("removes token from localStorage", () => {
+      // Act
       authService.logout();
+
+      // Assert
       expect(localStorageMock.removeItem).toHaveBeenCalledWith("token");
     });
 
     it("removes user from localStorage", () => {
+      // Act
       authService.logout();
+
+      // Assert
       expect(localStorageMock.removeItem).toHaveBeenCalledWith("user");
     });
   });
 
   describe("getUser", () => {
     it("returns null when no user is stored", () => {
+      // Arrange
       localStorageMock.getItem.mockReturnValueOnce(null);
+
+      // Act & Assert
       expect(authService.getUser()).toBeNull();
     });
 
     it("returns parsed user when stored", () => {
+      // Arrange
       const user = {
         id: 1,
         email: "test@test.com",
@@ -183,19 +211,26 @@ describe("authService", () => {
         last_name: "Doe",
       };
       localStorageMock.getItem.mockReturnValueOnce(JSON.stringify(user));
+
+      // Act & Assert
       expect(authService.getUser()).toEqual(user);
     });
   });
 
   describe("setUser", () => {
     it("stores user in localStorage as JSON", () => {
+      // Arrange
       const user = {
         id: 1,
         email: "test@test.com",
         first_name: "John",
         last_name: "Doe",
       };
+
+      // Act
       authService.setUser(user);
+
+      // Assert
       expect(localStorageMock.setItem).toHaveBeenCalledWith(
         "user",
         JSON.stringify(user)
@@ -205,26 +240,26 @@ describe("authService", () => {
 
   describe("error interceptor", () => {
     it("logs error message on API error", async () => {
+      // Arrange
       const consoleError = vi
         .spyOn(console, "error")
         .mockImplementation(() => {});
       const errorInterceptor = getErrorInterceptor();
-
       const error = new Error("Network Error");
 
+      // Act & Assert
       expect(errorInterceptor).not.toBeNull();
       await expect(errorInterceptor!(error)).rejects.toThrow("Network Error");
-
       expect(consoleError).toHaveBeenCalledWith("API Error:", "Network Error");
       consoleError.mockRestore();
     });
 
     it("logs response data and status when error has response", async () => {
+      // Arrange
       const consoleError = vi
         .spyOn(console, "error")
         .mockImplementation(() => {});
       const errorInterceptor = getErrorInterceptor();
-
       const error = Object.assign(new Error("Request failed"), {
         response: {
           data: { message: "Invalid credentials" },
@@ -232,9 +267,9 @@ describe("authService", () => {
         },
       });
 
+      // Act & Assert
       expect(errorInterceptor).not.toBeNull();
       await expect(errorInterceptor!(error)).rejects.toThrow("Request failed");
-
       expect(consoleError).toHaveBeenCalledWith("API Error:", "Request failed");
       expect(consoleError).toHaveBeenCalledWith("Response data:", {
         message: "Invalid credentials",

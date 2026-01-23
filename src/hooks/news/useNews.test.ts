@@ -70,58 +70,66 @@ describe("useNews", () => {
   });
 
   it("loads news on mount", async () => {
+    // Act
     const { result } = renderHook(() => useNews());
 
+    // Assert
     await waitFor(() => {
       expect(result.current.newsItems).toEqual(mockNews);
     });
-
     expect(newsService.getAll).toHaveBeenCalled();
   });
 
   it("handles create action", async () => {
+    // Arrange
     const { result } = renderHook(() => useNews());
-
     await waitFor(() => {
       expect(result.current.newsItems).toEqual(mockNews);
     });
 
+    // Act
     act(() => {
       result.current.handleCreate();
     });
 
+    // Assert
     expect(result.current.selectedNews).toBeUndefined();
   });
 
   it("handles edit action", async () => {
+    // Arrange
     const { result } = renderHook(() => useNews());
-
     await waitFor(() => {
       expect(result.current.newsItems).toEqual(mockNews);
     });
 
+    // Act
     act(() => {
       result.current.handleEdit(mockNews[0]);
     });
 
+    // Assert
     expect(result.current.selectedNews).toEqual(mockNews[0]);
   });
 
   it("handles delete click", async () => {
+    // Arrange
     const { result } = renderHook(() => useNews());
-
     await waitFor(() => {
       expect(result.current.newsItems).toEqual(mockNews);
     });
 
+    // Act
     act(() => {
       result.current.handleDeleteClick(1);
     });
 
+    // Assert
     expect(result.current.isDeleteDialogOpen).toBeDefined();
   });
 
   it("handles submit for creating new news", async () => {
+    // Arrange
     vi.mocked(newsService.create).mockResolvedValue({
       id: 3,
       title: "New News",
@@ -129,22 +137,21 @@ describe("useNews", () => {
       author: "John Doe",
       date: "2024-01-03",
     });
-
     const { result } = renderHook(() => useNews());
-
     await waitFor(() => {
       expect(result.current.newsItems).toEqual(mockNews);
     });
-
     const newNewsData = {
       title: "New News",
       description: "New Description",
     };
 
+    // Act
     await act(async () => {
       await result.current.handleSubmit(newNewsData);
     });
 
+    // Assert
     expect(newsService.create).toHaveBeenCalledWith({
       ...newNewsData,
       authorId: mockUser.id,
@@ -152,6 +159,7 @@ describe("useNews", () => {
   });
 
   it("handles submit for updating existing news", async () => {
+    // Arrange
     vi.mocked(newsService.update).mockResolvedValue({
       id: 1,
       title: "Updated",
@@ -159,26 +167,24 @@ describe("useNews", () => {
       author: "John Doe",
       date: "2024-01-01",
     });
-
     const { result } = renderHook(() => useNews());
-
     await waitFor(() => {
       expect(result.current.newsItems).toEqual(mockNews);
     });
-
     act(() => {
       result.current.handleEdit(mockNews[0]);
     });
-
     const updateData = {
       title: "Updated",
       description: "Updated",
     };
 
+    // Act
     await act(async () => {
       await result.current.handleSubmit(updateData);
     });
 
+    // Assert
     expect(newsService.update).toHaveBeenCalledWith(1, {
       ...updateData,
       authorId: mockUser.id,
@@ -186,37 +192,37 @@ describe("useNews", () => {
   });
 
   it("handles delete action", async () => {
+    // Arrange
     vi.mocked(newsService.delete).mockResolvedValue(undefined);
-
     const { result } = renderHook(() => useNews());
-
     await waitFor(() => {
       expect(result.current.newsItems).toEqual(mockNews);
     });
-
     act(() => {
       result.current.handleDeleteClick(1);
     });
 
+    // Act
     await act(async () => {
       await result.current.handleDelete();
     });
 
+    // Assert
     expect(newsService.delete).toHaveBeenCalledWith(1);
   });
 
   it("does not submit when no user is logged in", async () => {
+    // Arrange
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
     vi.mocked(authService.getUser).mockReturnValue(null);
-
     const { result } = renderHook(() => useNews());
-
     await waitFor(() => {
       expect(result.current.newsItems).toEqual(mockNews);
     });
 
+    // Act
     await act(async () => {
       await result.current.handleSubmit({
         title: "Test",
@@ -224,12 +230,14 @@ describe("useNews", () => {
       });
     });
 
+    // Assert
     expect(newsService.create).not.toHaveBeenCalled();
     expect(consoleError).toHaveBeenCalledWith("No user logged in");
     consoleError.mockRestore();
   });
 
   it("handles error when loading news", async () => {
+    // Arrange
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
@@ -237,33 +245,34 @@ describe("useNews", () => {
       new Error("Network error")
     );
 
+    // Act
     const { result } = renderHook(() => useNews());
 
+    // Assert
     await waitFor(() => {
       expect(consoleError).toHaveBeenCalledWith(
         "Error loading news:",
         expect.any(Error)
       );
     });
-
     expect(result.current.newsItems).toEqual([]);
     consoleError.mockRestore();
   });
 
   it("handles error when saving news", async () => {
+    // Arrange
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
     vi.mocked(newsService.create).mockRejectedValueOnce(
       new Error("Save error")
     );
-
     const { result } = renderHook(() => useNews());
-
     await waitFor(() => {
       expect(result.current.newsItems).toEqual(mockNews);
     });
 
+    // Act
     await act(async () => {
       await result.current.handleSubmit({
         title: "Test",
@@ -271,6 +280,7 @@ describe("useNews", () => {
       });
     });
 
+    // Assert
     expect(consoleError).toHaveBeenCalledWith(
       "Error saving news:",
       expect.any(Error)
@@ -279,27 +289,27 @@ describe("useNews", () => {
   });
 
   it("handles error when deleting news", async () => {
+    // Arrange
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
     vi.mocked(newsService.delete).mockRejectedValueOnce(
       new Error("Delete error")
     );
-
     const { result } = renderHook(() => useNews());
-
     await waitFor(() => {
       expect(result.current.newsItems).toEqual(mockNews);
     });
-
     act(() => {
       result.current.handleDeleteClick(1);
     });
 
+    // Act
     await act(async () => {
       await result.current.handleDelete();
     });
 
+    // Assert
     expect(consoleError).toHaveBeenCalledWith(
       "Error deleting news:",
       expect.any(Error)
@@ -308,16 +318,18 @@ describe("useNews", () => {
   });
 
   it("does not delete when newsToDelete is null", async () => {
+    // Arrange
     const { result } = renderHook(() => useNews());
-
     await waitFor(() => {
       expect(result.current.newsItems).toEqual(mockNews);
     });
 
+    // Act
     await act(async () => {
       await result.current.handleDelete();
     });
 
+    // Assert
     expect(newsService.delete).not.toHaveBeenCalled();
   });
 });
