@@ -1,1 +1,2 @@
-export { default as PasswordInput } from "./PasswordInput";
+export { PasswordInput } from "./password";
+export { ImageUpload } from "./image";

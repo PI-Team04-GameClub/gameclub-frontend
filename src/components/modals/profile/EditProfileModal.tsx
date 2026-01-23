@@ -15,7 +15,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useAuth } from "../../../context";
-import { ImageUpload } from "../../inputs/ImageUpload";
+import { ImageUpload } from "../../inputs";
 
 interface EditProfileModalProps {
   isOpen: boolean;
