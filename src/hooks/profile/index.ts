@@ -1,3 +1,3 @@
-export * from "./useFriends";
-export * from "./useSentRequests";
-export * from "./useReceivedRequests";
+export * from "./friends/useFriends";
+export * from "./requests/sent/useSentRequests";
+export * from "./requests/received/useReceivedRequests";

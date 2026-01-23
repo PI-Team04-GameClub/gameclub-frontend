@@ -19,9 +19,9 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 import { useAuth } from "../../context";
-import FriendsTab from "./FriendsTab";
-import SentRequestsTab from "./SentRequestsTab";
-import ReceivedRequestsTab from "./ReceivedRequestsTab";
+import FriendsTab from "./friends/FriendsTab";
+import SentRequestsTab from "./requests/sent/SentRequestsTab";
+import ReceivedRequestsTab from "./requests/received/ReceivedRequestsTab";
 import { EditProfileModal } from "../../components/modals/profile/EditProfileModal";
 import { mockProfileStats } from "../../mocks/profile";
 

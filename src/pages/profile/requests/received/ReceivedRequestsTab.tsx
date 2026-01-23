@@ -10,8 +10,8 @@ import {
   Flex,
   HStack,
 } from "@chakra-ui/react";
-import { useReceivedRequests } from "../../hooks";
-import { FriendRequest } from "../../types";
+import { useReceivedRequests } from "../../../../hooks";
+import { FriendRequest } from "../../../../types";
 
 const ReceivedRequestCard: React.FC<{
   request: FriendRequest;

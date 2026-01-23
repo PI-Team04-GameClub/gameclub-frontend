@@ -11,9 +11,9 @@ import {
   Badge,
   HStack,
 } from "@chakra-ui/react";
-import { useSentRequests } from "../../hooks";
-import { DeleteConfirmDialog } from "../../components/dialogs/DeleteConfirmDialog";
-import { FriendRequest } from "../../types";
+import { useSentRequests } from "../../../../hooks";
+import { DeleteConfirmDialog } from "../../../../components/dialogs/DeleteConfirmDialog";
+import { FriendRequest } from "../../../../types";
 
 const SentRequestCard: React.FC<{
   request: FriendRequest;

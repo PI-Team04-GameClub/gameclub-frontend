@@ -26,14 +26,19 @@ gameclub-frontend
     │   │   ├── error
     │   │   └── success
     │   ├── buttons
+    │   │   ├── action
+    │   │   └── submit
     │   ├── cards
     │   ├── dialogs
     │   ├── inputs
+    │   │   ├── image
+    │   │   └── password
     │   ├── layouts
     │   ├── links
     │   ├── modals
     │   │   ├── games
     │   │   ├── news
+    │   │   ├── profile
     │   │   ├── teams
     │   │   └── tournaments
     │   ├── navbars
@@ -45,23 +50,37 @@ gameclub-frontend
     ├── hooks
     │   ├── games
     │   ├── news
+    │   ├── profile
+    │   │   ├── friends
+    │   │   └── requests
+    │   │       ├── received
+    │   │       └── sent
     │   ├── teams
     │   └── tournaments
+    ├── mocks
     ├── pages
     │   ├── games
     │   ├── login
     │   ├── news
+    │   ├── profile
+    │   │   ├── friends
+    │   │   └── requests
+    │   │       ├── received
+    │   │       └── sent
     │   ├── register
     │   ├── teams
     │   └── tournaments
     ├── services
     ├── styles
+    ├── test
     └── types
         ├── auth
         ├── games
         ├── news
+        ├── request
         ├── team
-        └── tournaments
+        ├── tournaments
+        └── user
 ```
 
 ## Getting Started

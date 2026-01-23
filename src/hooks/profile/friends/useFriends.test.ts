@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { renderHook, act, waitFor } from "@testing-library/react";
 import { useFriends } from "./useFriends";
-import { profileService } from "../../services/profile_service";
+import { profileService } from "../../../services/profile_service";
 
-vi.mock("../../services/profile_service", () => ({
+vi.mock("../../../services/profile_service", () => ({
   profileService: {
     getFriends: vi.fn(),
     removeFriend: vi.fn(),

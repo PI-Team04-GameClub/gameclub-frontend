@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, waitFor } from "../../test/test-utils";
+import { render, screen, waitFor } from "../../../../test/test-utils";
 import userEvent from "@testing-library/user-event";
 import SentRequestsTab from "./SentRequestsTab";
-import { useSentRequests } from "../../hooks";
+import { useSentRequests } from "../../../../hooks";
 
-vi.mock("../../hooks", () => ({
+vi.mock("../../../../hooks", () => ({
   useSentRequests: vi.fn(),
 }));
 
