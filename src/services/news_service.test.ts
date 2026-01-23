@@ -13,6 +13,7 @@ describe("newsService", () => {
 
   describe("getAll", () => {
     it("returns news from API", async () => {
+      // Arrange
       const mockNews = [
         {
           id: 1,
@@ -31,8 +32,10 @@ describe("newsService", () => {
       ];
       mockedAxios.get.mockResolvedValueOnce({ data: mockNews });
 
+      // Act
       const result = await newsService.getAll();
 
+      // Assert
       expect(result).toEqual(mockNews);
       expect(mockedAxios.get).toHaveBeenCalledTimes(1);
     });
@@ -40,6 +43,7 @@ describe("newsService", () => {
 
   describe("create", () => {
     it("creates news via API", async () => {
+      // Arrange
       const newNews = {
         title: "New Title",
         description: "New Content",
@@ -54,14 +58,17 @@ describe("newsService", () => {
       };
       mockedAxios.post.mockResolvedValueOnce({ data: createdNews });
 
+      // Act
       const result = await newsService.create(newNews);
 
+      // Assert
       expect(result).toEqual(createdNews);
     });
   });
 
   describe("update", () => {
     it("updates news via API", async () => {
+      // Arrange
       const updateData = {
         title: "Updated Title",
         description: "Updated",
@@ -76,18 +83,23 @@ describe("newsService", () => {
       };
       mockedAxios.put.mockResolvedValueOnce({ data: updatedNews });
 
+      // Act
       const result = await newsService.update(1, updateData);
 
+      // Assert
       expect(result).toEqual(updatedNews);
     });
   });
 
   describe("delete", () => {
     it("deletes news via API", async () => {
+      // Arrange
       mockedAxios.delete.mockResolvedValueOnce({});
 
+      // Act
       await newsService.delete(1);
 
+      // Assert
       expect(mockedAxios.delete).toHaveBeenCalledTimes(1);
     });
   });

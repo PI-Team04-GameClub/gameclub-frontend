@@ -49,50 +49,54 @@ describe("useReceivedRequests", () => {
   });
 
   it("loads received requests on mount", async () => {
+    // Act
     const { result } = renderHook(() => useReceivedRequests());
 
+    // Assert
     await waitFor(() => {
       expect(result.current.receivedRequests).toEqual(mockReceivedRequests);
     });
-
     expect(profileService.getReceivedRequests).toHaveBeenCalled();
   });
 
   it("handles accept action", async () => {
+    // Arrange
     vi.mocked(profileService.acceptRequest).mockResolvedValue(undefined);
-
     const { result } = renderHook(() => useReceivedRequests());
-
     await waitFor(() => {
       expect(result.current.receivedRequests).toEqual(mockReceivedRequests);
     });
 
+    // Act
     await act(async () => {
       await result.current.handleAccept(1);
     });
 
+    // Assert
     expect(profileService.acceptRequest).toHaveBeenCalledWith(1);
     expect(profileService.getReceivedRequests).toHaveBeenCalledTimes(2);
   });
 
   it("handles reject action", async () => {
+    // Arrange
     vi.mocked(profileService.rejectRequest).mockResolvedValue(undefined);
-
     const { result } = renderHook(() => useReceivedRequests());
-
     await waitFor(() => {
       expect(result.current.receivedRequests).toEqual(mockReceivedRequests);
     });
 
+    // Act
     await act(async () => {
       await result.current.handleReject(1);
     });
 
+    // Assert
     expect(profileService.rejectRequest).toHaveBeenCalledWith(1);
     expect(profileService.getReceivedRequests).toHaveBeenCalledTimes(2);
   });
 
   it("handles error when loading received requests", async () => {
+    // Arrange
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
@@ -100,37 +104,39 @@ describe("useReceivedRequests", () => {
       new Error("Network error")
     );
 
+    // Act
     const { result } = renderHook(() => useReceivedRequests());
 
+    // Assert
     await waitFor(() => {
       expect(consoleError).toHaveBeenCalledWith(
         "Error loading received requests:",
         expect.any(Error)
       );
     });
-
     expect(result.current.receivedRequests).toEqual([]);
     consoleError.mockRestore();
   });
 
   it("handles error when accepting request", async () => {
+    // Arrange
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
     vi.mocked(profileService.acceptRequest).mockRejectedValueOnce(
       new Error("Accept error")
     );
-
     const { result } = renderHook(() => useReceivedRequests());
-
     await waitFor(() => {
       expect(result.current.receivedRequests).toEqual(mockReceivedRequests);
     });
 
+    // Act
     await act(async () => {
       await result.current.handleAccept(1);
     });
 
+    // Assert
     expect(consoleError).toHaveBeenCalledWith(
       "Error accepting request:",
       expect.any(Error)
@@ -139,23 +145,24 @@ describe("useReceivedRequests", () => {
   });
 
   it("handles error when rejecting request", async () => {
+    // Arrange
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
     vi.mocked(profileService.rejectRequest).mockRejectedValueOnce(
       new Error("Reject error")
     );
-
     const { result } = renderHook(() => useReceivedRequests());
-
     await waitFor(() => {
       expect(result.current.receivedRequests).toEqual(mockReceivedRequests);
     });
 
+    // Act
     await act(async () => {
       await result.current.handleReject(1);
     });
 
+    // Assert
     expect(consoleError).toHaveBeenCalledWith(
       "Error rejecting request:",
       expect.any(Error)

@@ -13,6 +13,7 @@ describe("gameService", () => {
 
   describe("getAll", () => {
     it("returns games from API", async () => {
+      // Arrange
       const mockGames = [
         {
           id: 1,
@@ -29,8 +30,10 @@ describe("gameService", () => {
       ];
       mockedAxios.get.mockResolvedValueOnce({ data: mockGames });
 
+      // Act
       const result = await gameService.getAll();
 
+      // Assert
       expect(result).toEqual(mockGames);
       expect(mockedAxios.get).toHaveBeenCalledTimes(1);
     });
@@ -38,6 +41,7 @@ describe("gameService", () => {
 
   describe("getById", () => {
     it("returns single game from API", async () => {
+      // Arrange
       const mockGame = {
         id: 1,
         name: "Chess",
@@ -46,14 +50,17 @@ describe("gameService", () => {
       };
       mockedAxios.get.mockResolvedValueOnce({ data: mockGame });
 
+      // Act
       const result = await gameService.getById(1);
 
+      // Assert
       expect(result).toEqual(mockGame);
     });
   });
 
   describe("create", () => {
     it("creates game via API", async () => {
+      // Arrange
       const newGame = {
         name: "New Game",
         description: "Fun game",
@@ -62,14 +69,17 @@ describe("gameService", () => {
       const createdGame = { id: 3, ...newGame };
       mockedAxios.post.mockResolvedValueOnce({ data: createdGame });
 
+      // Act
       const result = await gameService.create(newGame);
 
+      // Assert
       expect(result).toEqual(createdGame);
     });
   });
 
   describe("update", () => {
     it("updates game via API", async () => {
+      // Arrange
       const updateData = {
         name: "Updated Game",
         description: "Updated",
@@ -78,18 +88,23 @@ describe("gameService", () => {
       const updatedGame = { id: 1, ...updateData };
       mockedAxios.put.mockResolvedValueOnce({ data: updatedGame });
 
+      // Act
       const result = await gameService.update(1, updateData);
 
+      // Assert
       expect(result).toEqual(updatedGame);
     });
   });
 
   describe("delete", () => {
     it("deletes game via API", async () => {
+      // Arrange
       mockedAxios.delete.mockResolvedValueOnce({});
 
+      // Act
       await gameService.delete(1);
 
+      // Assert
       expect(mockedAxios.delete).toHaveBeenCalledTimes(1);
     });
   });

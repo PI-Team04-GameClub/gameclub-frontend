@@ -3,6 +3,7 @@ import type { Tournament, TournamentFormData } from "./index";
 
 describe("Tournament types", () => {
   it("should correctly type a Tournament object", () => {
+    // Arrange
     const tournament: Tournament = {
       id: 1,
       name: "Championship",
@@ -13,12 +14,14 @@ describe("Tournament types", () => {
       status: "Upcoming",
     };
 
+    // Assert
     expect(tournament.id).toBe(1);
     expect(tournament.name).toBe("Championship");
     expect(tournament.status).toBe("Upcoming");
   });
 
   it("should correctly type TournamentFormData", () => {
+    // Arrange
     const formData: TournamentFormData = {
       name: "New Tournament",
       gameId: 1,
@@ -27,11 +30,13 @@ describe("Tournament types", () => {
       startDate: "2024-04-01",
     };
 
+    // Assert
     expect(formData.name).toBe("New Tournament");
     expect(formData.gameId).toBe(1);
   });
 
   it("should handle all tournament statuses", () => {
+    // Arrange
     const activeT: Tournament = {
       id: 1,
       name: "T1",
@@ -60,6 +65,7 @@ describe("Tournament types", () => {
       status: "Completed",
     };
 
+    // Assert
     expect(activeT.status).toBe("Active");
     expect(upcomingT.status).toBe("Upcoming");
     expect(completedT.status).toBe("Completed");

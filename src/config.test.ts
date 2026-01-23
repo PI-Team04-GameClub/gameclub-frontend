@@ -3,14 +3,30 @@ import { API_BASE_URL } from "./config";
 
 describe("config", () => {
   it("should have a defined API_BASE_URL", () => {
-    expect(API_BASE_URL).toBeDefined();
+    // Arrange
+    const config = API_BASE_URL;
+
+    // Act & Assert
+    expect(config).toBeDefined();
   });
 
   it("should have a string API_BASE_URL", () => {
-    expect(typeof API_BASE_URL).toBe("string");
+    // Arrange
+    const config = API_BASE_URL;
+
+    // Act
+    const typeOfConfig = typeof config;
+
+    // Assert
+    expect(typeOfConfig).toBe("string");
   });
 
   it("should have a valid URL format or localhost default", () => {
-    expect(API_BASE_URL).toMatch(/^https?:\/\/.+|^http:\/\/localhost/);
+    // Arrange
+    const config = API_BASE_URL;
+    const urlPattern = /^https?:\/\/.+|^http:\/\/localhost/;
+
+    // Act & Assert
+    expect(config).toMatch(urlPattern);
   });
 });

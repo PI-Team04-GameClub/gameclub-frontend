@@ -67,51 +67,55 @@ describe("useSentRequests", () => {
   });
 
   it("loads sent requests on mount", async () => {
+    // Act
     const { result } = renderHook(() => useSentRequests());
 
+    // Assert
     await waitFor(() => {
       expect(result.current.sentRequests).toEqual(mockSentRequests);
     });
-
     expect(profileService.getSentRequests).toHaveBeenCalled();
   });
 
   it("handles cancel click", async () => {
+    // Arrange
     const { result } = renderHook(() => useSentRequests());
-
     await waitFor(() => {
       expect(result.current.sentRequests).toEqual(mockSentRequests);
     });
 
+    // Act
     act(() => {
       result.current.handleCancelClick(1);
     });
 
+    // Assert
     expect(result.current.isCancelDialogOpen).toBeDefined();
   });
 
   it("handles cancel action", async () => {
+    // Arrange
     vi.mocked(profileService.cancelRequest).mockResolvedValue(undefined);
-
     const { result } = renderHook(() => useSentRequests());
-
     await waitFor(() => {
       expect(result.current.sentRequests).toEqual(mockSentRequests);
     });
-
     act(() => {
       result.current.handleCancelClick(1);
     });
 
+    // Act
     await act(async () => {
       await result.current.handleCancel();
     });
 
+    // Assert
     expect(profileService.cancelRequest).toHaveBeenCalledWith(1);
     expect(profileService.getSentRequests).toHaveBeenCalledTimes(2);
   });
 
   it("handles error when loading sent requests", async () => {
+    // Arrange
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
@@ -119,41 +123,42 @@ describe("useSentRequests", () => {
       new Error("Network error")
     );
 
+    // Act
     const { result } = renderHook(() => useSentRequests());
 
+    // Assert
     await waitFor(() => {
       expect(consoleError).toHaveBeenCalledWith(
         "Error loading sent requests:",
         expect.any(Error)
       );
     });
-
     expect(result.current.sentRequests).toEqual([]);
     consoleError.mockRestore();
   });
 
   it("handles error when canceling request", async () => {
+    // Arrange
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
     vi.mocked(profileService.cancelRequest).mockRejectedValueOnce(
       new Error("Cancel error")
     );
-
     const { result } = renderHook(() => useSentRequests());
-
     await waitFor(() => {
       expect(result.current.sentRequests).toEqual(mockSentRequests);
     });
-
     act(() => {
       result.current.handleCancelClick(1);
     });
 
+    // Act
     await act(async () => {
       await result.current.handleCancel();
     });
 
+    // Assert
     expect(consoleError).toHaveBeenCalledWith(
       "Error canceling request:",
       expect.any(Error)
@@ -162,16 +167,18 @@ describe("useSentRequests", () => {
   });
 
   it("does not cancel when requestToCancel is null", async () => {
+    // Arrange
     const { result } = renderHook(() => useSentRequests());
-
     await waitFor(() => {
       expect(result.current.sentRequests).toEqual(mockSentRequests);
     });
 
+    // Act
     await act(async () => {
       await result.current.handleCancel();
     });
 
+    // Assert
     expect(profileService.cancelRequest).not.toHaveBeenCalled();
   });
 });

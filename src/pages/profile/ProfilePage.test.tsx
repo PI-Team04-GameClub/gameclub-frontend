@@ -49,30 +49,45 @@ describe("ProfilePage", () => {
   });
 
   it("renders user name", () => {
+    // Arrange & Act
     render(<ProfilePage />);
+
+    // Assert
     expect(screen.getByText("John Doe")).toBeInTheDocument();
   });
 
   it("renders user email", () => {
+    // Arrange & Act
     render(<ProfilePage />);
+
+    // Assert
     expect(screen.getByText("john@example.com")).toBeInTheDocument();
   });
 
   it("renders edit profile button", () => {
+    // Arrange & Act
     render(<ProfilePage />);
+
+    // Assert
     expect(
       screen.getByRole("button", { name: "Edit Profile" })
     ).toBeInTheDocument();
   });
 
   it("renders total wins stat", () => {
+    // Arrange & Act
     render(<ProfilePage />);
+
+    // Assert
     expect(screen.getByText("42")).toBeInTheDocument();
     expect(screen.getByText("Total Wins")).toBeInTheDocument();
   });
 
   it("renders tabs", () => {
+    // Arrange & Act
     render(<ProfilePage />);
+
+    // Assert
     expect(screen.getByRole("tab", { name: "Friends" })).toBeInTheDocument();
     expect(
       screen.getByRole("tab", { name: "Sent Requests" })
@@ -83,7 +98,10 @@ describe("ProfilePage", () => {
   });
 
   it("friends tab is selected by default", () => {
+    // Arrange & Act
     render(<ProfilePage />);
+
+    // Assert
     expect(screen.getByRole("tab", { name: "Friends" })).toHaveAttribute(
       "aria-selected",
       "true"
@@ -91,11 +109,14 @@ describe("ProfilePage", () => {
   });
 
   it("switches to sent requests tab when clicked", async () => {
+    // Arrange
     const user = userEvent.setup();
     render(<ProfilePage />);
 
+    // Act
     await user.click(screen.getByRole("tab", { name: "Sent Requests" }));
 
+    // Assert
     expect(screen.getByRole("tab", { name: "Sent Requests" })).toHaveAttribute(
       "aria-selected",
       "true"
@@ -103,28 +124,37 @@ describe("ProfilePage", () => {
   });
 
   it("switches to received requests tab when clicked", async () => {
+    // Arrange
     const user = userEvent.setup();
     render(<ProfilePage />);
 
+    // Act
     await user.click(screen.getByRole("tab", { name: "Received Requests" }));
 
+    // Assert
     expect(
       screen.getByRole("tab", { name: "Received Requests" })
     ).toHaveAttribute("aria-selected", "true");
   });
 
   it("opens edit profile modal when edit button clicked", async () => {
+    // Arrange
     const user = userEvent.setup();
     render(<ProfilePage />);
 
+    // Act
     await user.click(screen.getByRole("button", { name: "Edit Profile" }));
 
+    // Assert
     expect(screen.getByPlaceholderText("Enter first name")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("Enter last name")).toBeInTheDocument();
   });
 
   it("renders avatar", () => {
+    // Arrange & Act
     render(<ProfilePage />);
+
+    // Assert
     const avatar = screen.getByRole("img", { name: "John Doe" });
     expect(avatar).toBeInTheDocument();
   });

@@ -13,6 +13,7 @@ describe("tournamentService", () => {
 
   describe("getAll", () => {
     it("returns tournaments from API", async () => {
+      // Arrange
       const mockTournaments = [
         {
           id: 1,
@@ -35,8 +36,10 @@ describe("tournamentService", () => {
       ];
       mockedAxios.get.mockResolvedValueOnce({ data: mockTournaments });
 
+      // Act
       const result = await tournamentService.getAll();
 
+      // Assert
       expect(result).toEqual(mockTournaments);
       expect(mockedAxios.get).toHaveBeenCalledTimes(1);
     });
@@ -44,6 +47,7 @@ describe("tournamentService", () => {
 
   describe("getById", () => {
     it("returns single tournament from API", async () => {
+      // Arrange
       const mockTournament = {
         id: 1,
         name: "Tournament 1",
@@ -55,14 +59,17 @@ describe("tournamentService", () => {
       };
       mockedAxios.get.mockResolvedValueOnce({ data: mockTournament });
 
+      // Act
       const result = await tournamentService.getById(1);
 
+      // Assert
       expect(result).toEqual(mockTournament);
     });
   });
 
   describe("create", () => {
     it("creates tournament via API", async () => {
+      // Arrange
       const newTournament = {
         name: "New Tournament",
         gameId: 1,
@@ -81,14 +88,17 @@ describe("tournamentService", () => {
       };
       mockedAxios.post.mockResolvedValueOnce({ data: createdTournament });
 
+      // Act
       const result = await tournamentService.create(newTournament);
 
+      // Assert
       expect(result).toEqual(createdTournament);
     });
   });
 
   describe("update", () => {
     it("updates tournament via API", async () => {
+      // Arrange
       const updateData = {
         name: "Updated Tournament",
         gameId: 1,
@@ -107,18 +117,23 @@ describe("tournamentService", () => {
       };
       mockedAxios.put.mockResolvedValueOnce({ data: updatedTournament });
 
+      // Act
       const result = await tournamentService.update(1, updateData);
 
+      // Assert
       expect(result).toEqual(updatedTournament);
     });
   });
 
   describe("delete", () => {
     it("deletes tournament via API", async () => {
+      // Arrange
       mockedAxios.delete.mockResolvedValueOnce({});
 
+      // Act
       await tournamentService.delete(1);
 
+      // Assert
       expect(mockedAxios.delete).toHaveBeenCalledTimes(1);
     });
   });

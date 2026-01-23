@@ -67,13 +67,16 @@ describe("AuthContext", () => {
 
   describe("AuthProvider", () => {
     it("provides initial unauthenticated state when no token", () => {
+      // Arrange & Act
       renderWithProviders(<TestComponent />);
 
+      // Assert
       expect(screen.getByTestId("authenticated")).toHaveTextContent("no");
       expect(screen.getByTestId("user")).toHaveTextContent("none");
     });
 
     it("provides authenticated state when token exists", () => {
+      // Arrange
       vi.mocked(authService.getToken).mockReturnValue("test-token");
       vi.mocked(authService.getUser).mockReturnValue({
         id: 1,
@@ -82,8 +85,10 @@ describe("AuthContext", () => {
         last_name: "Doe",
       });
 
+      // Act
       renderWithProviders(<TestComponent />);
 
+      // Assert
       expect(screen.getByTestId("authenticated")).toHaveTextContent("yes");
       expect(screen.getByTestId("user")).toHaveTextContent("test@test.com");
     });
@@ -91,6 +96,7 @@ describe("AuthContext", () => {
 
   describe("login", () => {
     it("logs in user and updates state", async () => {
+      // Arrange
       const user = userEvent.setup();
       const authResponse = {
         token: "jwt-token",
@@ -100,19 +106,18 @@ describe("AuthContext", () => {
         last_name: "Doe",
       };
       vi.mocked(authService.login).mockResolvedValue(authResponse);
-
       renderWithProviders(<TestComponent />);
-
       expect(screen.getByTestId("authenticated")).toHaveTextContent("no");
 
+      // Act
       await act(async () => {
         await user.click(screen.getByRole("button", { name: "Login" }));
       });
 
+      // Assert
       await waitFor(() => {
         expect(screen.getByTestId("authenticated")).toHaveTextContent("yes");
       });
-
       expect(authService.login).toHaveBeenCalledWith({
         email: "test@test.com",
         password: "password123",
@@ -124,6 +129,7 @@ describe("AuthContext", () => {
 
   describe("register", () => {
     it("registers user and returns response", async () => {
+      // Arrange
       const user = userEvent.setup();
       const authResponse = {
         token: "jwt-token",
@@ -133,13 +139,14 @@ describe("AuthContext", () => {
         last_name: "Doe",
       };
       vi.mocked(authService.register).mockResolvedValue(authResponse);
-
       renderWithProviders(<TestComponent />);
 
+      // Act
       await act(async () => {
         await user.click(screen.getByRole("button", { name: "Register" }));
       });
 
+      // Assert
       await waitFor(() => {
         expect(authService.register).toHaveBeenCalledWith({
           email: "test@test.com",
@@ -153,6 +160,7 @@ describe("AuthContext", () => {
 
   describe("logout", () => {
     it("logs out user and clears state", async () => {
+      // Arrange
       const user = userEvent.setup();
       vi.mocked(authService.getToken).mockReturnValue("test-token");
       vi.mocked(authService.getUser).mockReturnValue({
@@ -161,15 +169,15 @@ describe("AuthContext", () => {
         first_name: "John",
         last_name: "Doe",
       });
-
       renderWithProviders(<TestComponent />);
-
       expect(screen.getByTestId("authenticated")).toHaveTextContent("yes");
 
+      // Act
       await act(async () => {
         await user.click(screen.getByRole("button", { name: "Logout" }));
       });
 
+      // Assert
       expect(authService.logout).toHaveBeenCalled();
       expect(screen.getByTestId("authenticated")).toHaveTextContent("no");
       expect(screen.getByTestId("user")).toHaveTextContent("none");
@@ -178,10 +186,12 @@ describe("AuthContext", () => {
 
   describe("useAuth", () => {
     it("throws error when used outside AuthProvider", () => {
+      // Arrange
       const consoleError = vi
         .spyOn(console, "error")
         .mockImplementation(() => {});
 
+      // Act & Assert
       expect(() => {
         render(
           <ChakraProvider>
@@ -198,13 +208,13 @@ describe("AuthContext", () => {
 
   describe("storage event listener", () => {
     it("updates state on storage change", async () => {
+      // Arrange
       vi.mocked(authService.getToken).mockReturnValue(null);
       vi.mocked(authService.getUser).mockReturnValue(null);
-
       renderWithProviders(<TestComponent />);
-
       expect(screen.getByTestId("authenticated")).toHaveTextContent("no");
 
+      // Act
       vi.mocked(authService.getToken).mockReturnValue("new-token");
       vi.mocked(authService.getUser).mockReturnValue({
         id: 2,
@@ -212,11 +222,11 @@ describe("AuthContext", () => {
         first_name: "Jane",
         last_name: "Doe",
       });
-
       await act(async () => {
         window.dispatchEvent(new Event("storage"));
       });
 
+      // Assert
       await waitFor(() => {
         expect(screen.getByTestId("authenticated")).toHaveTextContent("yes");
         expect(screen.getByTestId("user")).toHaveTextContent("new@test.com");

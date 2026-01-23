@@ -3,6 +3,7 @@ import type { Game, GameFormData } from "./index";
 
 describe("Game types", () => {
   it("should correctly type a Game object", () => {
+    // Arrange
     const game: Game = {
       id: 1,
       name: "Chess",
@@ -10,6 +11,7 @@ describe("Game types", () => {
       numberOfPlayers: 2,
     };
 
+    // Assert
     expect(game.id).toBe(1);
     expect(game.name).toBe("Chess");
     expect(game.description).toBe("Classic strategy game");
@@ -17,12 +19,14 @@ describe("Game types", () => {
   });
 
   it("should correctly type GameFormData", () => {
+    // Arrange
     const formData: GameFormData = {
       name: "New Game",
       description: "A fun game",
       numberOfPlayers: 4,
     };
 
+    // Assert
     expect(formData.name).toBe("New Game");
     expect(formData.numberOfPlayers).toBe(4);
   });

@@ -52,6 +52,13 @@ vi.mock("./services/tournament_service", () => ({
 }));
 
 describe("App", () => {
+  const mockAuthenticatedUser = {
+    id: 1,
+    email: "test@test.com",
+    first_name: "John",
+    last_name: "Doe",
+  };
+
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(authService.getToken).mockReturnValue(null);
@@ -59,122 +66,131 @@ describe("App", () => {
   });
 
   it("renders without crashing", () => {
+    // Arrange & Act
     render(<App />);
+
+    // Assert
     expect(document.body).toBeInTheDocument();
   });
 
   it("renders login page when not authenticated", () => {
+    // Arrange & Act
     render(<App />);
+
+    // Assert
     expect(screen.getByText("Sign in to your account")).toBeInTheDocument();
   });
 
   it("renders GameClub heading on login page", () => {
+    // Arrange & Act
     render(<App />);
+
+    // Assert
     expect(
       screen.getByRole("heading", { name: "GameClub" })
     ).toBeInTheDocument();
   });
 
   it("renders create account link on login page", () => {
+    // Arrange & Act
     render(<App />);
+
+    // Assert
     expect(
       screen.getByRole("link", { name: "Create account" })
     ).toBeInTheDocument();
   });
 
   it("redirects to login when accessing protected route unauthenticated", async () => {
+    // Arrange
     vi.mocked(authService.getToken).mockReturnValue(null);
 
-    // App already includes BrowserRouter, so we test by rendering App directly
-    // The router in App will use the current window.location
+    // Act
     render(<App />);
 
+    // Assert
     await waitFor(() => {
       expect(screen.getByText("Sign in to your account")).toBeInTheDocument();
     });
   });
 
   it("shows navbar when authenticated", async () => {
+    // Arrange
     vi.mocked(authService.getToken).mockReturnValue("test-token");
-    vi.mocked(authService.getUser).mockReturnValue({
-      id: 1,
-      email: "test@test.com",
-      first_name: "John",
-      last_name: "Doe",
-    });
+    vi.mocked(authService.getUser).mockReturnValue(mockAuthenticatedUser);
 
+    // Act
     render(<App />);
 
+    // Assert
     await waitFor(() => {
       expect(screen.getByText("GameClub")).toBeInTheDocument();
     });
   });
 
   it("redirects to news when authenticated user visits login page", async () => {
+    // Arrange
     vi.mocked(authService.getToken).mockReturnValue("test-token");
-    vi.mocked(authService.getUser).mockReturnValue({
-      id: 1,
-      email: "test@test.com",
-      first_name: "John",
-      last_name: "Doe",
-    });
+    vi.mocked(authService.getUser).mockReturnValue(mockAuthenticatedUser);
 
+    // Act
     render(<App />);
 
+    // Assert
     await waitFor(() => {
       expect(screen.getByText("News & Updates")).toBeInTheDocument();
     });
   });
 
   it("redirects to news when authenticated user visits root", async () => {
+    // Arrange
     vi.mocked(authService.getToken).mockReturnValue("test-token");
-    vi.mocked(authService.getUser).mockReturnValue({
-      id: 1,
-      email: "test@test.com",
-      first_name: "John",
-      last_name: "Doe",
-    });
+    vi.mocked(authService.getUser).mockReturnValue(mockAuthenticatedUser);
 
+    // Act
     render(<App />);
 
+    // Assert
     await waitFor(() => {
       expect(screen.getByText("News & Updates")).toBeInTheDocument();
     });
   });
 
   it("redirects to news when authenticated user visits register page", async () => {
+    // Arrange
     vi.mocked(authService.getToken).mockReturnValue("test-token");
-    vi.mocked(authService.getUser).mockReturnValue({
-      id: 1,
-      email: "test@test.com",
-      first_name: "John",
-      last_name: "Doe",
-    });
+    vi.mocked(authService.getUser).mockReturnValue(mockAuthenticatedUser);
 
-    // App already includes BrowserRouter - authenticated users are redirected to /news
+    // Act
     render(<App />);
 
+    // Assert
     await waitFor(() => {
       expect(screen.getByText("News & Updates")).toBeInTheDocument();
     });
   });
 
   it("redirects to login when unauthenticated user visits root", async () => {
+    // Arrange
     vi.mocked(authService.getToken).mockReturnValue(null);
 
+    // Act
     render(<App />);
 
+    // Assert
     await waitFor(() => {
       expect(screen.getByText("Sign in to your account")).toBeInTheDocument();
     });
   });
 
   it("renders register page elements correctly", async () => {
+    // Arrange
     vi.mocked(authService.getToken).mockReturnValue(null);
 
+    // Act
     render(<App />);
 
-    // First, verify the login page renders with the register link
+    // Assert
     await waitFor(() => {
       expect(
         screen.getByRole("link", { name: "Create account" })
@@ -183,16 +199,14 @@ describe("App", () => {
   });
 
   it("renders nav links when authenticated", async () => {
+    // Arrange
     vi.mocked(authService.getToken).mockReturnValue("test-token");
-    vi.mocked(authService.getUser).mockReturnValue({
-      id: 1,
-      email: "test@test.com",
-      first_name: "John",
-      last_name: "Doe",
-    });
+    vi.mocked(authService.getUser).mockReturnValue(mockAuthenticatedUser);
 
+    // Act
     render(<App />);
 
+    // Assert
     await waitFor(() => {
       expect(screen.getByText("News")).toBeInTheDocument();
       expect(screen.getByText("Games")).toBeInTheDocument();
@@ -202,16 +216,14 @@ describe("App", () => {
   });
 
   it("shows user name when authenticated", async () => {
+    // Arrange
     vi.mocked(authService.getToken).mockReturnValue("test-token");
-    vi.mocked(authService.getUser).mockReturnValue({
-      id: 1,
-      email: "test@test.com",
-      first_name: "John",
-      last_name: "Doe",
-    });
+    vi.mocked(authService.getUser).mockReturnValue(mockAuthenticatedUser);
 
+    // Act
     render(<App />);
 
+    // Assert
     await waitFor(() => {
       expect(screen.getByText("Profile")).toBeInTheDocument();
     });

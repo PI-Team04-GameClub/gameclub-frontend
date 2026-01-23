@@ -34,52 +34,72 @@ describe("GamesPage", () => {
   });
 
   it("renders page header with title", () => {
+    // Arrange & Act
     render(<GamesPage />);
+
+    // Assert
     expect(screen.getByText("Games")).toBeInTheDocument();
   });
 
   it("renders create game button", () => {
+    // Arrange & Act
     render(<GamesPage />);
+
+    // Assert
     expect(
       screen.getByRole("button", { name: /create game/i })
     ).toBeInTheDocument();
   });
 
   it("renders games table", () => {
+    // Arrange & Act
     render(<GamesPage />);
+
+    // Assert
     expect(screen.getByText("Chess")).toBeInTheDocument();
     expect(screen.getByText("Poker")).toBeInTheDocument();
   });
 
   it("calls handleCreate when create button clicked", async () => {
+    // Arrange
     const user = userEvent.setup();
     const handleCreate = vi.fn();
     vi.mocked(useGames).mockReturnValue({ ...mockHookReturn, handleCreate });
-
     render(<GamesPage />);
+
+    // Act
     await user.click(screen.getByRole("button", { name: /create game/i }));
 
+    // Assert
     expect(handleCreate).toHaveBeenCalled();
   });
 
   it("renders modal when isModalOpen is true", () => {
+    // Arrange
     vi.mocked(useGames).mockReturnValue({
       ...mockHookReturn,
       isModalOpen: true,
     });
 
+    // Act
     render(<GamesPage />);
+
+    // Assert
     const dialog = screen.getByRole("dialog");
     expect(within(dialog).getByText("Create Game")).toBeInTheDocument();
   });
 
   it("renders delete dialog when isDeleteDialogOpen is true", () => {
+    // Arrange
     vi.mocked(useGames).mockReturnValue({
       ...mockHookReturn,
       isDeleteDialogOpen: true,
     });
 
+    // Act
     render(<GamesPage />);
+
+    // Assert
     expect(screen.getByText("Delete Game")).toBeInTheDocument();
     expect(
       screen.getByText(
@@ -89,41 +109,53 @@ describe("GamesPage", () => {
   });
 
   it("renders edit button for each game", () => {
+    // Arrange & Act
     render(<GamesPage />);
+
+    // Assert
     const editButtons = screen.getAllByRole("button", { name: /edit/i });
     expect(editButtons).toHaveLength(2);
   });
 
   it("renders delete button for each game", () => {
+    // Arrange & Act
     render(<GamesPage />);
+
+    // Assert
     const deleteButtons = screen.getAllByRole("button", { name: /delete/i });
     expect(deleteButtons).toHaveLength(2);
   });
 
   it("calls handleEdit when edit button clicked", async () => {
+    // Arrange
     const user = userEvent.setup();
     const handleEdit = vi.fn();
     vi.mocked(useGames).mockReturnValue({ ...mockHookReturn, handleEdit });
-
     render(<GamesPage />);
+
+    // Act
     const editButtons = screen.getAllByRole("button", { name: /edit/i });
     await user.click(editButtons[0]);
 
+    // Assert
     expect(handleEdit).toHaveBeenCalledWith(mockGames[0]);
   });
 
   it("calls handleDeleteClick when delete button clicked", async () => {
+    // Arrange
     const user = userEvent.setup();
     const handleDeleteClick = vi.fn();
     vi.mocked(useGames).mockReturnValue({
       ...mockHookReturn,
       handleDeleteClick,
     });
-
     render(<GamesPage />);
+
+    // Act
     const deleteButtons = screen.getAllByRole("button", { name: /delete/i });
     await user.click(deleteButtons[0]);
 
+    // Assert
     expect(handleDeleteClick).toHaveBeenCalledWith(1);
   });
 });
