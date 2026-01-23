@@ -21,6 +21,7 @@ interface NewsCardProps {
 const NewsCard: React.FC<NewsCardProps> = ({ news, onEdit, onDelete }) => {
   return (
     <Card
+      width="100%"
       _hover={{ transform: "translateY(-4px)", boxShadow: "md" }}
       transition="all 0.3s"
     >

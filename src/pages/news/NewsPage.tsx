@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Container, SimpleGrid } from "@chakra-ui/react";
+import { Box, Container, VStack } from "@chakra-ui/react";
 import { useNews } from "../../hooks";
 import { NewsModal } from "../../components/modals/news/NewsModal";
 import { DeleteConfirmDialog } from "../../components/dialogs/DeleteConfirmDialog";
@@ -30,7 +30,7 @@ const NewsPage: React.FC = () => {
           onAction={handleCreate}
         />
 
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
+        <VStack spacing={6} width="100%" align="stretch">
           {newsItems.map((news) => (
             <NewsCard
               key={news.id}
@@ -39,7 +39,7 @@ const NewsPage: React.FC = () => {
               onDelete={handleDeleteClick}
             />
           ))}
-        </SimpleGrid>
+        </VStack>
       </Box>
 
       <NewsModal
