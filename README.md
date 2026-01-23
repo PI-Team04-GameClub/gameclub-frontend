@@ -29,6 +29,10 @@ gameclub-frontend
     │   │   ├── action
     │   │   └── submit
     │   ├── cards
+    │   │   ├── friend
+    │   │   └── request
+    │   │       ├── received
+    │   │       └── sent
     │   ├── dialogs
     │   ├── inputs
     │   │   ├── image
