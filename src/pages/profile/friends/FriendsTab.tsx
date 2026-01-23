@@ -10,9 +10,9 @@ import {
   Button,
   Flex,
 } from "@chakra-ui/react";
-import { useFriends } from "../../hooks";
-import { DeleteConfirmDialog } from "../../components/dialogs/DeleteConfirmDialog";
-import { Friend } from "../../types";
+import { useFriends } from "../../../hooks";
+import { DeleteConfirmDialog } from "../../../components/dialogs/DeleteConfirmDialog";
+import { Friend } from "../../../types";
 
 const FriendCard: React.FC<{
   friend: Friend;

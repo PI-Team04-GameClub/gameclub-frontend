@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { renderHook, act, waitFor } from "@testing-library/react";
 import { useSentRequests } from "./useSentRequests";
-import { profileService } from "../../services/profile_service";
+import { profileService } from "../../../../services/profile_service";
 
-vi.mock("../../services/profile_service", () => ({
+vi.mock("../../../../services/profile_service", () => ({
   profileService: {
     getSentRequests: vi.fn(),
     cancelRequest: vi.fn(),

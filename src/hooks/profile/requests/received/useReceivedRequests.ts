@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import { profileService } from "../../services/profile_service";
-import { FriendRequest } from "../../types";
+import { profileService } from "../../../../services/profile_service";
+import { FriendRequest } from "../../../../types";
 
 export const useReceivedRequests = () => {
   const [receivedRequests, setReceivedRequests] = useState<FriendRequest[]>([]);

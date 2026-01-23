@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useDisclosure } from "@chakra-ui/react";
-import { profileService } from "../../services/profile_service";
-import { FriendRequest } from "../../types";
+import { profileService } from "../../../../services/profile_service";
+import { FriendRequest } from "../../../../types";
 
 export const useSentRequests = () => {
   const [sentRequests, setSentRequests] = useState<FriendRequest[]>([]);
