@@ -3,6 +3,7 @@ import React, {
   useContext,
   useState,
   useEffect,
+  useMemo,
   ReactNode,
 } from "react";
 import { authService } from "../services/auth_service";
@@ -34,8 +35,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setUser(authService.getUser());
     };
 
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
+    globalThis.addEventListener("storage", handleStorageChange);
+    return () => globalThis.removeEventListener("storage", handleStorageChange);
   }, []);
 
   const login = async (data: LoginRequest): Promise<AuthResponse> => {
@@ -63,10 +64,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsAuthenticated(false);
   };
 
+  const contextValue = useMemo(
+    () => ({ isAuthenticated, user, login, register, logout }),
+    [isAuthenticated, user]
+  );
+
   return (
-    <AuthContext.Provider
-      value={{ isAuthenticated, user, login, register, logout }}
-    >
+    <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
   );

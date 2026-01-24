@@ -223,7 +223,7 @@ describe("AuthContext", () => {
         last_name: "Doe",
       });
       await act(async () => {
-        window.dispatchEvent(new Event("storage"));
+        globalThis.dispatchEvent(new Event("storage"));
       });
 
       // Assert

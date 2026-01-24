@@ -14,10 +14,10 @@ const localStorageMock = {
   removeItem: vi.fn(),
   clear: vi.fn(),
 };
-Object.defineProperty(window, "localStorage", { value: localStorageMock });
+Object.defineProperty(globalThis, "localStorage", { value: localStorageMock });
 
-// Mock window.matchMedia
-Object.defineProperty(window, "matchMedia", {
+// Mock globalThis.matchMedia
+Object.defineProperty(globalThis, "matchMedia", {
   writable: true,
   value: vi.fn().mockImplementation((query) => ({
     matches: false,

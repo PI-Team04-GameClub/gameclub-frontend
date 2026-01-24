@@ -159,7 +159,7 @@ describe("TournamentModal", () => {
 
   it("shows alert when submitting without game", async () => {
     const user = userEvent.setup();
-    const alertMock = vi.spyOn(window, "alert").mockImplementation(() => {});
+    const alertMock = vi.spyOn(globalThis, "alert").mockImplementation(() => {});
 
     render(<TournamentModal {...defaultProps} />);
 
@@ -175,7 +175,7 @@ describe("TournamentModal", () => {
 
   it("shows alert when submitting without name", async () => {
     const user = userEvent.setup();
-    const alertMock = vi.spyOn(window, "alert").mockImplementation(() => {});
+    const alertMock = vi.spyOn(globalThis, "alert").mockImplementation(() => {});
 
     render(<TournamentModal {...defaultProps} />);
 
@@ -192,7 +192,7 @@ describe("TournamentModal", () => {
 
   it("shows alert when submitting without date", async () => {
     const user = userEvent.setup();
-    const alertMock = vi.spyOn(window, "alert").mockImplementation(() => {});
+    const alertMock = vi.spyOn(globalThis, "alert").mockImplementation(() => {});
 
     render(<TournamentModal {...defaultProps} />);
 
@@ -213,7 +213,7 @@ describe("TournamentModal", () => {
 
   it("shows alert when prize pool is zero or negative", async () => {
     const user = userEvent.setup();
-    const alertMock = vi.spyOn(window, "alert").mockImplementation(() => {});
+    const alertMock = vi.spyOn(globalThis, "alert").mockImplementation(() => {});
 
     render(<TournamentModal {...defaultProps} />);
 
