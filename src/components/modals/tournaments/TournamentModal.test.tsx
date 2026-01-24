@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, waitFor } from "../../../test/test-utils";
 import userEvent from "@testing-library/user-event";
 import { TournamentModal } from "./TournamentModal";
@@ -9,6 +9,9 @@ vi.mock("../../../services/game_service", () => ({
     getAll: vi.fn(),
   },
 }));
+
+// Helper to create alert mock
+const createAlertMock = () => vi.spyOn(globalThis, "alert").mockImplementation(() => {});
 
 describe("TournamentModal", () => {
   const mockGames = [
@@ -159,7 +162,7 @@ describe("TournamentModal", () => {
 
   it("shows alert when submitting without game", async () => {
     const user = userEvent.setup();
-    const alertMock = vi.spyOn(globalThis, "alert").mockImplementation(() => {});
+    const alertMock = createAlertMock();
 
     render(<TournamentModal {...defaultProps} />);
 
@@ -175,7 +178,7 @@ describe("TournamentModal", () => {
 
   it("shows alert when submitting without name", async () => {
     const user = userEvent.setup();
-    const alertMock = vi.spyOn(globalThis, "alert").mockImplementation(() => {});
+    const alertMock = createAlertMock();
 
     render(<TournamentModal {...defaultProps} />);
 
@@ -192,7 +195,7 @@ describe("TournamentModal", () => {
 
   it("shows alert when submitting without date", async () => {
     const user = userEvent.setup();
-    const alertMock = vi.spyOn(globalThis, "alert").mockImplementation(() => {});
+    const alertMock = createAlertMock();
 
     render(<TournamentModal {...defaultProps} />);
 
@@ -213,7 +216,7 @@ describe("TournamentModal", () => {
 
   it("shows alert when prize pool is zero or negative", async () => {
     const user = userEvent.setup();
-    const alertMock = vi.spyOn(globalThis, "alert").mockImplementation(() => {});
+    const alertMock = createAlertMock();
 
     render(<TournamentModal {...defaultProps} />);
 
