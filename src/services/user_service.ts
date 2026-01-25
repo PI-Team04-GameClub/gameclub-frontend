@@ -1,21 +1,7 @@
 import axios from "axios";
-import { User } from "../types";
+import { User, CreateUserRequest, UpdateUserRequest } from "../types";
 import { API_BASE_URL } from "../config";
 import { authService } from "./auth_service";
-
-export interface CreateUserRequest {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName?: string;
-}
-
-export interface UpdateUserRequest {
-  email?: string;
-  password?: string;
-  firstName?: string;
-  lastName?: string;
-}
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
