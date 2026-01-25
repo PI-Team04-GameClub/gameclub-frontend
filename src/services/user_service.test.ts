@@ -105,46 +105,6 @@ describe("userService", () => {
     });
   });
 
-  describe("createUser", () => {
-    it("creates user via API", async () => {
-      // Arrange
-      const createData = {
-        email: "new@example.com",
-        password: "password123",
-        firstName: "New",
-        lastName: "User",
-      };
-      const mockUser: User = {
-        id: 1,
-        first_name: "New",
-        last_name: "User",
-        email: "new@example.com",
-      };
-      mockedAxios.post.mockResolvedValueOnce({ data: mockUser });
-
-      // Act
-      const result = await userService.createUser(createData);
-
-      // Assert
-      expect(result).toEqual(mockUser);
-      expect(mockedAxios.post).toHaveBeenCalledTimes(1);
-    });
-
-    it("throws error when API fails", async () => {
-      // Arrange
-      mockedAxios.post.mockRejectedValueOnce(new Error("Validation error"));
-
-      // Act & Assert
-      await expect(
-        userService.createUser({
-          email: "new@example.com",
-          password: "pass",
-          firstName: "New",
-        })
-      ).rejects.toThrow("Validation error");
-    });
-  });
-
   describe("updateUser", () => {
     it("updates user via API", async () => {
       // Arrange

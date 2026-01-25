@@ -9,8 +9,9 @@ import {
   Flex,
   Box,
 } from "@chakra-ui/react";
-import { NewsItem } from "../../types";
-import { ActionButtons } from "../buttons";
+import { NewsItem } from "../../../types";
+import { ActionButtons } from "../../buttons";
+import { CommentToggle } from "../../comments";
 
 interface NewsCardProps {
   news: NewsItem;
@@ -50,6 +51,8 @@ const NewsCard: React.FC<NewsCardProps> = ({ news, onEdit, onDelete }) => {
             </Box>
           )}
         </Flex>
+
+        <CommentToggle newsId={news.id} />
       </CardBody>
     </Card>
   );

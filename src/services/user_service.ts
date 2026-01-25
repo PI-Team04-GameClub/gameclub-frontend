@@ -1,5 +1,5 @@
 import axios from "axios";
-import { User, CreateUserRequest, UpdateUserRequest } from "../types";
+import { User, UpdateUserRequest } from "../types";
 import { API_BASE_URL } from "../config";
 import { authService } from "./auth_service";
 
@@ -39,11 +39,6 @@ export const userService = {
 
   getUserById: async (id: number): Promise<User> => {
     const response = await axiosInstance.get(`/users/${id}`);
-    return response.data;
-  },
-
-  createUser: async (data: CreateUserRequest): Promise<User> => {
-    const response = await axiosInstance.post("/users", data);
     return response.data;
   },
 

@@ -1,7 +1,22 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "../../test/test-utils";
+import { render, screen } from "../../../test/test-utils";
 import userEvent from "@testing-library/user-event";
 import NewsCard from "./NewsCard";
+
+vi.mock("../../../hooks", () => ({
+  useComments: vi.fn(() => ({
+    comments: [],
+    selectedComment: undefined,
+    isLoading: false,
+    isModalOpen: false,
+    onModalClose: vi.fn(),
+    loadComments: vi.fn(),
+    handleCreate: vi.fn(),
+    handleEdit: vi.fn(),
+    handleSubmit: vi.fn(),
+    handleDelete: vi.fn(),
+  })),
+}));
 
 describe("NewsCard", () => {
   const mockNews = {
@@ -118,5 +133,29 @@ describe("NewsCard", () => {
     // Assert
     expect(screen.getByRole("button", { name: /edit/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /delete/i })).toBeInTheDocument();
+  });
+
+  it("renders show comments button", () => {
+    // Arrange & Act
+    render(<NewsCard news={mockNews} />);
+
+    // Assert
+    expect(
+      screen.getByRole("button", { name: /show comments/i })
+    ).toBeInTheDocument();
+  });
+
+  it("toggles comments section when show comments button is clicked", async () => {
+    // Arrange
+    const user = userEvent.setup();
+    render(<NewsCard news={mockNews} />);
+
+    // Act
+    await user.click(screen.getByRole("button", { name: /show comments/i }));
+
+    // Assert
+    expect(
+      screen.getByRole("button", { name: /hide comments/i })
+    ).toBeInTheDocument();
   });
 });
