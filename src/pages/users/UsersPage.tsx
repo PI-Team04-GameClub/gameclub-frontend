@@ -1,5 +1,12 @@
 import React from "react";
-import { Box, Container, SimpleGrid, Text, Spinner, Center } from "@chakra-ui/react";
+import {
+  Box,
+  Container,
+  SimpleGrid,
+  Text,
+  Spinner,
+  Center,
+} from "@chakra-ui/react";
 import { useUsers } from "../../hooks";
 import { UserCard } from "../../components/cards";
 import { SearchInput } from "../../components/inputs";
