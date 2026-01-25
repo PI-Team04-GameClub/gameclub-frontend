@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Button, Collapse } from "@chakra-ui/react";
 import { ChatIcon } from "@chakra-ui/icons";
-import { CommentSection } from "../CommentSection";
+import { CommentSection } from "../comments";
 
 interface CommentToggleProps {
   newsId: number;

@@ -1,11 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, waitFor } from "../../test/test-utils";
+import { render, screen, waitFor } from "../../../test/test-utils";
 import userEvent from "@testing-library/user-event";
 import { CommentSection } from "./CommentSection";
-import { commentService } from "../../services/comment_service";
-import { authService } from "../../services/auth_service";
+import { commentService } from "../../../services/comment_service";
+import { authService } from "../../../services/auth_service";
 
-vi.mock("../../services/comment_service", () => ({
+vi.mock("../../../services/comment_service", () => ({
   commentService: {
     getByNewsId: vi.fn(),
     create: vi.fn(),
@@ -14,7 +14,7 @@ vi.mock("../../services/comment_service", () => ({
   },
 }));
 
-vi.mock("../../services/auth_service", () => ({
+vi.mock("../../../services/auth_service", () => ({
   authService: {
     getToken: vi.fn(),
     getUser: vi.fn(),
