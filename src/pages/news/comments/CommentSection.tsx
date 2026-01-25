@@ -4,16 +4,15 @@ import {
   VStack,
   HStack,
   Text,
-  Button,
-  Textarea,
   Avatar,
   Divider,
   IconButton,
 } from "@chakra-ui/react";
 import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
-import { useComments } from "../../hooks";
-import { useAuth } from "../../context";
-import { Comment } from "../../types";
+import { useComments } from "../../../hooks";
+import { useAuth } from "../../../context";
+import { Comment } from "../../../types";
+import { CommentBox } from "../../../components/inputs";
 
 interface CommentSectionProps {
   newsId: number;
@@ -124,30 +123,13 @@ export const CommentSection: React.FC<CommentSectionProps> = ({ newsId }) => {
       </Text>
 
       {user && (
-        <Box mb={4}>
-          <Textarea
-            placeholder="Write a comment..."
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            rows={3}
-            resize="none"
-          />
-          <HStack mt={2} justify="flex-end">
-            {isEditing && (
-              <Button variant="ghost" size="sm" onClick={onCancel}>
-                Cancel
-              </Button>
-            )}
-            <Button
-              colorScheme="brand"
-              size="sm"
-              onClick={onSubmit}
-              isDisabled={!newComment.trim()}
-            >
-              {isEditing ? "Update" : "Post"}
-            </Button>
-          </HStack>
-        </Box>
+        <CommentBox
+          value={newComment}
+          onChange={setNewComment}
+          onSubmit={onSubmit}
+          onCancel={onCancel}
+          isEditing={isEditing}
+        />
       )}
 
       <Divider />

@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { NewsItem } from "../../../types";
 import { ActionButtons } from "../../buttons";
-import { CommentToggle } from "../../comments";
+import { CommentToggle } from "../../../pages/news/toggles";
 
 interface NewsCardProps {
   news: NewsItem;
