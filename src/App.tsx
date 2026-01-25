@@ -13,6 +13,7 @@ import RegisterPage from "./pages/register/RegisterPage";
 import GamesPage from "./pages/games/GamesPage";
 import TeamsPage from "./pages/teams/TeamsPage";
 import TournamentsPage from "./pages/tournaments/TournamentsPage";
+import UsersPage from "./pages/users/UsersPage";
 import NewsPage from "./pages/news/NewsPage";
 import ProfilePage from "./pages/profile/ProfilePage";
 import { AuthProvider, useAuth } from "./context";
@@ -102,6 +103,12 @@ const AppContent: React.FC = () => {
               ) : (
                 <Navigate to="/login" replace />
               )
+            }
+          />
+          <Route
+            path="/users"
+            element={
+              isAuthenticated ? <UsersPage /> : <Navigate to="/login" replace />
             }
           />
           <Route
