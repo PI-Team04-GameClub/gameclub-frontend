@@ -1,4 +1,4 @@
-name: SonarQube Analysis
+name: SonarCloud Analysis
 
 on:
   push:
@@ -9,8 +9,8 @@ on:
       - main
 
 jobs:
-  sonarqube:
-    name: SonarQube Scan
+  sonarcloud:
+    name: SonarCloud Scan
     runs-on: ubuntu-latest
 
     steps:
@@ -31,11 +31,8 @@ jobs:
       - name: Run tests with coverage
         run: npm run test:coverage
 
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@2f77a1ec69fb1d595b06f35ab27e97605bdef703 # v5
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >
-            -Dsonar.ci=true
-
+          SONAR_HOST_URL: https://sonarcloud.io
