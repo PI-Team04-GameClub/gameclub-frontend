@@ -1,12 +1,24 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { renderHook, act, waitFor } from "@testing-library/react";
 import { useSentRequests } from "./useSentRequests";
-import { profileService } from "../../../../services/profile_service";
+import { friendRequestService } from "../../../../services/friend_request_service";
+import { authService } from "../../../../services/auth_service";
 
-vi.mock("../../../../services/profile_service", () => ({
-  profileService: {
+vi.mock("../../../../services/friend_request_service", () => ({
+  friendRequestService: {
     getSentRequests: vi.fn(),
     cancelRequest: vi.fn(),
+  },
+}));
+
+vi.mock("../../../../services/auth_service", () => ({
+  authService: {
+    getUser: vi.fn(() => ({
+      id: 1,
+      firstName: "Test",
+      lastName: "User",
+      email: "test@example.com",
+    })),
   },
 }));
 
@@ -61,7 +73,7 @@ describe("useSentRequests", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(profileService.getSentRequests).mockResolvedValue(
+    vi.mocked(friendRequestService.getSentRequests).mockResolvedValue(
       mockSentRequests
     );
   });
@@ -74,7 +86,7 @@ describe("useSentRequests", () => {
     await waitFor(() => {
       expect(result.current.sentRequests).toEqual(mockSentRequests);
     });
-    expect(profileService.getSentRequests).toHaveBeenCalled();
+    expect(friendRequestService.getSentRequests).toHaveBeenCalledWith(1);
   });
 
   it("handles cancel click", async () => {
@@ -95,7 +107,7 @@ describe("useSentRequests", () => {
 
   it("handles cancel action", async () => {
     // Arrange
-    vi.mocked(profileService.cancelRequest).mockResolvedValue(undefined);
+    vi.mocked(friendRequestService.cancelRequest).mockResolvedValue(undefined);
     const { result } = renderHook(() => useSentRequests());
     await waitFor(() => {
       expect(result.current.sentRequests).toEqual(mockSentRequests);
@@ -110,8 +122,8 @@ describe("useSentRequests", () => {
     });
 
     // Assert
-    expect(profileService.cancelRequest).toHaveBeenCalledWith(1);
-    expect(profileService.getSentRequests).toHaveBeenCalledTimes(2);
+    expect(friendRequestService.cancelRequest).toHaveBeenCalledWith(1);
+    expect(friendRequestService.getSentRequests).toHaveBeenCalledTimes(2);
   });
 
   it("handles error when loading sent requests", async () => {
@@ -119,7 +131,7 @@ describe("useSentRequests", () => {
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
-    vi.mocked(profileService.getSentRequests).mockRejectedValueOnce(
+    vi.mocked(friendRequestService.getSentRequests).mockRejectedValueOnce(
       new Error("Network error")
     );
 
@@ -142,7 +154,7 @@ describe("useSentRequests", () => {
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
-    vi.mocked(profileService.cancelRequest).mockRejectedValueOnce(
+    vi.mocked(friendRequestService.cancelRequest).mockRejectedValueOnce(
       new Error("Cancel error")
     );
     const { result } = renderHook(() => useSentRequests());
@@ -179,6 +191,20 @@ describe("useSentRequests", () => {
     });
 
     // Assert
-    expect(profileService.cancelRequest).not.toHaveBeenCalled();
+    expect(friendRequestService.cancelRequest).not.toHaveBeenCalled();
+  });
+
+  it("does not load sent requests when user is null", async () => {
+    // Arrange
+    vi.mocked(authService.getUser).mockReturnValueOnce(null);
+
+    // Act
+    const { result } = renderHook(() => useSentRequests());
+
+    // Assert
+    await waitFor(() => {
+      expect(result.current.sentRequests).toEqual([]);
+    });
+    expect(friendRequestService.getSentRequests).not.toHaveBeenCalled();
   });
 });

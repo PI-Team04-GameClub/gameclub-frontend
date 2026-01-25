@@ -134,7 +134,10 @@ export const TournamentModal: React.FC<TournamentModalProps> = ({
                 placeholder="Select game"
                 value={formData.gameId || ""}
                 onChange={(e) =>
-                  setFormData({ ...formData, gameId: Number.parseInt(e.target.value, 10) })
+                  setFormData({
+                    ...formData,
+                    gameId: Number.parseInt(e.target.value, 10),
+                  })
                 }
               >
                 {games.map((game) => (

@@ -1,10 +1,6 @@
 import { describe, it, expect } from "vitest";
-import type {
-  LoginRequest,
-  RegisterRequest,
-  AuthResponse,
-  User,
-} from "./index";
+import type { LoginRequest, RegisterRequest, AuthResponse } from "./index";
+import type { User } from "../user";
 
 describe("Auth types", () => {
   it("should correctly type LoginRequest", () => {

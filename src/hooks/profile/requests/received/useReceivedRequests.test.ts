@@ -1,13 +1,25 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { renderHook, act, waitFor } from "@testing-library/react";
 import { useReceivedRequests } from "./useReceivedRequests";
-import { profileService } from "../../../../services/profile_service";
+import { friendRequestService } from "../../../../services/friend_request_service";
+import { authService } from "../../../../services/auth_service";
 
-vi.mock("../../../../services/profile_service", () => ({
-  profileService: {
+vi.mock("../../../../services/friend_request_service", () => ({
+  friendRequestService: {
     getReceivedRequests: vi.fn(),
     acceptRequest: vi.fn(),
     rejectRequest: vi.fn(),
+  },
+}));
+
+vi.mock("../../../../services/auth_service", () => ({
+  authService: {
+    getUser: vi.fn(() => ({
+      id: 1,
+      firstName: "Test",
+      lastName: "User",
+      email: "test@example.com",
+    })),
   },
 }));
 
@@ -43,7 +55,7 @@ describe("useReceivedRequests", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(profileService.getReceivedRequests).mockResolvedValue(
+    vi.mocked(friendRequestService.getReceivedRequests).mockResolvedValue(
       mockReceivedRequests
     );
   });
@@ -56,12 +68,12 @@ describe("useReceivedRequests", () => {
     await waitFor(() => {
       expect(result.current.receivedRequests).toEqual(mockReceivedRequests);
     });
-    expect(profileService.getReceivedRequests).toHaveBeenCalled();
+    expect(friendRequestService.getReceivedRequests).toHaveBeenCalledWith(1);
   });
 
   it("handles accept action", async () => {
     // Arrange
-    vi.mocked(profileService.acceptRequest).mockResolvedValue(undefined);
+    vi.mocked(friendRequestService.acceptRequest).mockResolvedValue(undefined);
     const { result } = renderHook(() => useReceivedRequests());
     await waitFor(() => {
       expect(result.current.receivedRequests).toEqual(mockReceivedRequests);
@@ -73,13 +85,13 @@ describe("useReceivedRequests", () => {
     });
 
     // Assert
-    expect(profileService.acceptRequest).toHaveBeenCalledWith(1);
-    expect(profileService.getReceivedRequests).toHaveBeenCalledTimes(2);
+    expect(friendRequestService.acceptRequest).toHaveBeenCalledWith(1);
+    expect(friendRequestService.getReceivedRequests).toHaveBeenCalledTimes(2);
   });
 
   it("handles reject action", async () => {
     // Arrange
-    vi.mocked(profileService.rejectRequest).mockResolvedValue(undefined);
+    vi.mocked(friendRequestService.rejectRequest).mockResolvedValue(undefined);
     const { result } = renderHook(() => useReceivedRequests());
     await waitFor(() => {
       expect(result.current.receivedRequests).toEqual(mockReceivedRequests);
@@ -91,8 +103,8 @@ describe("useReceivedRequests", () => {
     });
 
     // Assert
-    expect(profileService.rejectRequest).toHaveBeenCalledWith(1);
-    expect(profileService.getReceivedRequests).toHaveBeenCalledTimes(2);
+    expect(friendRequestService.rejectRequest).toHaveBeenCalledWith(1);
+    expect(friendRequestService.getReceivedRequests).toHaveBeenCalledTimes(2);
   });
 
   it("handles error when loading received requests", async () => {
@@ -100,7 +112,7 @@ describe("useReceivedRequests", () => {
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
-    vi.mocked(profileService.getReceivedRequests).mockRejectedValueOnce(
+    vi.mocked(friendRequestService.getReceivedRequests).mockRejectedValueOnce(
       new Error("Network error")
     );
 
@@ -123,7 +135,7 @@ describe("useReceivedRequests", () => {
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
-    vi.mocked(profileService.acceptRequest).mockRejectedValueOnce(
+    vi.mocked(friendRequestService.acceptRequest).mockRejectedValueOnce(
       new Error("Accept error")
     );
     const { result } = renderHook(() => useReceivedRequests());
@@ -149,7 +161,7 @@ describe("useReceivedRequests", () => {
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
-    vi.mocked(profileService.rejectRequest).mockRejectedValueOnce(
+    vi.mocked(friendRequestService.rejectRequest).mockRejectedValueOnce(
       new Error("Reject error")
     );
     const { result } = renderHook(() => useReceivedRequests());
@@ -168,5 +180,19 @@ describe("useReceivedRequests", () => {
       expect.any(Error)
     );
     consoleError.mockRestore();
+  });
+
+  it("does not load received requests when user is null", async () => {
+    // Arrange
+    vi.mocked(authService.getUser).mockReturnValueOnce(null);
+
+    // Act
+    const { result } = renderHook(() => useReceivedRequests());
+
+    // Assert
+    await waitFor(() => {
+      expect(result.current.receivedRequests).toEqual([]);
+    });
+    expect(friendRequestService.getReceivedRequests).not.toHaveBeenCalled();
   });
 });
