@@ -1,12 +1,13 @@
 import { describe, it, expect, vi, beforeEach, type Mocked } from "vitest";
 import axios from "axios";
-import { profileService } from "./profile_service";
-import { Friend, FriendRequest } from "../types";
+import { friendRequestService } from "./friend_request_service";
+import { FriendRequest } from "../types";
 
 vi.mock("axios", () => {
   const mockAxiosInstance = {
     get: vi.fn(),
     post: vi.fn(),
+    put: vi.fn(),
     delete: vi.fn(),
     interceptors: {
       request: { use: vi.fn() },
@@ -18,6 +19,7 @@ vi.mock("axios", () => {
       create: vi.fn(() => mockAxiosInstance),
       get: mockAxiosInstance.get,
       post: mockAxiosInstance.post,
+      put: mockAxiosInstance.put,
       delete: mockAxiosInstance.delete,
     },
   };
@@ -33,70 +35,13 @@ const mockedAxios = axios as unknown as {
   create: Mocked<typeof axios.create>;
   get: ReturnType<typeof vi.fn>;
   post: ReturnType<typeof vi.fn>;
+  put: ReturnType<typeof vi.fn>;
   delete: ReturnType<typeof vi.fn>;
 };
 
-describe("profileService", () => {
+describe("friendRequestService", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-  });
-
-  describe("getFriends", () => {
-    it("returns friends list from API", async () => {
-      // Arrange
-      const mockFriends: Friend[] = [
-        {
-          id: 1,
-          userId: 1,
-          friendId: 2,
-          firstName: "John",
-          lastName: "Doe",
-          email: "john@example.com",
-          createdAt: "2024-01-01T00:00:00Z",
-        },
-      ];
-      mockedAxios.get.mockResolvedValueOnce({ data: mockFriends });
-
-      // Act
-      const result = await profileService.getFriends();
-
-      // Assert
-      expect(result).toEqual(mockFriends);
-      expect(mockedAxios.get).toHaveBeenCalledTimes(1);
-    });
-
-    it("throws error when API fails", async () => {
-      // Arrange
-      mockedAxios.get.mockRejectedValueOnce(new Error("Network error"));
-
-      // Act & Assert
-      await expect(profileService.getFriends()).rejects.toThrow(
-        "Network error"
-      );
-    });
-  });
-
-  describe("removeFriend", () => {
-    it("removes friend via API", async () => {
-      // Arrange
-      mockedAxios.delete.mockResolvedValueOnce({});
-
-      // Act
-      await profileService.removeFriend(1);
-
-      // Assert
-      expect(mockedAxios.delete).toHaveBeenCalledTimes(1);
-    });
-
-    it("throws error when API fails", async () => {
-      // Arrange
-      mockedAxios.delete.mockRejectedValueOnce(new Error("Delete error"));
-
-      // Act & Assert
-      await expect(profileService.removeFriend(1)).rejects.toThrow(
-        "Delete error"
-      );
-    });
   });
 
   describe("getSentRequests", () => {
@@ -120,7 +65,7 @@ describe("profileService", () => {
       mockedAxios.get.mockResolvedValueOnce({ data: mockRequests });
 
       // Act
-      const result = await profileService.getSentRequests();
+      const result = await friendRequestService.getSentRequests(1);
 
       // Assert
       expect(result).toEqual(mockRequests);
@@ -132,7 +77,7 @@ describe("profileService", () => {
       mockedAxios.get.mockRejectedValueOnce(new Error("Network error"));
 
       // Act & Assert
-      await expect(profileService.getSentRequests()).rejects.toThrow(
+      await expect(friendRequestService.getSentRequests(1)).rejects.toThrow(
         "Network error"
       );
     });
@@ -159,7 +104,7 @@ describe("profileService", () => {
       mockedAxios.get.mockResolvedValueOnce({ data: mockRequests });
 
       // Act
-      const result = await profileService.getReceivedRequests();
+      const result = await friendRequestService.getReceivedRequests(1);
 
       // Assert
       expect(result).toEqual(mockRequests);
@@ -171,7 +116,7 @@ describe("profileService", () => {
       mockedAxios.get.mockRejectedValueOnce(new Error("Network error"));
 
       // Act & Assert
-      await expect(profileService.getReceivedRequests()).rejects.toThrow(
+      await expect(friendRequestService.getReceivedRequests(1)).rejects.toThrow(
         "Network error"
       );
     });
@@ -197,7 +142,7 @@ describe("profileService", () => {
       mockedAxios.post.mockResolvedValueOnce({ data: mockResponse });
 
       // Act
-      const result = await profileService.sendFriendRequest(requestData);
+      const result = await friendRequestService.sendFriendRequest(requestData);
 
       // Assert
       expect(result).toEqual(mockResponse);
@@ -210,7 +155,7 @@ describe("profileService", () => {
 
       // Act & Assert
       await expect(
-        profileService.sendFriendRequest({ receiverId: 2 })
+        friendRequestService.sendFriendRequest({ receiverId: 2 })
       ).rejects.toThrow("Send error");
     });
   });
@@ -218,21 +163,21 @@ describe("profileService", () => {
   describe("acceptRequest", () => {
     it("accepts friend request via API", async () => {
       // Arrange
-      mockedAxios.post.mockResolvedValueOnce({});
+      mockedAxios.put.mockResolvedValueOnce({});
 
       // Act
-      await profileService.acceptRequest(1);
+      await friendRequestService.acceptRequest(1);
 
       // Assert
-      expect(mockedAxios.post).toHaveBeenCalledTimes(1);
+      expect(mockedAxios.put).toHaveBeenCalledTimes(1);
     });
 
     it("throws error when API fails", async () => {
       // Arrange
-      mockedAxios.post.mockRejectedValueOnce(new Error("Accept error"));
+      mockedAxios.put.mockRejectedValueOnce(new Error("Accept error"));
 
       // Act & Assert
-      await expect(profileService.acceptRequest(1)).rejects.toThrow(
+      await expect(friendRequestService.acceptRequest(1)).rejects.toThrow(
         "Accept error"
       );
     });
@@ -241,21 +186,21 @@ describe("profileService", () => {
   describe("rejectRequest", () => {
     it("rejects friend request via API", async () => {
       // Arrange
-      mockedAxios.post.mockResolvedValueOnce({});
+      mockedAxios.put.mockResolvedValueOnce({});
 
       // Act
-      await profileService.rejectRequest(1);
+      await friendRequestService.rejectRequest(1);
 
       // Assert
-      expect(mockedAxios.post).toHaveBeenCalledTimes(1);
+      expect(mockedAxios.put).toHaveBeenCalledTimes(1);
     });
 
     it("throws error when API fails", async () => {
       // Arrange
-      mockedAxios.post.mockRejectedValueOnce(new Error("Reject error"));
+      mockedAxios.put.mockRejectedValueOnce(new Error("Reject error"));
 
       // Act & Assert
-      await expect(profileService.rejectRequest(1)).rejects.toThrow(
+      await expect(friendRequestService.rejectRequest(1)).rejects.toThrow(
         "Reject error"
       );
     });
@@ -267,7 +212,7 @@ describe("profileService", () => {
       mockedAxios.delete.mockResolvedValueOnce({});
 
       // Act
-      await profileService.cancelRequest(1);
+      await friendRequestService.cancelRequest(1);
 
       // Assert
       expect(mockedAxios.delete).toHaveBeenCalledTimes(1);
@@ -278,7 +223,7 @@ describe("profileService", () => {
       mockedAxios.delete.mockRejectedValueOnce(new Error("Cancel error"));
 
       // Act & Assert
-      await expect(profileService.cancelRequest(1)).rejects.toThrow(
+      await expect(friendRequestService.cancelRequest(1)).rejects.toThrow(
         "Cancel error"
       );
     });

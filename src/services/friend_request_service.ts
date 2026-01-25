@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Friend, FriendRequest, FriendRequestFormData } from "../types";
+import { FriendRequest, FriendRequestFormData } from "../types";
 import { API_BASE_URL } from "../config";
 import { authService } from "./auth_service";
 
@@ -31,44 +31,37 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-export const profileService = {
-  // Friends
-  getFriends: async (): Promise<Friend[]> => {
-    const response = await axiosInstance.get("/profile/friends");
+export const friendRequestService = {
+  getSentRequests: async (userId: number): Promise<FriendRequest[]> => {
+    const response = await axiosInstance.get(
+      `/users/${userId}/friend-requests/sent`
+    );
     return response.data;
   },
 
-  removeFriend: async (friendId: number): Promise<void> => {
-    await axiosInstance.delete(`/profile/friends/${friendId}`);
-  },
-
-  // Friend Requests
-  getSentRequests: async (): Promise<FriendRequest[]> => {
-    const response = await axiosInstance.get("/profile/requests/sent");
-    return response.data;
-  },
-
-  getReceivedRequests: async (): Promise<FriendRequest[]> => {
-    const response = await axiosInstance.get("/profile/requests/received");
+  getReceivedRequests: async (userId: number): Promise<FriendRequest[]> => {
+    const response = await axiosInstance.get(
+      `/users/${userId}/friend-requests/received`
+    );
     return response.data;
   },
 
   sendFriendRequest: async (
     data: FriendRequestFormData
   ): Promise<FriendRequest> => {
-    const response = await axiosInstance.post("/profile/requests", data);
+    const response = await axiosInstance.post("/friend-requests", data);
     return response.data;
   },
 
   acceptRequest: async (requestId: number): Promise<void> => {
-    await axiosInstance.post(`/profile/requests/${requestId}/accept`);
+    await axiosInstance.put(`/friend-requests/${requestId}/accept`);
   },
 
   rejectRequest: async (requestId: number): Promise<void> => {
-    await axiosInstance.post(`/profile/requests/${requestId}/reject`);
+    await axiosInstance.put(`/friend-requests/${requestId}/decline`);
   },
 
   cancelRequest: async (requestId: number): Promise<void> => {
-    await axiosInstance.delete(`/profile/requests/${requestId}`);
+    await axiosInstance.delete(`/friend-requests/${requestId}`);
   },
 };

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useDisclosure } from "@chakra-ui/react";
-import { profileService } from "../../../../services/profile_service";
+import { friendRequestService } from "../../../../services/friend_request_service";
+import { authService } from "../../../../services/auth_service";
 import { FriendRequest } from "../../../../types";
 
 export const useSentRequests = () => {
@@ -15,7 +16,9 @@ export const useSentRequests = () => {
 
   const loadSentRequests = useCallback(async () => {
     try {
-      const data = await profileService.getSentRequests();
+      const user = authService.getUser();
+      if (!user) return;
+      const data = await friendRequestService.getSentRequests(user.id);
       setSentRequests(data);
     } catch (error) {
       console.error("Error loading sent requests:", error);
@@ -37,7 +40,7 @@ export const useSentRequests = () => {
   const handleCancel = useCallback(async () => {
     if (requestToCancel) {
       try {
-        await profileService.cancelRequest(requestToCancel);
+        await friendRequestService.cancelRequest(requestToCancel);
         loadSentRequests();
       } catch (error) {
         console.error("Error canceling request:", error);

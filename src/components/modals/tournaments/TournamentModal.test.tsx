@@ -11,7 +11,8 @@ vi.mock("../../../services/game_service", () => ({
 }));
 
 // Helper to create alert mock
-const createAlertMock = () => vi.spyOn(globalThis, "alert").mockImplementation(() => {});
+const createAlertMock = () =>
+  vi.spyOn(globalThis, "alert").mockImplementation(() => {});
 
 describe("TournamentModal", () => {
   const mockGames = [
