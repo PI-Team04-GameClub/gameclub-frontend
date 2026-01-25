@@ -40,6 +40,7 @@ const Navbar: React.FC = () => {
             <NavLink to="/games">Games</NavLink>
             <NavLink to="/teams">Teams</NavLink>
             <NavLink to="/tournaments">Tournaments</NavLink>
+            <NavLink to="/users">Users</NavLink>
           </HStack>
 
           <HStack spacing={4}>

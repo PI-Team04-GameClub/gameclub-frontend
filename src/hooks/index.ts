@@ -4,3 +4,4 @@ export * from "./tournaments";
 export * from "./news";
 export * from "./profile";
 export * from "./comments";
+export * from "./users";
