@@ -1,7 +1,21 @@
 import axios from "axios";
-import { Friend } from "../types";
+import { User } from "../types";
 import { API_BASE_URL } from "../config";
 import { authService } from "./auth_service";
+
+export interface CreateUserRequest {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName?: string;
+}
+
+export interface UpdateUserRequest {
+  email?: string;
+  password?: string;
+  firstName?: string;
+  lastName?: string;
+}
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -32,12 +46,23 @@ axiosInstance.interceptors.response.use(
 );
 
 export const userService = {
-  getFriends: async (userId: number): Promise<Friend[]> => {
-    const response = await axiosInstance.get(`/users/${userId}/friends`);
+  getAllUsers: async (): Promise<User[]> => {
+    const response = await axiosInstance.get("/users");
     return response.data;
   },
 
-  removeFriend: async (friendRequestId: number): Promise<void> => {
-    await axiosInstance.delete(`/friend-requests/${friendRequestId}`);
+  getUserById: async (id: number): Promise<User> => {
+    const response = await axiosInstance.get(`/users/${id}`);
+    return response.data;
+  },
+
+  createUser: async (data: CreateUserRequest): Promise<User> => {
+    const response = await axiosInstance.post("/users", data);
+    return response.data;
+  },
+
+  updateUser: async (id: number, data: UpdateUserRequest): Promise<User> => {
+    const response = await axiosInstance.put(`/users/${id}`, data);
+    return response.data;
   },
 };

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FriendRequest, FriendRequestFormData } from "../types";
+import { Friend, FriendRequest, FriendRequestFormData } from "../types";
 import { API_BASE_URL } from "../config";
 import { authService } from "./auth_service";
 
@@ -63,5 +63,10 @@ export const friendRequestService = {
 
   cancelRequest: async (requestId: number): Promise<void> => {
     await axiosInstance.delete(`/friend-requests/${requestId}`);
+  },
+
+  getFriends: async (userId: number): Promise<Friend[]> => {
+    const response = await axiosInstance.get(`/users/${userId}/friends`);
+    return response.data;
   },
 };

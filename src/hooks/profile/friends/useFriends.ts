@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useDisclosure } from "@chakra-ui/react";
-import { userService } from "../../../services/user_service";
+import { friendRequestService } from "../../../services/friend_request_service";
 import { authService } from "../../../services/auth_service";
 import { Friend } from "../../../types";
 
@@ -18,7 +18,7 @@ export const useFriends = () => {
     try {
       const user = authService.getUser();
       if (!user) return;
-      const data = await userService.getFriends(user.id);
+      const data = await friendRequestService.getFriends(user.id);
       setFriends(data);
     } catch (error) {
       console.error("Error loading friends:", error);
@@ -40,7 +40,7 @@ export const useFriends = () => {
   const handleRemove = useCallback(async () => {
     if (friendToRemove) {
       try {
-        await userService.removeFriend(friendToRemove);
+        await friendRequestService.cancelRequest(friendToRemove);
         loadFriends();
       } catch (error) {
         console.error("Error removing friend:", error);

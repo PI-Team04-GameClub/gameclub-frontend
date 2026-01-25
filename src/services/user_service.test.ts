@@ -1,12 +1,13 @@
 import { describe, it, expect, vi, beforeEach, type Mocked } from "vitest";
 import axios from "axios";
 import { userService } from "./user_service";
-import { Friend } from "../types";
+import { User } from "../types";
 
 vi.mock("axios", () => {
   const mockAxiosInstance = {
     get: vi.fn(),
-    delete: vi.fn(),
+    post: vi.fn(),
+    put: vi.fn(),
     interceptors: {
       request: { use: vi.fn() },
       response: { use: vi.fn() },
@@ -16,7 +17,8 @@ vi.mock("axios", () => {
     default: {
       create: vi.fn(() => mockAxiosInstance),
       get: mockAxiosInstance.get,
-      delete: mockAxiosInstance.delete,
+      post: mockAxiosInstance.post,
+      put: mockAxiosInstance.put,
     },
   };
 });
@@ -30,7 +32,8 @@ vi.mock("./auth_service", () => ({
 const mockedAxios = axios as unknown as {
   create: Mocked<typeof axios.create>;
   get: ReturnType<typeof vi.fn>;
-  delete: ReturnType<typeof vi.fn>;
+  post: ReturnType<typeof vi.fn>;
+  put: ReturnType<typeof vi.fn>;
 };
 
 describe("userService", () => {
@@ -38,27 +41,30 @@ describe("userService", () => {
     vi.clearAllMocks();
   });
 
-  describe("getFriends", () => {
-    it("returns friends list from API", async () => {
+  describe("getAllUsers", () => {
+    it("returns users list from API", async () => {
       // Arrange
-      const mockFriends: Friend[] = [
+      const mockUsers: User[] = [
         {
           id: 1,
-          userId: 1,
-          friendId: 2,
-          firstName: "John",
-          lastName: "Doe",
+          first_name: "John",
+          last_name: "Doe",
           email: "john@example.com",
-          createdAt: "2024-01-01T00:00:00Z",
+        },
+        {
+          id: 2,
+          first_name: "Jane",
+          last_name: "Smith",
+          email: "jane@example.com",
         },
       ];
-      mockedAxios.get.mockResolvedValueOnce({ data: mockFriends });
+      mockedAxios.get.mockResolvedValueOnce({ data: mockUsers });
 
       // Act
-      const result = await userService.getFriends(1);
+      const result = await userService.getAllUsers();
 
       // Assert
-      expect(result).toEqual(mockFriends);
+      expect(result).toEqual(mockUsers);
       expect(mockedAxios.get).toHaveBeenCalledTimes(1);
     });
 
@@ -67,28 +73,106 @@ describe("userService", () => {
       mockedAxios.get.mockRejectedValueOnce(new Error("Network error"));
 
       // Act & Assert
-      await expect(userService.getFriends(1)).rejects.toThrow("Network error");
+      await expect(userService.getAllUsers()).rejects.toThrow("Network error");
     });
   });
 
-  describe("removeFriend", () => {
-    it("removes friend via API", async () => {
+  describe("getUserById", () => {
+    it("returns user from API", async () => {
       // Arrange
-      mockedAxios.delete.mockResolvedValueOnce({});
+      const mockUser: User = {
+        id: 1,
+        first_name: "John",
+        last_name: "Doe",
+        email: "john@example.com",
+      };
+      mockedAxios.get.mockResolvedValueOnce({ data: mockUser });
 
       // Act
-      await userService.removeFriend(1);
+      const result = await userService.getUserById(1);
 
       // Assert
-      expect(mockedAxios.delete).toHaveBeenCalledTimes(1);
+      expect(result).toEqual(mockUser);
+      expect(mockedAxios.get).toHaveBeenCalledTimes(1);
     });
 
     it("throws error when API fails", async () => {
       // Arrange
-      mockedAxios.delete.mockRejectedValueOnce(new Error("Delete error"));
+      mockedAxios.get.mockRejectedValueOnce(new Error("Not found"));
 
       // Act & Assert
-      await expect(userService.removeFriend(1)).rejects.toThrow("Delete error");
+      await expect(userService.getUserById(1)).rejects.toThrow("Not found");
+    });
+  });
+
+  describe("createUser", () => {
+    it("creates user via API", async () => {
+      // Arrange
+      const createData = {
+        email: "new@example.com",
+        password: "password123",
+        firstName: "New",
+        lastName: "User",
+      };
+      const mockUser: User = {
+        id: 1,
+        first_name: "New",
+        last_name: "User",
+        email: "new@example.com",
+      };
+      mockedAxios.post.mockResolvedValueOnce({ data: mockUser });
+
+      // Act
+      const result = await userService.createUser(createData);
+
+      // Assert
+      expect(result).toEqual(mockUser);
+      expect(mockedAxios.post).toHaveBeenCalledTimes(1);
+    });
+
+    it("throws error when API fails", async () => {
+      // Arrange
+      mockedAxios.post.mockRejectedValueOnce(new Error("Validation error"));
+
+      // Act & Assert
+      await expect(
+        userService.createUser({
+          email: "new@example.com",
+          password: "pass",
+          firstName: "New",
+        })
+      ).rejects.toThrow("Validation error");
+    });
+  });
+
+  describe("updateUser", () => {
+    it("updates user via API", async () => {
+      // Arrange
+      const updateData = { firstName: "Updated" };
+      const mockUser: User = {
+        id: 1,
+        first_name: "Updated",
+        last_name: "Doe",
+        email: "john@example.com",
+      };
+      mockedAxios.put.mockResolvedValueOnce({ data: mockUser });
+
+      // Act
+      const result = await userService.updateUser(1, updateData);
+
+      // Assert
+      expect(result).toEqual(mockUser);
+      expect(mockedAxios.put).toHaveBeenCalledTimes(1);
+    });
+
+    it("throws error when API fails", async () => {
+      // Arrange
+      mockedAxios.put.mockRejectedValueOnce(new Error("Update error"));
+
+      // Act & Assert
+      await expect(
+        userService.updateUser(1, { firstName: "Updated" })
+      ).rejects.toThrow("Update error");
     });
   });
 });

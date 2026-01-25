@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, type Mocked } from "vitest";
 import axios from "axios";
 import { friendRequestService } from "./friend_request_service";
-import { FriendRequest } from "../types";
+import { Friend, FriendRequest } from "../types";
 
 vi.mock("axios", () => {
   const mockAxiosInstance = {
@@ -225,6 +225,41 @@ describe("friendRequestService", () => {
       // Act & Assert
       await expect(friendRequestService.cancelRequest(1)).rejects.toThrow(
         "Cancel error"
+      );
+    });
+  });
+
+  describe("getFriends", () => {
+    it("returns friends list from API", async () => {
+      // Arrange
+      const mockFriends: Friend[] = [
+        {
+          id: 1,
+          userId: 1,
+          friendId: 2,
+          firstName: "John",
+          lastName: "Doe",
+          email: "john@example.com",
+          createdAt: "2024-01-01T00:00:00Z",
+        },
+      ];
+      mockedAxios.get.mockResolvedValueOnce({ data: mockFriends });
+
+      // Act
+      const result = await friendRequestService.getFriends(1);
+
+      // Assert
+      expect(result).toEqual(mockFriends);
+      expect(mockedAxios.get).toHaveBeenCalledTimes(1);
+    });
+
+    it("throws error when API fails", async () => {
+      // Arrange
+      mockedAxios.get.mockRejectedValueOnce(new Error("Network error"));
+
+      // Act & Assert
+      await expect(friendRequestService.getFriends(1)).rejects.toThrow(
+        "Network error"
       );
     });
   });

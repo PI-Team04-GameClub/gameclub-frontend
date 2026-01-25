@@ -1,13 +1,13 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { renderHook, act, waitFor } from "@testing-library/react";
 import { useFriends } from "./useFriends";
-import { userService } from "../../../services/user_service";
+import { friendRequestService } from "../../../services/friend_request_service";
 import { authService } from "../../../services/auth_service";
 
-vi.mock("../../../services/user_service", () => ({
-  userService: {
+vi.mock("../../../services/friend_request_service", () => ({
+  friendRequestService: {
     getFriends: vi.fn(),
-    removeFriend: vi.fn(),
+    cancelRequest: vi.fn(),
   },
 }));
 
@@ -65,7 +65,7 @@ describe("useFriends", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(userService.getFriends).mockResolvedValue(mockFriends);
+    vi.mocked(friendRequestService.getFriends).mockResolvedValue(mockFriends);
   });
 
   it("loads friends on mount", async () => {
@@ -76,7 +76,7 @@ describe("useFriends", () => {
     await waitFor(() => {
       expect(result.current.friends).toEqual(mockFriends);
     });
-    expect(userService.getFriends).toHaveBeenCalledWith(1);
+    expect(friendRequestService.getFriends).toHaveBeenCalledWith(1);
   });
 
   it("handles remove click", async () => {
@@ -97,7 +97,7 @@ describe("useFriends", () => {
 
   it("handles remove action", async () => {
     // Arrange
-    vi.mocked(userService.removeFriend).mockResolvedValue(undefined);
+    vi.mocked(friendRequestService.cancelRequest).mockResolvedValue(undefined);
     const { result } = renderHook(() => useFriends());
     await waitFor(() => {
       expect(result.current.friends).toEqual(mockFriends);
@@ -112,8 +112,8 @@ describe("useFriends", () => {
     });
 
     // Assert
-    expect(userService.removeFriend).toHaveBeenCalledWith(1);
-    expect(userService.getFriends).toHaveBeenCalledTimes(2);
+    expect(friendRequestService.cancelRequest).toHaveBeenCalledWith(1);
+    expect(friendRequestService.getFriends).toHaveBeenCalledTimes(2);
   });
 
   it("handles error when loading friends", async () => {
@@ -121,7 +121,7 @@ describe("useFriends", () => {
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
-    vi.mocked(userService.getFriends).mockRejectedValueOnce(
+    vi.mocked(friendRequestService.getFriends).mockRejectedValueOnce(
       new Error("Network error")
     );
 
@@ -144,7 +144,7 @@ describe("useFriends", () => {
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
-    vi.mocked(userService.removeFriend).mockRejectedValueOnce(
+    vi.mocked(friendRequestService.cancelRequest).mockRejectedValueOnce(
       new Error("Remove error")
     );
     const { result } = renderHook(() => useFriends());
@@ -181,7 +181,7 @@ describe("useFriends", () => {
     });
 
     // Assert
-    expect(userService.removeFriend).not.toHaveBeenCalled();
+    expect(friendRequestService.cancelRequest).not.toHaveBeenCalled();
   });
 
   it("does not load friends when user is null", async () => {
@@ -195,6 +195,6 @@ describe("useFriends", () => {
     await waitFor(() => {
       expect(result.current.friends).toEqual([]);
     });
-    expect(userService.getFriends).not.toHaveBeenCalled();
+    expect(friendRequestService.getFriends).not.toHaveBeenCalled();
   });
 });
