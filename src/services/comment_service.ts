@@ -9,7 +9,9 @@ export const commentService = {
   },
 
   getByUserId: async (userId: number): Promise<Comment[]> => {
-    const response = await axios.get(`${API_BASE_URL}/users/${userId}/comments`);
+    const response = await axios.get(
+      `${API_BASE_URL}/users/${userId}/comments`
+    );
     return response.data;
   },
 
