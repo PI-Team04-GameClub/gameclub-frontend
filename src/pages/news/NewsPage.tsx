@@ -3,7 +3,7 @@ import { Box, Container, VStack } from "@chakra-ui/react";
 import { useNews } from "../../hooks";
 import { NewsModal } from "../../components/modals/news/NewsModal";
 import { DeleteConfirmDialog } from "../../components/dialogs/DeleteConfirmDialog";
-import NewsCard from "../../components/cards/NewsCard";
+import { NewsCard } from "../../components/cards";
 import { PageHeader } from "../../components/layouts";
 
 const NewsPage: React.FC = () => {

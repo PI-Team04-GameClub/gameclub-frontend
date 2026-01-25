@@ -5,3 +5,4 @@ export * from "./team";
 export * from "./games";
 export * from "./user";
 export * from "./request";
+export * from "./comments";

@@ -6,6 +6,18 @@ import { useNews } from "../../hooks";
 
 vi.mock("../../hooks", () => ({
   useNews: vi.fn(),
+  useComments: vi.fn(() => ({
+    comments: [],
+    selectedComment: undefined,
+    isLoading: false,
+    isModalOpen: false,
+    onModalClose: vi.fn(),
+    loadComments: vi.fn(),
+    handleCreate: vi.fn(),
+    handleEdit: vi.fn(),
+    handleSubmit: vi.fn(),
+    handleDelete: vi.fn(),
+  })),
 }));
 
 describe("NewsPage", () => {
